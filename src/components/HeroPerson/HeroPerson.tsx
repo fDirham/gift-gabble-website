@@ -1,7 +1,7 @@
 import styles from "./HeroPerson.module.scss";
 import { Amaranth } from "next/font/google";
 
-const allura = Amaranth({ subsets: ["latin"], weight: "400" });
+const amaranth = Amaranth({ subsets: ["latin"], weight: "400" });
 
 export default function HeroPerson() {
   const nameList = [
@@ -32,7 +32,7 @@ export default function HeroPerson() {
   };
 
   return (
-    <div className={`${styles.container} ${allura.className}`}>
+    <div className={`${styles.container} ${amaranth.className}`}>
       <div className={styles.scrollContainer}>{renderNames()}</div>
     </div>
   );

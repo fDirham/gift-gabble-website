@@ -19,9 +19,9 @@ export const whyOptions = [
   UNKNOWN_VALUE,
   ["bday", "their birthday"],
   ["anniversary", "our anniversary"],
-  ["sorry", "forgiveness"],
-  ["special", "a special occasion"],
   ["wedding", "their wedding"],
-  ["event", "an event"],
+  // Add bottom later
+  // ["sorry", "forgiveness"],
+  // ["event", "an event"],
   ["na", "no reason"],
 ];

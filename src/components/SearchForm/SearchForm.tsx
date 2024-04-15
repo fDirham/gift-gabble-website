@@ -3,8 +3,16 @@
 import { useState } from "react";
 import styles from "./SearchForm.module.scss";
 import { UNKNOWN_VALUE, whoOptions, whyOptions } from "./options";
+import { SearchConfig } from "@/utilities/customTypes";
+import { Amaranth } from "next/font/google";
 
-export default function SearchForm() {
+const amaranth = Amaranth({ subsets: ["latin"], weight: "400" });
+
+export type SearchFormProps = {
+  onGo: (config: SearchConfig) => void;
+};
+
+export default function SearchForm(props: SearchFormProps) {
   const [fWho, setFWho] = useState<string>(UNKNOWN_VALUE);
   const [fWhy, setFWhy] = useState<string>(UNKNOWN_VALUE);
   const [fDesc, setFDesc] = useState<string>("");
@@ -30,7 +38,14 @@ export default function SearchForm() {
     });
   };
 
-  function handleGo() {}
+  function handleGo() {
+    props.onGo({
+      why: fWhy,
+      who: fWho,
+      desc: fDesc,
+      budget: fBudget,
+    });
+  }
 
   const renderInputTree = () => {
     const toRender = [];
@@ -74,7 +89,8 @@ export default function SearchForm() {
       if (fWhy !== UNKNOWN_VALUE) {
         toRender.push(
           <label htmlFor="descInput" key="descInputLabel">
-            Describe your {fWho} <br />
+            Describe your <span className={amaranth.className}>{fWho}</span>{" "}
+            <br />
             {
               "(mention any hobbies, favorite tv shows / movies, personality, etc.)"
             }
@@ -102,12 +118,11 @@ export default function SearchForm() {
           );
 
           toRender.push(
-            <span className={styles.input}>
+            <span className={styles.input} key={"budgetInput"}>
               {"$ "}
               <input
                 name="budgetInput"
                 id="budgetInput"
-                key={"budgetInput"}
                 className={styles.budgetInput}
                 value={fBudget}
                 onChange={(e) => setFBudget(parseInt(e.target.value))}
