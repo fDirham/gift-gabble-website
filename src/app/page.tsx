@@ -1,5 +1,6 @@
-import HeroPerson from "@/components/HeroPerson/HeroPerson";
+import HeroPerson from "@/components/HeroPerson";
 import styles from "./page.module.scss";
+import SearchForm from "@/components/SearchForm";
 
 export default function Home() {
   return (
@@ -16,6 +17,8 @@ export default function Home() {
               IN <b>SECONDS</b>
             </h2>
           </div>
+
+          <SearchForm />
         </div>
       </main>
       <footer></footer>

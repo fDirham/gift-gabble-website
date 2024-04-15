@@ -10,6 +10,7 @@ export default function HeroPerson() {
     "parents",
     "boyfriend",
     "best-friend",
+    "family",
     "mom",
     "girlfriend",
     "dad",

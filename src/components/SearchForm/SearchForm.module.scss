@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  label {
+    font-size: medium;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  input,
+  .input,
+  select,
+  textarea {
+    background-color: white;
+    border: 2px black solid;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-radius: 4px;
+    font-size: 18px;
+    font-family: inherit;
+    padding: 8px;
+    min-width: 206px;
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+
+  .budgetInput {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  textarea {
+    font-size: 16px;
+    min-width: 280px;
+  }
+
+  option {
+    font-family: inherit;
+  }
+}
