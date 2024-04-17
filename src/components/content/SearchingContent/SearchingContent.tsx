@@ -51,7 +51,7 @@ export default function SearchingContent(props: SearchingContentProps) {
       <span className={styles.disclaimerText}>
         DICLAIMER: As an Amazon Associate I earn from qualifying purchases.
       </span>
-      <ProductList productList={props.productList} />
+      <ProductList productList={props.productList} max={10} />
     </div>
   );
 }

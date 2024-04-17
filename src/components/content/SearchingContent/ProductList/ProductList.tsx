@@ -5,10 +5,21 @@ import StarRatings from "react-star-ratings";
 
 type ProductListProps = {
   productList: ProductObj[];
+  max?: number;
 };
+
+/**
+ * TODO: Add actual pagination
+ */
+
 export default function ProductList(props: ProductListProps) {
   const renderProductList = () => {
-    return props.productList.map((productObj) => {
+    let listToRender = props.productList;
+    if (props.max && listToRender.length > props.max) {
+      listToRender = listToRender.slice(0, props.max);
+    }
+
+    return listToRender.map((productObj) => {
       return (
         <div className={styles.productBlock} key={productObj.linkUrl}>
           <img className={styles.productImg} src={productObj.imageUrl} />
