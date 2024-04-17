@@ -1,6 +1,6 @@
 import styles from "./LandingContent.module.scss";
-import HeroPerson from "@/components/HeroPerson";
-import SearchForm from "@/components/SearchForm";
+import HeroPerson from "@/components/content/LandingContent/HeroPerson";
+import SearchForm from "@/components/content/LandingContent/SearchForm";
 import { SearchConfig } from "@/utilities/customTypes";
 
 type LandingContentProps = {

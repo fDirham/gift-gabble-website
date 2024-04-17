@@ -9,8 +9,8 @@ import {
   DUMM_REC_PRODUCT_MAP,
 } from "@/utilities/dummy";
 
-import LandingContent from "@/components/LandingContent";
-import SearchingContent from "@/components/SearchingContent";
+import LandingContent from "@/components/content/LandingContent";
+import SearchingContent from "@/components/content/SearchingContent";
 
 export default function Home() {
   const [isSearching, setIsSearching] = useState(true);
