@@ -1,10 +1,12 @@
-export type SearchResult = {
+export type ProductObj = {
   title: string;
   imageUrl: string;
   linkUrl: string;
   price: string;
   asin: string;
-  rating: number;
+  rating?: number;
+  ratingsTotal?: number;
+  isPrime: boolean;
 };
 
 export type SearchConfig = {

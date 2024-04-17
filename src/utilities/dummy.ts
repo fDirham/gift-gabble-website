@@ -1,4 +1,13 @@
-export const dummyRecsList = [
+import { ProductObj, SearchConfig } from "./customTypes";
+
+export const DUMMY_SEARCH_CONFIG: SearchConfig = {
+  who: "girlfriend",
+  why: "birthday",
+  desc: "Lorem ipsum baba yetu mf",
+  budget: 0,
+};
+
+export const DUMMY_REC_LIST: string[] = [
   "Personalized soccer keychain",
   "UFC keychain",
   "Soccer ball stress ball",
@@ -10,7 +19,7 @@ export const dummyRecsList = [
   "Soccer phone grip",
   "UFC themed phone case",
 ];
-export const dummyProductList = [
+export const DUMMY_PRODUCT_LIST: ProductObj[] = [
   {
     title:
       "WOKAI Custom Name Keychain Personalized, 3D Printed Personalized Name Keychains for Car Key, Backpack, Customized Key Chain for Girls Women",
@@ -20,6 +29,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/610DJ-X3ToL._AC_UL320_.jpg",
     rating: 4.8,
     price: "$5.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -30,6 +41,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71WAMl4M-cL._AC_UL320_.jpg",
     rating: 4.7,
     price: "$12.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -40,6 +53,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51LhHGM2uWL._AC_UL320_.jpg",
     rating: 4.2,
     price: "$10.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -50,6 +65,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71C0hUSahGL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$6.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -60,6 +77,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61lGvCMnkzL._AC_UL320_.jpg",
     rating: 4.5,
     price: "$14.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -70,6 +89,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71eZUwvDW+L._AC_UL320_.jpg",
     rating: 4.7,
     price: "$11.00",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -80,6 +101,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/81WaosmHQvL._AC_UL320_.jpg",
     rating: 5,
     price: "$4.00",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -90,6 +113,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/610DJ-X3ToL._AC_UL320_.jpg",
     rating: 4.8,
     price: "$5.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -100,6 +125,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71C0hUSahGL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$6.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -110,6 +137,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51IPc-KD2KL._AC_UL320_.jpg",
     rating: 4.4,
     price: "$8.59",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -120,6 +149,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/6126zGNGG7L._AC_UL320_.jpg",
     rating: 4.2,
     price: "$5.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -130,6 +161,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/619rkNQmVWL._AC_UL320_.jpg",
     rating: 4.7,
     price: "$4.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -140,6 +173,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51bttz+o1WL._AC_UL320_.jpg",
     rating: 4.8,
     price: "$15.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -150,6 +185,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71iRooYOznL._AC_UL320_.jpg",
     rating: 5,
     price: "$8.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -159,6 +196,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Soccer-keychain-bottle-personalized-soccer/dp/B0CZJCB7G6/ref=sr_1_10?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-10&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/710j36+UQ8L._AC_UL320_.jpg",
     price: "$6.95",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -168,6 +207,8 @@ export const dummyProductList = [
       "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyMzYwNDYzMDUwNjM4MTA1OjE3MTMxNjQ5NzE6c3BfbXRmOjMwMDE1MTEzMzE5MTgwMjo6MDo6&url=%2FKeychain-Personalized-Birthday-Suitcase-Backpack%2Fdp%2FB0CXHP4RVT%2Fref%3Dsr_1_11_sspa%3Fdib%3DeyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU%26dib_tag%3Dse%26keywords%3DPersonalized%2Bsoccer%2Bkeychain%26qid%3D1713164971%26sr%3D8-11-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/71bcHAReFlL._AC_UL320_.jpg",
     price: "$9.98",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -178,6 +219,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51V4JyOLkSL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$10.00",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -188,6 +231,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/6126zGNGG7L._AC_UL320_.jpg",
     rating: 4.2,
     price: "$5.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -197,6 +242,8 @@ export const dummyProductList = [
       "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyMzYwNDYzMDUwNjM4MTA1OjE3MTMxNjQ5NzE6c3BfbXRmOjMwMDE2MzAzMjk4NTgwMjo6MDo6&url=%2FCupike-Custom-Keychain-Picture-Personalized%2Fdp%2FB0CZLDH3GV%2Fref%3Dsr_1_14_sspa%3Fdib%3DeyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU%26dib_tag%3Dse%26keywords%3DPersonalized%2Bsoccer%2Bkeychain%26qid%3D1713164971%26sr%3D8-14-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/61qOd9+pgiL._AC_UL320_.jpg",
     price: "$8.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -207,6 +254,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71z3Esfwf5L._AC_UL320_.jpg",
     rating: 4.6,
     price: "$16.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -217,6 +266,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51rUZAwv9hL._AC_UL320_.jpg",
     rating: 4.8,
     price: "$12.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -227,6 +278,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51q2NNqql4L._AC_UL320_.jpg",
     rating: 4.5,
     price: "$5.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -237,6 +290,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51XFYjbqE-L._AC_UL320_.jpg",
     rating: 4.5,
     price: "$13.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -247,6 +302,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51orpnyCfLL._AC_UL320_.jpg",
     rating: 4.1,
     price: "$15.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -257,6 +314,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61J1mVViKML._AC_UL320_.jpg",
     rating: 4.5,
     price: "$7.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -266,6 +325,8 @@ export const dummyProductList = [
       "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyMzYwNDYzMDUwNjM4MTA1OjE3MTMxNjQ5NzE6c3BfbXRmOjMwMDE1OTg3NDk3NTgwMjo6MDo6&url=%2FSoccer-keychain-bottle-personalized-soccer%2Fdp%2FB0CZJCB7G6%2Fref%3Dsr_1_21_sspa%3Fdib%3DeyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU%26dib_tag%3Dse%26keywords%3DPersonalized%2Bsoccer%2Bkeychain%26qid%3D1713164971%26sr%3D8-21-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/710j36+UQ8L._AC_UL320_.jpg",
     price: "$6.95",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -276,6 +337,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/718CmgD4WkL._AC_UL320_.jpg",
     rating: 4.4,
     price: "$9.90",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -285,6 +348,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Personalized-Soccer-tag-Soccer-gift-Soccer-goodie/dp/B0BY5XKTQX/ref=sr_1_23?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-23&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/51fzFpEZJCL._AC_UL320_.jpg",
     price: "$10.00",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -295,6 +360,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71C0hUSahGL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$6.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -305,6 +372,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51orpnyCfLL._AC_UL320_.jpg",
     rating: 4.1,
     price: "$15.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -315,6 +384,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51pOLPgj-vL._AC_UL320_.jpg",
     rating: 4.5,
     price: "$12.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -325,6 +396,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61y-M-GrSNL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$12.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -335,6 +408,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51R5psFjNpL._AC_UL320_.jpg",
     rating: 5,
     price: "$15.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -345,6 +420,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61a3di0lItL._AC_UL320_.jpg",
     rating: 4.1,
     price: "$8.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -355,6 +432,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71WAMl4M-cL._AC_UL320_.jpg",
     rating: 4.7,
     price: "$12.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -364,6 +443,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Soccer-Personalized-Stainless-Keychain-personalized/dp/B0CJWNNDC1/ref=sr_1_31?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-31&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/51oDLMGka0L._AC_UL320_.jpg",
     price: "$12.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -374,6 +455,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51LhHGM2uWL._AC_UL320_.jpg",
     rating: 4.2,
     price: "$10.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -384,6 +467,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51-RJNBHj0L._AC_UL320_.jpg",
     rating: 5,
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -393,6 +478,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Personalized-Soccer-Keychain-Keychains-Backpack/dp/B0CS28ZZVR/ref=sr_1_34?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-34&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/61TV6H-MEXL._AC_UL320_.jpg",
     price: "$5.50",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -402,6 +489,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Customized-Keychain-Backpack-Luggage-Nametag/dp/B0CNX7NGMR/ref=sr_1_35?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-35&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/71fzWLz5OsL._AC_UL320_.jpg",
     price: "$8.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -412,6 +501,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/81Vw0TyoX0L._AC_UL320_.jpg",
     rating: 4.9,
     price: "$5.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -422,6 +513,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61FxqZ7UCML._AC_UL320_.jpg",
     rating: 4.5,
     price: "$6.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -432,6 +525,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71rlemXCfcL._AC_UL320_.jpg",
     rating: 5,
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -441,6 +536,8 @@ export const dummyProductList = [
       "https://www.amazon.com/NAZENTI-personalized-soccer-keychain-gifts/dp/B0BXPJCF4L/ref=sr_1_39?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-39&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/51o-rXtmFRL._AC_UL320_.jpg",
     price: "$18.95",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -450,6 +547,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Personalized-Keychain-Christmas-Stocking-Appreciation/dp/B0CNW971C9/ref=sr_1_40?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-40&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/510ZRhTojdL._AC_UL320_.jpg",
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -459,6 +558,8 @@ export const dummyProductList = [
       "https://www.amazon.com/FYXYZ-Keychain-Birthday-Christmas-Players/dp/B0CJ8RDGP9/ref=sr_1_41?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-41&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/51e3xm6BK7L._AC_UL320_.jpg",
     price: "$7.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -469,6 +570,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61eB1ckkN4L._AC_UL320_.jpg",
     rating: 4.7,
     price: "$12.89",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -479,6 +582,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51tcJtpdK2L._AC_UL320_.jpg",
     rating: 4.3,
     price: "$10.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -489,6 +594,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71v1bZ1jgrL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -499,6 +606,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61AiRRfpOVL._AC_UL320_.jpg",
     rating: 4.7,
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -508,6 +617,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Yetene-Football-Keychains-National-Valentine/dp/B0CNGTNGJ1/ref=sr_1_46?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-46&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/81TFM4AeMOL._AC_UL320_.jpg",
     price: "$14.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -518,6 +629,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51I1ytrNQjL._AC_UL320_.jpg",
     rating: 4.7,
     price: "$10.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -528,6 +641,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51Nz+Ex5dcL._AC_UL320_.jpg",
     rating: 4.5,
     price: "$12.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -538,6 +653,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51IPc-KD2KL._AC_UL320_.jpg",
     rating: 4.4,
     price: "$8.59",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -548,6 +665,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61tAgMw2SnL._AC_UL320_.jpg",
     rating: 4.3,
     price: "$3.69",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -558,6 +677,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71gZoZXdLjL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -568,6 +689,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61dCEh-Hp1L._AC_UL320_.jpg",
     rating: 4.5,
     price: "$7.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -577,6 +700,8 @@ export const dummyProductList = [
       "https://www.amazon.com/Custom-Graduation-Keychain-Personalized-Graduate/dp/B0BZQZP85Z/ref=sr_1_53?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-53&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/41ESnMkzzyL._AC_UL320_.jpg",
     price: "$9.95",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -587,6 +712,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/71MUZ63WE1L._AC_UL320_.jpg",
     rating: 5,
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -597,6 +724,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/616pJx6DIDL._AC_UL320_.jpg",
     rating: 4.7,
     price: "$11.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -607,6 +736,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51fbofZJWcL._AC_UL320_.jpg",
     rating: 3.2,
     price: "$14.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -616,6 +747,8 @@ export const dummyProductList = [
       "https://www.amazon.com/WJR-Sparkling-Keychain-Rhinestone-Accessories-soccer/dp/B0CXN9GMYT/ref=sr_1_57?dib=eyJ2IjoiMSJ9.nGc338wOMLl8aRSyymU7xgBQAtNhLpqNQ_opra_MpWDqQqlM8_t5Yopg8smqIJpBRTpKVnhpTdiYjfmlUh5xWtE711cwIntsBjp89MJh3QzGG3jCFkiOJL5w5dMzvcINhz4URdhzXwvvdZjND9IOE5lAogepwE-63XvRBJGS9jMidl5x7coeo2AFEZjXRf-YQx-GSKm8gQoV_OtYsEFaKFphNKwR0qIzgXOp8GvlL-UWmi3hmu1_tnQIsTNi5BCcH1a2iig0jdKIQVOOIJ07pSYFfPpQXIxsYHIIDuoAzlM.zsT_FcMwdO7uBd1mLHhId_PbY4TJw4QPWwn6RhZKWOU&dib_tag=se&keywords=Personalized+soccer+keychain&qid=1713164971&sr=8-57&tag=fbdlabs-20",
     imageUrl: "https://m.media-amazon.com/images/I/51-mfR35B6L._AC_UL320_.jpg",
     price: "$5.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -626,6 +759,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51bfzEGwvzL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$10.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -636,6 +771,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61KoqlxP7AL._AC_UL320_.jpg",
     rating: 5,
     price: "$13.53",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -646,6 +783,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51ldtiqctgL._AC_UL320_.jpg",
     rating: 4.3,
     price: "$7.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -656,6 +795,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61t9ggiXGGL._AC_UL320_.jpg",
     rating: 4.6,
     price: "$8.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -666,6 +807,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/61FxqZ7UCML._AC_UL320_.jpg",
     rating: 4.5,
     price: "$6.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -676,6 +819,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/81n+n5klT9L._AC_UL320_.jpg",
     rating: 4.6,
     price: "$8.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -686,6 +831,8 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51LbOEn3PQL._AC_UL320_.jpg",
     rating: 4.7,
     price: "$9.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
   {
     title:
@@ -696,5 +843,7 @@ export const dummyProductList = [
     imageUrl: "https://m.media-amazon.com/images/I/51xO+sHS8XL._AC_UL320_.jpg",
     rating: 4.3,
     price: "$7.99",
+    ratingsTotal: 200,
+    isPrime: true,
   },
 ];

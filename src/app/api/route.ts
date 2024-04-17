@@ -1,6 +1,7 @@
 import { encodeObject } from "@/utilities/helpers";
 import OpenAI from "openai";
-import { dummyProductList, dummyRecsList } from "./dummy";
+import { DUMMY_PRODUCT_LIST, DUMMY_REC_LIST } from "../../utilities/dummy";
+import { ProductObj } from "@/utilities/customTypes";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -9,16 +10,16 @@ export async function GET(request: Request) {
   const why = searchParams.get("why");
   const desc = searchParams.get("desc");
   const budget = searchParams.get("budget");
-  const getRecs = searchParams.get("getRecs");
+  const getRec = searchParams.get("getRec");
   const doSearch = searchParams.get("doSearch");
   const searchKeyWords = searchParams.get("searchKeyWords");
-  const debugRecs = searchParams.get("debugRecs");
+  const debugRec = searchParams.get("debugRec");
   const debugSearch = searchParams.get("debugSearch");
 
-  let recsList = [];
-  if (debugRecs == "1") {
-    recsList = dummyRecsList;
-  } else if (getRecs == "1") {
+  let recList: string[] = [];
+  if (debugRec == "1") {
+    recList = DUMMY_REC_LIST;
+  } else if (getRec == "1") {
     const openai = new OpenAI();
 
     const systemPrompt = `
@@ -76,7 +77,7 @@ export async function GET(request: Request) {
     }
 
     try {
-      recsList = JSON.parse(openaiRes as string);
+      recList = JSON.parse(openaiRes as string);
     } catch (e) {
       console.error("Parsing recommendations failed", e);
       return Response.json(
@@ -85,19 +86,19 @@ export async function GET(request: Request) {
       );
     }
 
-    if (!recsList.length) {
+    if (!recList.length) {
       return Response.json({ error: "No recommendations." }, { status: 404 });
     }
   }
 
-  let productList = [];
+  let productList: ProductObj[] = [];
   if (debugSearch == "1") {
-    productList = dummyProductList;
+    productList = DUMMY_PRODUCT_LIST;
   } else if (doSearch == "1") {
     let query = searchKeyWords;
     if (!searchKeyWords) {
-      if (recsList.length) {
-        query = recsList[0];
+      if (recList.length) {
+        query = recList[0];
       }
     }
 
@@ -131,13 +132,15 @@ export async function GET(request: Request) {
         const resList = resObj.search_results;
         for (let j = 0; j < resList.length; j++) {
           const curr = resList[j];
-          const toAdd = {
+          const toAdd: ProductObj = {
             title: curr.title,
             asin: curr.asin,
             linkUrl: curr.link,
             imageUrl: curr.image,
             rating: curr.rating,
+            ratingsTotal: curr.ratings_total,
             price: curr.price.raw,
+            isPrime: curr.is_prime || false,
           };
           productList.push(toAdd);
         }
@@ -151,5 +154,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return Response.json({ recsList, productList });
+  return Response.json({ recList, productList });
 }

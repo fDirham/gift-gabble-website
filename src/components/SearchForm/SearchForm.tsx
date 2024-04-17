@@ -6,17 +6,29 @@ import { UNKNOWN_VALUE, whoOptions, whyOptions } from "./options";
 import { SearchConfig } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 
-const amaranth = Amaranth({ subsets: ["latin"], weight: "400" });
+const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export type SearchFormProps = {
   onGo: (config: SearchConfig) => void;
+  initialValues: SearchConfig | null;
 };
 
 export default function SearchForm(props: SearchFormProps) {
-  const [fWho, setFWho] = useState<string>(UNKNOWN_VALUE);
-  const [fWhy, setFWhy] = useState<string>(UNKNOWN_VALUE);
-  const [fDesc, setFDesc] = useState<string>("");
-  const [fBudget, setFBudget] = useState<number>(0);
+  const fWhoInitVal = props.initialValues
+    ? props.initialValues.who
+    : UNKNOWN_VALUE;
+  const [fWho, setFWho] = useState<string>(fWhoInitVal);
+
+  const fWhyInitVal = props.initialValues
+    ? props.initialValues.why
+    : UNKNOWN_VALUE;
+  const [fWhy, setFWhy] = useState<string>(fWhyInitVal);
+
+  const fDescInitVal = props.initialValues ? props.initialValues.desc : "";
+  const [fDesc, setFDesc] = useState<string>(fDescInitVal);
+
+  const fBudgetInitVal = props.initialValues ? props.initialValues.budget : 0;
+  const [fBudget, setFBudget] = useState<number>(fBudgetInitVal);
 
   const renderOptions = (
     optionsList: (string | string[])[],

@@ -22,9 +22,9 @@ export default function HeroPerson() {
     return newNameList.map((nameStr, i) => {
       return (
         <>
-          <h2 className={styles.personText} key={`${i}-name`}>
+          <h1 className={styles.personText} key={`${i}-name`}>
             {nameStr}
-          </h2>
+          </h1>
           <div className={styles.spacing} key={`${i}-spacing`}></div>
         </>
       );

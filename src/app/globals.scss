@@ -4,7 +4,8 @@
   box-sizing: content-box;
 }
 
-button {
+button,
+.button {
   background-color: black;
   color: white;
   padding: 8px 16px;
@@ -15,7 +16,7 @@ button {
 
   &:hover {
     color: black;
-    background-color: white;
+    background-color: rgb(180, 180, 180);
     cursor: pointer;
   }
 }
