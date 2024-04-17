@@ -1,5 +1,5 @@
 import styles from "./SearchingContent.module.scss";
-import { ProductObj, SearchConfig } from "@/utilities/customTypes";
+import { ProductObj, FormResponse } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 import StarRatings from "react-star-ratings";
@@ -7,7 +7,7 @@ import ProductList from "./ProductList/ProductList";
 
 type SearchingContentProps = {
   onBack: () => void;
-  searchConfig: SearchConfig;
+  formResponse: FormResponse;
   recList: string[];
   productList: ProductObj[];
   currRec: string;
@@ -15,7 +15,7 @@ type SearchingContentProps = {
 };
 
 export default function SearchingContent(props: SearchingContentProps) {
-  const { who } = props.searchConfig;
+  const { who } = props.formResponse;
 
   const renderOther = () => {
     const renderRecList = props.recList.filter((rec) => rec !== props.currRec);

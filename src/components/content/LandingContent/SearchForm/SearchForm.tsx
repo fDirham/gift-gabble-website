@@ -3,14 +3,14 @@
 import { useState } from "react";
 import styles from "./SearchForm.module.scss";
 import { UNKNOWN_VALUE, whoOptions, whyOptions } from "./options";
-import { SearchConfig } from "@/utilities/customTypes";
+import { FormResponse } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export type SearchFormProps = {
-  onGo: (config: SearchConfig) => void;
-  initialValues: SearchConfig | null;
+  onGo: (config: FormResponse) => void;
+  initialValues: FormResponse | null;
 };
 
 export default function SearchForm(props: SearchFormProps) {

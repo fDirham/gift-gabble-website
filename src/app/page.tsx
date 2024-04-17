@@ -2,7 +2,7 @@
 
 import styles from "./page.module.scss";
 import { useState } from "react";
-import { ProductObj, SearchConfig } from "@/utilities/customTypes";
+import { ProductObj, FormResponse } from "@/utilities/customTypes";
 import {
   DUMMY_SEARCH_CONFIG,
   DUMMY_REC_LIST,
@@ -23,12 +23,12 @@ export default function Home() {
   const currRec = recList[recIdx];
   const currProductList = recProductMap[currRec] || [];
 
-  const [searchFormCache, setSearchFormCache] = useState<SearchConfig | null>(
+  const [searchFormCache, setSearchFormCache] = useState<FormResponse | null>(
     DUMMY_SEARCH_CONFIG
   );
 
-  function handleSearch(searchConfig: SearchConfig) {
-    setSearchFormCache(searchConfig);
+  function handleSearch(formResponse: FormResponse) {
+    setSearchFormCache(formResponse);
     setIsSearching(true);
   }
 
@@ -46,7 +46,7 @@ export default function Home() {
       return (
         <SearchingContent
           onBack={handleSearchingBack}
-          searchConfig={searchFormCache!}
+          formResponse={searchFormCache!}
           currRec={currRec}
           onRecChange={handleRecChange}
           recList={recList}

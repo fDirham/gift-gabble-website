@@ -1,10 +1,10 @@
-import { SearchConfig } from "./customTypes";
+import { FormResponse } from "./customTypes";
 import {
   DUMMY_PRODUCT_LIST_0,
   DUMMY_PRODUCT_LIST_1,
 } from "./dummyProductLists";
 
-export const DUMMY_SEARCH_CONFIG: SearchConfig = {
+export const DUMMY_SEARCH_CONFIG: FormResponse = {
   who: "girlfriend",
   why: "birthday",
   desc: "Lorem ipsum baba yetu mf",

@@ -1,11 +1,11 @@
 import styles from "./LandingContent.module.scss";
 import HeroPerson from "@/components/content/LandingContent/HeroPerson";
 import SearchForm from "@/components/content/LandingContent/SearchForm";
-import { SearchConfig } from "@/utilities/customTypes";
+import { FormResponse } from "@/utilities/customTypes";
 
 type LandingContentProps = {
-  handleSearch: (val: SearchConfig) => void;
-  searchFormCache: SearchConfig | null;
+  handleSearch: (val: FormResponse) => void;
+  searchFormCache: FormResponse | null;
 };
 
 export default function LandingContent(props: LandingContentProps) {

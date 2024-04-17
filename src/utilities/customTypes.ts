@@ -9,7 +9,7 @@ export type ProductObj = {
   isPrime: boolean;
 };
 
-export type SearchConfig = {
+export type FormResponse = {
   why: string;
   who: string;
   desc: string;
