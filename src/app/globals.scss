@@ -20,3 +20,13 @@ button,
     cursor: pointer;
   }
 }
+
+.invisButton {
+  background: none;
+  color: black;
+  padding: 0;
+
+  &:hover {
+    background: none;
+  }
+}

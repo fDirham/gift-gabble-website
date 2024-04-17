@@ -1,7 +1,8 @@
 import { encodeObject } from "@/utilities/helpers";
 import OpenAI from "openai";
-import { DUMMY_PRODUCT_LIST, DUMMY_REC_LIST } from "../../utilities/dummy";
+import { DUMMY_REC_LIST } from "../../utilities/dummy";
 import { ProductObj } from "@/utilities/customTypes";
+import { DUMMY_PRODUCT_LIST_0 } from "@/utilities/dummyProductLists";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -93,7 +94,7 @@ export async function GET(request: Request) {
 
   let productList: ProductObj[] = [];
   if (debugSearch == "1") {
-    productList = DUMMY_PRODUCT_LIST;
+    productList = DUMMY_PRODUCT_LIST_0;
   } else if (doSearch == "1") {
     let query = searchKeyWords;
     if (!searchKeyWords) {
@@ -101,8 +102,6 @@ export async function GET(request: Request) {
         query = recList[0];
       }
     }
-
-    console.log("query", query);
 
     if (query) {
       const params = {

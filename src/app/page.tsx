@@ -5,8 +5,8 @@ import { useState } from "react";
 import { ProductObj, SearchConfig } from "@/utilities/customTypes";
 import {
   DUMMY_SEARCH_CONFIG,
-  DUMMY_PRODUCT_LIST,
   DUMMY_REC_LIST,
+  DUMM_REC_PRODUCT_MAP,
 } from "@/utilities/dummy";
 
 import LandingContent from "@/components/LandingContent";
@@ -14,10 +14,14 @@ import SearchingContent from "@/components/SearchingContent";
 
 export default function Home() {
   const [isSearching, setIsSearching] = useState(true);
-  const [recList, setRecList] = useState<string[]>(DUMMY_REC_LIST);
-  const [productList, setProductList] =
-    useState<ProductObj[]>(DUMMY_PRODUCT_LIST);
   const [recIdx, setRecIdx] = useState<number>(0);
+  const [recList, setRecList] = useState<string[]>(DUMMY_REC_LIST);
+  const [recProductMap, setRecProductMap] = useState<{
+    [key: string]: ProductObj[];
+  }>(DUMM_REC_PRODUCT_MAP);
+
+  const currRec = recList[recIdx];
+  const currProductList = recProductMap[currRec] || [];
 
   const [searchFormCache, setSearchFormCache] = useState<SearchConfig | null>(
     DUMMY_SEARCH_CONFIG
@@ -32,15 +36,21 @@ export default function Home() {
     setIsSearching(false);
   }
 
+  function handleRecChange(newRec: string) {
+    const newIdx = recList.indexOf(newRec);
+    setRecIdx(newIdx);
+  }
+
   const renderContent = () => {
     if (isSearching) {
       return (
         <SearchingContent
           onBack={handleSearchingBack}
           searchConfig={searchFormCache!}
+          currRec={currRec}
+          onRecChange={handleRecChange}
           recList={recList}
-          productList={productList}
-          recIdx={recIdx}
+          productList={currProductList}
         />
       );
     }

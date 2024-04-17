@@ -9,17 +9,22 @@ type SearchingContentProps = {
   searchConfig: SearchConfig;
   recList: string[];
   productList: ProductObj[];
-  recIdx: number;
+  currRec: string;
+  onRecChange: (val: string) => void;
 };
 
 export default function SearchingContent(props: SearchingContentProps) {
   const { who } = props.searchConfig;
 
   const renderOther = () => {
-    const renderRecList = props.recList.filter((_, i) => i !== props.recIdx);
+    const renderRecList = props.recList.filter((rec) => rec !== props.currRec);
     return renderRecList.map((rec) => {
       return (
-        <button className={styles.otherRec} key={rec}>
+        <button
+          className={"invisButton " + styles.otherRec}
+          key={rec}
+          onClick={() => props.onRecChange(rec)}
+        >
           {rec}
         </button>
       );
@@ -70,15 +75,15 @@ export default function SearchingContent(props: SearchingContentProps) {
 
   return (
     <div className={[styles.centerContainer].join(" ")}>
-      <button onClick={props.onBack} className={styles.backButton}>
+      <button
+        onClick={props.onBack}
+        className={"invisButton " + styles.backButton}
+      >
         {"<- Go back and try again"}
       </button>
       <h2 className={styles.resultsBlurb}>
         We think your <span className={amaranth.className}>{who}</span> would
-        love{" "}
-        <span className={styles.recSpan}>
-          {'"' + props.recList[props.recIdx] + '"'}
-        </span>
+        love <span className={styles.recSpan}>{'"' + props.currRec + '"'}</span>
       </h2>
       <div className={styles.otherContainer}>
         <span className={styles.otherText}> They might also like: </span>
@@ -87,7 +92,6 @@ export default function SearchingContent(props: SearchingContentProps) {
       <div className={styles.productListContainer}>
         <span className={styles.disclaimerText}>
           DICLAIMER: As an Amazon Associate I earn from qualifying purchases.
-          Product descriptions may be slightly outdated.
         </span>
         {renderProductList()}
       </div>

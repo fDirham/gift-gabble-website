@@ -6,8 +6,7 @@
 }
 
 .backButton {
-  color: black;
-  background: none;
+  padding: 8px;
   padding-left: 0;
 }
 
@@ -39,7 +38,7 @@
   color: black;
   background: none;
   text-decoration: underline;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 
   &:hover {
     color: rgb(78, 78, 78);
