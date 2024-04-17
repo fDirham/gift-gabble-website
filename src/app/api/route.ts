@@ -22,6 +22,7 @@ export async function GET(request: Request) {
   }
 
   let productList: ProductObj[] = [];
+  let productListQuery = "";
   if (doProductList == "1") {
     const res = await getProductList(searchParams, isDebug, recList);
     if (res.isError) {
@@ -30,7 +31,8 @@ export async function GET(request: Request) {
     }
 
     productList = res.productList;
+    productListQuery = res.query;
   }
 
-  return Response.json({ recList, productList });
+  return Response.json({ recList, productList, productListQuery });
 }

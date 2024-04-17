@@ -1,5 +1,8 @@
 import { ProductObj } from "@/utilities/customTypes";
-import { DUMMY_PRODUCT_LIST_0 } from "@/utilities/dummyProductLists";
+import {
+  DUMMY_PRODUCT_LIST_0,
+  DUMMY_PRODUCT_LIST_1,
+} from "@/utilities/dummyProductLists";
 import { encodeObject } from "@/utilities/helpers";
 
 export default async function getProductList(
@@ -7,14 +10,15 @@ export default async function getProductList(
   isDebug: boolean,
   recList: string[]
 ): Promise<
-  | { isError: false; productList: ProductObj[] }
+  | { isError: false; productList: ProductObj[]; query: string }
   | { isError: true; errorObj: any; status?: number }
 > {
-  if (isDebug) {
-    return { isError: false, productList: DUMMY_PRODUCT_LIST_0 };
-  }
-
   const searchKeyWords = searchParams.get("searchKeyWords");
+  if (isDebug) {
+    let productList = DUMMY_PRODUCT_LIST_0;
+    if (searchKeyWords == "1") productList = DUMMY_PRODUCT_LIST_1;
+    return { isError: false, productList, query: "debug " + searchKeyWords };
+  }
 
   let query = searchKeyWords;
   if (!searchKeyWords) {
@@ -79,5 +83,5 @@ export default async function getProductList(
     };
   }
 
-  return { isError: false, productList };
+  return { isError: false, productList, query };
 }
