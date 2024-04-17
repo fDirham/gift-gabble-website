@@ -114,6 +114,7 @@ export async function GET(request: Request) {
         currency: "usd",
         sort_by: "featured",
         page: "1",
+        max_page: "1",
         output: "json",
       };
 

@@ -3,6 +3,7 @@ import { ProductObj, SearchConfig } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 import StarRatings from "react-star-ratings";
+import ProductList from "./ProductList/ProductList";
 
 type SearchingContentProps = {
   onBack: () => void;
@@ -31,48 +32,6 @@ export default function SearchingContent(props: SearchingContentProps) {
     });
   };
 
-  const renderProductList = () => {
-    return props.productList.map((productObj) => {
-      return (
-        <div className={styles.productBlock} key={productObj.linkUrl}>
-          <img className={styles.productImg} src={productObj.imageUrl} />
-          <div className={styles.productCopyContainer}>
-            <h3 className={styles.productTitle}>{productObj.title}</h3>
-            {!!productObj.rating && (
-              <div className={styles.ratingContainer}>
-                <span className={styles.ratingText}>{productObj.rating}</span>
-                <StarRatings
-                  rating={productObj.rating}
-                  starDimension="16px"
-                  starSpacing="0px"
-                  starRatedColor="#FEA31C"
-                />
-                <span className={styles.ratingCountText}>
-                  {"(" + productObj.ratingsTotal + ")"}
-                </span>
-              </div>
-            )}
-            {!!productObj.isPrime && (
-              <img
-                src="prime_logo.jpg"
-                alt="prime"
-                className={styles.primeLogo}
-              />
-            )}
-
-            <a
-              className={"button " + styles.productLink}
-              href={productObj.linkUrl}
-              target="_blank"
-            >
-              {productObj.price} on <b>Amazon</b>
-            </a>
-          </div>
-        </div>
-      );
-    });
-  };
-
   return (
     <div className={[styles.centerContainer].join(" ")}>
       <button
@@ -89,12 +48,10 @@ export default function SearchingContent(props: SearchingContentProps) {
         <span className={styles.otherText}> They might also like: </span>
         {renderOther()}
       </div>
-      <div className={styles.productListContainer}>
-        <span className={styles.disclaimerText}>
-          DICLAIMER: As an Amazon Associate I earn from qualifying purchases.
-        </span>
-        {renderProductList()}
-      </div>
+      <span className={styles.disclaimerText}>
+        DICLAIMER: As an Amazon Associate I earn from qualifying purchases.
+      </span>
+      <ProductList productList={props.productList} />
     </div>
   );
 }

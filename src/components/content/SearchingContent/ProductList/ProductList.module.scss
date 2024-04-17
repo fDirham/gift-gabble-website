@@ -1,0 +1,42 @@
+.container {
+  margin-top: 4px;
+}
+
+.productBlock {
+  display: grid;
+  grid-template-columns: 160px auto;
+  &:not(:last-child) {
+    margin-bottom: 32px;
+  }
+}
+
+.productImg {
+  width: 160px;
+  max-height: 320px;
+  object-fit: scale-down;
+}
+
+.productCopyContainer {
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.productTitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.productLink {
+  margin-top: 16px;
+  text-decoration: none;
+}
+
+.ratingText {
+  margin-right: 6px;
+}
+.ratingCountText {
+  margin-left: 6px;
+  color: rgb(100, 100, 100);
+}
