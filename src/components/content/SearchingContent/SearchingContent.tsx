@@ -2,7 +2,6 @@ import styles from "./SearchingContent.module.scss";
 import { ProductObj, FormResponse } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
-import StarRatings from "react-star-ratings";
 import ProductList from "./ProductList/ProductList";
 
 type SearchingContentProps = {
@@ -49,7 +48,7 @@ export default function SearchingContent(props: SearchingContentProps) {
         {renderOther()}
       </div>
       <span className={styles.disclaimerText}>
-        DICLAIMER: As an Amazon Associate I earn from qualifying purchases.
+        DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
       </span>
       <ProductList productList={props.productList} max={10} />
     </div>

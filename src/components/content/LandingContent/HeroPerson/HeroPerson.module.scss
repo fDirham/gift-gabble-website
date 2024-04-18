@@ -31,11 +31,14 @@
   text-underline-offset: 2px;
   text-decoration-color: white;
   text-decoration-thickness: 10px;
+
+  &:not(:last-child) {
+    margin-right: 40px;
+  }
 }
 
 .spacing {
   display: inline-block;
-  width: 40px;
 }
 
 @keyframes typing {

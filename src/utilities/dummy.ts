@@ -24,7 +24,7 @@ export const DUMMY_REC_LIST: string[] = [
   "UFC themed phone case",
 ];
 
-export const DUMM_REC_PRODUCT_MAP = {
+export const DUMMY_REC_PRODUCT_MAP = {
   [DUMMY_REC_LIST[0]]: DUMMY_PRODUCT_LIST_0,
   [DUMMY_REC_LIST[1]]: DUMMY_PRODUCT_LIST_1,
 };

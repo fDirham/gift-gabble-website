@@ -1,4 +1,4 @@
-export function encodeObject(obj: { [key: string]: string }): string {
+export function encodeObject(obj: { [key: string]: any }): string {
   var str = [];
   for (var p in obj)
     if (obj.hasOwnProperty(p)) {
