@@ -1,25 +1,18 @@
 import { ProductObj } from "@/utilities/customTypes";
-import {
-  DUMMY_PRODUCT_LIST_0,
-  DUMMY_PRODUCT_LIST_1,
-} from "@/utilities/dummyProductLists";
+import { DUMMY_REC_PRODUCT_MAP } from "@/utilities/dummy";
 import { encodeObject } from "@/utilities/helpers";
 
 export default async function getProductList(
   searchParams: URLSearchParams,
-  isDebug: boolean,
   recList: string[]
 ): Promise<
   | { isError: false; productList: ProductObj[]; query: string }
   | { isError: true; errorObj: any; status?: number }
 > {
-  const searchKeyWords = searchParams.get("searchKeyWords");
-  if (isDebug) {
-    let productList = DUMMY_PRODUCT_LIST_0;
-    if (searchKeyWords == "1") productList = DUMMY_PRODUCT_LIST_1;
-    return { isError: false, productList, query: "debug " + searchKeyWords };
-  }
+  const returnDummy = searchParams.get("returnDummy");
+  const isDummy = returnDummy === "1";
 
+  const searchKeyWords = searchParams.get("searchKeyWords");
   let query = searchKeyWords;
   if (!searchKeyWords) {
     if (recList.length) {
@@ -32,6 +25,11 @@ export default async function getProductList(
       errorObj: { error: "Invalid inputs" },
       status: 400,
     };
+
+  if (isDummy) {
+    const dummyList = DUMMY_REC_PRODUCT_MAP[query] || [];
+    return { isError: false, productList: dummyList, query };
+  }
 
   const productList = [];
   const params = {

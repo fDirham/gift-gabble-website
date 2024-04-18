@@ -8,12 +8,9 @@ export async function GET(request: Request) {
   const doRecList = searchParams.get("doRecList");
   const doProductList = searchParams.get("doProductList");
 
-  const debugMode = searchParams.get("debugMode");
-  const isDebug = debugMode === "1";
-
   let recList: string[] = [];
   if (doRecList == "1") {
-    const res = await getRecList(searchParams, isDebug);
+    const res = await getRecList(searchParams);
     if (res.isError) {
       const status = res.status || 500;
       return Response.json(res.errorObj, { status });
@@ -24,7 +21,7 @@ export async function GET(request: Request) {
   let productList: ProductObj[] = [];
   let productListQuery = "";
   if (doProductList == "1") {
-    const res = await getProductList(searchParams, isDebug, recList);
+    const res = await getProductList(searchParams, recList);
     if (res.isError) {
       const status = res.status || 500;
       return Response.json(res.errorObj, { status });

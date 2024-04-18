@@ -2,13 +2,14 @@ import OpenAI from "openai";
 import { DUMMY_REC_LIST } from "../../../utilities/dummy";
 
 export default async function getRecList(
-  searchParams: URLSearchParams,
-  isDebug: boolean
+  searchParams: URLSearchParams
 ): Promise<
   | { isError: false; recList: string[] }
   | { isError: true; errorObj: any; status?: number }
 > {
-  if (isDebug) return { isError: false, recList: DUMMY_REC_LIST };
+  const returnDummy = searchParams.get("returnDummy");
+  const isDummy = returnDummy === "1";
+  if (isDummy) return { isError: false, recList: DUMMY_REC_LIST };
 
   const who = searchParams.get("who");
   const why = searchParams.get("why");
