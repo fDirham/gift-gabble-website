@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { DUMMY_REC_LIST } from "../../utilities/dummy";
+import { DUMMY_REC_LIST } from "../../../utilities/dummy";
 
 export default async function getRecList(
   searchParams: URLSearchParams,
