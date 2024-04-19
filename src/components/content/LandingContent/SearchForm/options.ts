@@ -8,7 +8,33 @@ export const whoOptions = [
   "husband",
   "wife",
   "partner",
+  "family",
 ];
+
+const familyWhoOptions: (string | string[])[] = [
+  UNKNOWN_VALUE,
+  "mom",
+  "dad",
+  "sister",
+  "brother",
+  "cousin",
+  "uncle",
+  "aunt",
+  "grandfather",
+  "grandmother",
+];
+
+export const whoTwoMap: {
+  [key: string]: {
+    formLabelText: string;
+    optionsList: (string | string[])[];
+  };
+} = {
+  family: {
+    formLabelText: "Who in your family?",
+    optionsList: familyWhoOptions,
+  },
+};
 
 export const whoPronounsMap: { [k: string]: string } = {
   [UNKNOWN_VALUE]: UNKNOWN_VALUE,
@@ -18,6 +44,15 @@ export const whoPronounsMap: { [k: string]: string } = {
   husband: "male",
   wife: "female",
   partner: UNKNOWN_VALUE,
+  mom: "female",
+  dad: "male",
+  sister: "female",
+  brother: "male",
+  cousin: UNKNOWN_VALUE,
+  uncle: "male",
+  aunt: "female",
+  grandfather: "male",
+  grandmother: "female",
 };
 
 export const whyOptions = [

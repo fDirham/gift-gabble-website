@@ -1,4 +1,5 @@
-import { FormResponse, ProductObj } from "./customTypes";
+import { resolveWho } from "@/components/content/LandingContent/SearchForm/SearchForm";
+import { APIFormResponse, FormResponse, ProductObj } from "./customTypes";
 import { encodeObject } from "./helpers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -26,7 +27,7 @@ export async function fetchRecommend(args: FetchRecommendArgs): Promise<
   const recommendUrl = API_URL + "recommend";
   let queryComponents: { [key: string]: string | number } = {};
   if (args.formResponse) {
-    queryComponents = args.formResponse;
+    queryComponents = convertFormResponseForAPI(args.formResponse);
   }
   if (args.doRecList) {
     queryComponents["doRecList"] = 1;
@@ -53,4 +54,20 @@ export async function fetchRecommend(args: FetchRecommendArgs): Promise<
   } catch (error) {
     return { isError: true, error };
   }
+}
+
+function convertFormResponseForAPI(
+  formResponse: FormResponse
+): APIFormResponse {
+  const who = resolveWho(formResponse.whoOne, formResponse.whoTwo);
+  const toReturn: APIFormResponse = {
+    who,
+    why: formResponse.why,
+    whyExtra: formResponse.whyExtra,
+    desc: formResponse.desc,
+    pronouns: formResponse.pronouns,
+    budget: formResponse.budget,
+  };
+
+  return toReturn;
 }

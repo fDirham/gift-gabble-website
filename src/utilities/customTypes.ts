@@ -11,6 +11,16 @@ export type ProductObj = {
 
 export type FormResponse = {
   why: string;
+  whoOne: string;
+  whoTwo: string;
+  desc: string;
+  budget: number;
+  whyExtra: string;
+  pronouns: string;
+};
+
+export type APIFormResponse = {
+  why: string;
   who: string;
   desc: string;
   budget: number;

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SearchForm.module.scss";
 import {
   UNKNOWN_VALUE,
   pronounsOptions,
   whoOptions,
   whoPronounsMap,
+  whoTwoMap,
   whyOptions,
 } from "./options";
 import { FormResponse } from "@/utilities/customTypes";
@@ -19,40 +20,49 @@ export type SearchFormProps = {
   initialValues: FormResponse | null;
 };
 
+export function resolveWho(whoOne: string, whoTwo: string) {
+  return whoTwo || whoOne;
+}
+
 export default function SearchForm(props: SearchFormProps) {
-  const fWhoInitVal = props.initialValues
-    ? props.initialValues.who
-    : UNKNOWN_VALUE;
-  const [fWho, _setFWho] = useState<string>(fWhoInitVal);
+  const initialValues: FormResponse = props.initialValues
+    ? props.initialValues
+    : {
+        whoOne: UNKNOWN_VALUE,
+        whoTwo: UNKNOWN_VALUE,
+        why: UNKNOWN_VALUE,
+        whyExtra: "",
+        desc: "",
+        pronouns: "",
+        budget: 0,
+      };
+  const whoOneInitVal = initialValues.whoOne;
+  const [whoOne, setWhoOne] = useState<string>(whoOneInitVal);
 
-  const fWhyInitVal = props.initialValues
-    ? props.initialValues.why
-    : UNKNOWN_VALUE;
-  const [fWhy, setFWhy] = useState<string>(fWhyInitVal);
+  const whoTwoInitVal = initialValues.whoTwo;
+  const [whoTwo, setWhoTwo] = useState<string>(whoTwoInitVal);
 
-  const fWhyExtraInitVal = props.initialValues
-    ? props.initialValues.whyExtra || ""
-    : "";
-  const [fWhyExtra, setFWhyExtra] = useState<string>(fWhyExtraInitVal);
+  const whyInitVal = initialValues.why;
+  const [why, setWhy] = useState<string>(whyInitVal);
 
-  const fDescInitVal = props.initialValues ? props.initialValues.desc : "";
-  const [fDesc, setFDesc] = useState<string>(fDescInitVal);
+  const whyExtraInitVal = initialValues.whyExtra;
+  const [whyExtra, setWhyExtra] = useState<string>(whyExtraInitVal);
 
-  const fPronounsInitVal = props.initialValues
-    ? props.initialValues.pronouns
-    : UNKNOWN_VALUE;
-  const [fPronouns, setFPronouns] = useState<string>(fPronounsInitVal);
+  const descInitVal = initialValues.desc;
+  const [desc, setDesc] = useState<string>(descInitVal);
 
-  const fBudgetInitVal = props.initialValues ? props.initialValues.budget : 0;
-  const [fBudget, setFBudget] = useState<number>(fBudgetInitVal);
+  const pronounsInitVal = initialValues.pronouns;
+  const [pronouns, setPronouns] = useState<string>(pronounsInitVal);
 
-  // Custom state handlers
-  function setFWho(newVal: string) {
-    _setFWho(newVal);
-    const newPronouns = whoPronounsMap[newVal];
-    setFPronouns(newPronouns);
-  }
+  const budgetInitVal = initialValues.budget;
+  const [budget, setBudget] = useState<number>(budgetInitVal);
 
+  useEffect(() => {
+    const newWho = resolveWho(whoOne, whoTwo);
+    setPronouns(whoPronounsMap[newWho] || UNKNOWN_VALUE);
+  }, [whoOne, whoTwo]);
+
+  // Render
   const renderOptions = (
     optionsList: (string | string[])[],
     keyName: string
@@ -75,12 +85,13 @@ export default function SearchForm(props: SearchFormProps) {
 
   function handleGo() {
     props.onGo({
-      why: fWhy,
-      who: fWho,
-      desc: fDesc,
-      budget: fBudget,
-      pronouns: fPronouns,
-      whyExtra: fWhyExtra,
+      whoOne: whoOne,
+      whoTwo: whoTwo,
+      why: why,
+      desc: desc,
+      budget: budget,
+      pronouns: pronouns,
+      whyExtra: whyExtra,
     });
   }
 
@@ -89,29 +100,57 @@ export default function SearchForm(props: SearchFormProps) {
 
     // Who
     toRender.push(
-      <label htmlFor="whoSelect" key="whoSelectLabel">
+      <label htmlFor="whoOne" key="whoOneLabel">
         I'm getting a gift for my...
       </label>
     );
 
     toRender.push(
       <select
-        name="whoSelect"
-        id="whoSelect"
-        key="whoSelect"
-        value={fWho}
-        onChange={(e) => setFWho(e.target.value)}
+        name="whoOne"
+        id="whoOne"
+        key="whoOne"
+        value={whoOne}
+        onChange={(e) => {
+          setWhoOne(e.target.value);
+          setWhoTwo("");
+        }}
       >
-        {renderOptions(whoOptions, "who")}
+        {renderOptions(whoOptions, "whoOne")}
       </select>
     );
 
-    if (fWho == UNKNOWN_VALUE) return toRender;
+    if (whoOne == UNKNOWN_VALUE) return toRender;
+    const whoTwoObj = whoTwoMap[whoOne];
+
+    if (whoTwoObj) {
+      toRender.push(
+        <label htmlFor="whoTwo" key="whoTwoLabel">
+          {whoTwoObj.formLabelText}
+        </label>
+      );
+
+      toRender.push(
+        <select
+          name="whoTwo"
+          id="whoTwo"
+          key="whoTwo"
+          value={whoTwo}
+          onChange={(e) => setWhoTwo(e.target.value)}
+        >
+          {renderOptions(whoTwoObj.optionsList, "whoTwo")}
+        </select>
+      );
+
+      if (whoTwo == UNKNOWN_VALUE) return toRender;
+    }
+
+    const resolvedWho = resolveWho(whoOne, whoTwo);
 
     // Why
     toRender.push(
       <label htmlFor="whySelect" key="whySelectLabel">
-        for...
+        Why?
       </label>
     );
 
@@ -120,22 +159,22 @@ export default function SearchForm(props: SearchFormProps) {
         name="whySelect"
         id="whySelect"
         key="whySelect"
-        value={fWhy}
-        onChange={(e) => setFWhy(e.target.value)}
+        value={why}
+        onChange={(e) => setWhy(e.target.value)}
       >
         {renderOptions(whyOptions, "why")}
       </select>
     );
 
-    if (fWhy == UNKNOWN_VALUE) return toRender;
+    if (why == UNKNOWN_VALUE) return toRender;
 
     // Special why cases
-    if (fWhy == "other") {
+    if (why == "other") {
       toRender.push(
         <label htmlFor="otherWhyInput" key="otherWhyInputLabel">
           Why are you buying a gift for your{" "}
           <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-            {fWho}
+            {resolvedWho}
           </span>
           {"?"}
         </label>
@@ -147,14 +186,14 @@ export default function SearchForm(props: SearchFormProps) {
           id="otherWhyInput"
           key={"otherWhyInput"}
           className={styles.otherWhyInput}
-          value={fWhyExtra}
-          onChange={(e) => setFWhyExtra(e.target.value)}
+          value={whyExtra}
+          onChange={(e) => setWhyExtra(e.target.value)}
           placeholder="e.g Because I appreciate them..."
           maxLength={300}
         ></textarea>
       );
 
-      if (!fWhyExtra) return toRender;
+      if (!whyExtra) return toRender;
     }
 
     // Description
@@ -162,7 +201,7 @@ export default function SearchForm(props: SearchFormProps) {
       <label htmlFor="descInput" key="descInputLabel">
         Describe your{" "}
         <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-          {fWho}
+          {resolvedWho}
         </span>
       </label>
     );
@@ -173,21 +212,21 @@ export default function SearchForm(props: SearchFormProps) {
         id="descInput"
         key={"descInput"}
         className={styles.descInput}
-        value={fDesc}
-        onChange={(e) => setFDesc(e.target.value)}
+        value={desc}
+        onChange={(e) => setDesc(e.target.value)}
         placeholder="Hobbies? Favorite tv shows / media? Personality?"
         maxLength={300}
       ></textarea>
     );
 
-    if (!fDesc) return toRender;
+    if (!desc) return toRender;
 
-    // Gender pronounss
+    // Gender pronouns
     toRender.push(
       <label htmlFor="pronounsSelect" key="pronounsSelectLabel">
         OPTIONAL: What are your{" "}
         <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-          {fWho}
+          {resolvedWho}
         </span>
         {"'s"} pronouns?
       </label>
@@ -198,8 +237,8 @@ export default function SearchForm(props: SearchFormProps) {
         name="pronounsSelect"
         id="pronounsSelect"
         key="pronounsSelect"
-        value={fPronouns}
-        onChange={(e) => setFPronouns(e.target.value)}
+        value={pronouns}
+        onChange={(e) => setPronouns(e.target.value)}
       >
         {renderOptions(pronounsOptions, "pronouns")}
       </select>
@@ -219,8 +258,8 @@ export default function SearchForm(props: SearchFormProps) {
           name="budgetInput"
           id="budgetInput"
           className={styles.budgetInput}
-          value={fBudget}
-          onChange={(e) => setFBudget(parseInt(e.target.value))}
+          value={budget}
+          onChange={(e) => setBudget(parseInt(e.target.value))}
           type="number"
           min={0}
           placeholder="0"

@@ -43,7 +43,7 @@ export default async function getRecList(
       extendedWhy = ". Their wedding is coming up";
       break;
     case "other":
-      extendedWhy = ". Why am I doing this? " + whyExtra;
+      extendedWhy = ". Why? " + whyExtra;
     case "na":
       extendedWhy = "";
       break;
