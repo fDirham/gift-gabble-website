@@ -33,7 +33,7 @@ export default function Home() {
 
   // Cache states
   const [searchFormCache, setSearchFormCache] = useState<FormResponse | null>(
-    DUMMY_SEARCH_CONFIG
+    null
   );
 
   async function handleSearch(formResponse: FormResponse) {
@@ -83,6 +83,7 @@ export default function Home() {
         doProductList: true,
         searchKeyWords: newRec,
         doRecList: false,
+        formResponse: searchFormCache!,
       });
 
       if (res.isError) {

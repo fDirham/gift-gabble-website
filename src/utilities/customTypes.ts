@@ -14,4 +14,6 @@ export type FormResponse = {
   who: string;
   desc: string;
   budget: number;
+  whyExtra?: string;
+  pronouns: string;
 };

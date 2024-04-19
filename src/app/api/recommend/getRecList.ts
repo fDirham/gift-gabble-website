@@ -13,8 +13,10 @@ export default async function getRecList(
 
   const who = searchParams.get("who");
   const why = searchParams.get("why");
+  const whyExtra = searchParams.get("whyExtra");
   const desc = searchParams.get("desc");
   const budget = searchParams.get("budget");
+  const pronouns = searchParams.get("pronouns");
 
   const openai = new OpenAI();
 
@@ -40,6 +42,8 @@ export default async function getRecList(
     case "wedding":
       extendedWhy = ". Their wedding is coming up";
       break;
+    case "other":
+      extendedWhy = ". Why am I doing this? " + whyExtra;
     case "na":
       extendedWhy = "";
       break;
@@ -48,8 +52,17 @@ export default async function getRecList(
       break;
   }
 
+  let extendedBudget = budget;
+  if (budget) {
+    if (budget !== "0") {
+      extendedBudget = "I only have a budget of $${budget}.";
+    } else {
+      extendedBudget = " ";
+    }
+  }
+
   const userPrompt = `
-  I want to get a gift for my ${who}${extendedWhy}. ${desc}. I only have a budget of $${budget}. What should I get?
+  I want to get a gift for my ${who}${extendedWhy}. A little about my ${who}: ${desc}.${extendedBudget}What should I get?
   `;
 
   let openaiRes = "";

@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import styles from "./SearchForm.module.scss";
-import { UNKNOWN_VALUE, whoOptions, whyOptions } from "./options";
+import {
+  UNKNOWN_VALUE,
+  pronounsOptions,
+  whoOptions,
+  whoPronounsMap,
+  whyOptions,
+} from "./options";
 import { FormResponse } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 
@@ -17,18 +23,35 @@ export default function SearchForm(props: SearchFormProps) {
   const fWhoInitVal = props.initialValues
     ? props.initialValues.who
     : UNKNOWN_VALUE;
-  const [fWho, setFWho] = useState<string>(fWhoInitVal);
+  const [fWho, _setFWho] = useState<string>(fWhoInitVal);
 
   const fWhyInitVal = props.initialValues
     ? props.initialValues.why
     : UNKNOWN_VALUE;
   const [fWhy, setFWhy] = useState<string>(fWhyInitVal);
 
+  const fWhyExtraInitVal = props.initialValues
+    ? props.initialValues.whyExtra || ""
+    : "";
+  const [fWhyExtra, setFWhyExtra] = useState<string>(fWhyExtraInitVal);
+
   const fDescInitVal = props.initialValues ? props.initialValues.desc : "";
   const [fDesc, setFDesc] = useState<string>(fDescInitVal);
 
+  const fPronounsInitVal = props.initialValues
+    ? props.initialValues.pronouns
+    : UNKNOWN_VALUE;
+  const [fPronouns, setFPronouns] = useState<string>(fPronounsInitVal);
+
   const fBudgetInitVal = props.initialValues ? props.initialValues.budget : 0;
   const [fBudget, setFBudget] = useState<number>(fBudgetInitVal);
+
+  // Custom state handlers
+  function setFWho(newVal: string) {
+    _setFWho(newVal);
+    const newPronouns = whoPronounsMap[newVal];
+    setFPronouns(newPronouns);
+  }
 
   const renderOptions = (
     optionsList: (string | string[])[],
@@ -56,11 +79,15 @@ export default function SearchForm(props: SearchFormProps) {
       who: fWho,
       desc: fDesc,
       budget: fBudget,
+      pronouns: fPronouns,
+      whyExtra: fWhyExtra,
     });
   }
 
   const renderInputTree = () => {
     const toRender = [];
+
+    // Who
     toRender.push(
       <label htmlFor="whoSelect" key="whoSelectLabel">
         I'm getting a gift for my...
@@ -79,80 +106,134 @@ export default function SearchForm(props: SearchFormProps) {
       </select>
     );
 
-    if (fWho !== UNKNOWN_VALUE) {
+    if (fWho == UNKNOWN_VALUE) return toRender;
+
+    // Why
+    toRender.push(
+      <label htmlFor="whySelect" key="whySelectLabel">
+        for...
+      </label>
+    );
+
+    toRender.push(
+      <select
+        name="whySelect"
+        id="whySelect"
+        key="whySelect"
+        value={fWhy}
+        onChange={(e) => setFWhy(e.target.value)}
+      >
+        {renderOptions(whyOptions, "why")}
+      </select>
+    );
+
+    if (fWhy == UNKNOWN_VALUE) return toRender;
+
+    // Special why cases
+    if (fWhy == "other") {
       toRender.push(
-        <label htmlFor="whySelect" key="whySelectLabel">
-          for...
+        <label htmlFor="otherWhyInput" key="otherWhyInputLabel">
+          Why are you buying a gift for your{" "}
+          <span className={[amaranth.className, styles.whoSpan].join(" ")}>
+            {fWho}
+          </span>
+          {"?"}
         </label>
       );
 
       toRender.push(
-        <select
-          name="whySelect"
-          id="whySelect"
-          key="whySelect"
-          value={fWhy}
-          onChange={(e) => setFWhy(e.target.value)}
-        >
-          {renderOptions(whyOptions, "why")}
-        </select>
+        <textarea
+          name="otherWhyInput"
+          id="otherWhyInput"
+          key={"otherWhyInput"}
+          className={styles.otherWhyInput}
+          value={fWhyExtra}
+          onChange={(e) => setFWhyExtra(e.target.value)}
+          placeholder="e.g Because I appreciate them..."
+          maxLength={300}
+        ></textarea>
       );
 
-      if (fWhy !== UNKNOWN_VALUE) {
-        toRender.push(
-          <label htmlFor="descInput" key="descInputLabel">
-            Describe your <span className={amaranth.className}>{fWho}</span>{" "}
-            <br />
-            {
-              "(mention any hobbies, favorite tv shows / movies, personality, etc.)"
-            }
-          </label>
-        );
-
-        toRender.push(
-          <textarea
-            name="descInput"
-            id="descInput"
-            key={"descInput"}
-            className={styles.descInput}
-            value={fDesc}
-            onChange={(e) => setFDesc(e.target.value)}
-            placeholder="Type here"
-            maxLength={300}
-          ></textarea>
-        );
-
-        if (fDesc) {
-          toRender.push(
-            <label htmlFor="budgetInput" key="budgetInputLabel">
-              Do you have a budget? ($0 for no)
-            </label>
-          );
-
-          toRender.push(
-            <span className={styles.input} key={"budgetInput"}>
-              {"$ "}
-              <input
-                name="budgetInput"
-                id="budgetInput"
-                className={styles.budgetInput}
-                value={fBudget}
-                onChange={(e) => setFBudget(parseInt(e.target.value))}
-                type="number"
-                min={0}
-                placeholder="0"
-              ></input>
-            </span>
-          );
-
-          toRender.push(
-            <button onClick={handleGo} key={"goButton"}>
-              Find a gift!
-            </button>
-          );
-        }
-      }
+      if (!fWhyExtra) return toRender;
     }
+
+    // Description
+    toRender.push(
+      <label htmlFor="descInput" key="descInputLabel">
+        Describe your{" "}
+        <span className={[amaranth.className, styles.whoSpan].join(" ")}>
+          {fWho}
+        </span>
+      </label>
+    );
+
+    toRender.push(
+      <textarea
+        name="descInput"
+        id="descInput"
+        key={"descInput"}
+        className={styles.descInput}
+        value={fDesc}
+        onChange={(e) => setFDesc(e.target.value)}
+        placeholder="Hobbies? Favorite tv shows / media? Personality?"
+        maxLength={300}
+      ></textarea>
+    );
+
+    if (!fDesc) return toRender;
+
+    // Gender pronounss
+    toRender.push(
+      <label htmlFor="pronounsSelect" key="pronounsSelectLabel">
+        OPTIONAL: What are your{" "}
+        <span className={[amaranth.className, styles.whoSpan].join(" ")}>
+          {fWho}
+        </span>
+        {"'s"} pronouns?
+      </label>
+    );
+
+    toRender.push(
+      <select
+        name="pronounsSelect"
+        id="pronounsSelect"
+        key="pronounsSelect"
+        value={fPronouns}
+        onChange={(e) => setFPronouns(e.target.value)}
+      >
+        {renderOptions(pronounsOptions, "pronouns")}
+      </select>
+    );
+
+    // Budget
+    toRender.push(
+      <label htmlFor="budgetInput" key="budgetInputLabel">
+        OPTIONAL: Do you have a budget? ($0 for no)
+      </label>
+    );
+
+    toRender.push(
+      <span className={styles.input} key={"budgetInput"}>
+        {"$ "}
+        <input
+          name="budgetInput"
+          id="budgetInput"
+          className={styles.budgetInput}
+          value={fBudget}
+          onChange={(e) => setFBudget(parseInt(e.target.value))}
+          type="number"
+          min={0}
+          placeholder="0"
+        ></input>
+      </span>
+    );
+
+    toRender.push(
+      <button onClick={handleGo} key={"goButton"}>
+        Find a gift!
+      </button>
+    );
+
     return toRender;
   };
 

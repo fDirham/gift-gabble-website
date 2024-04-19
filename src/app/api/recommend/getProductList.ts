@@ -26,6 +26,20 @@ export default async function getProductList(
       status: 400,
     };
 
+  // Add pronouns to query
+  let modifiedQuery = query as string;
+  const pronouns = searchParams.get("pronouns");
+  if (pronouns) {
+    if (pronouns == "male") {
+      modifiedQuery += " for men";
+    }
+    if (pronouns == "female") {
+      modifiedQuery += " for women";
+    }
+  }
+
+  console.log(modifiedQuery);
+
   if (isDummy) {
     const dummyList = DUMMY_REC_PRODUCT_MAP[query] || [];
     return { isError: false, productList: dummyList, query };
@@ -36,7 +50,7 @@ export default async function getProductList(
     api_key: process.env.RAINFOREST_API_KEY!,
     type: "search",
     amazon_domain: "amazon.com",
-    search_term: query as string,
+    search_term: modifiedQuery,
     associate_id: "fbdlabs-20",
     language: "en_US",
     currency: "usd",

@@ -12,8 +12,8 @@
 
 button,
 .button {
-  background-color: var(--secondary-color);
-  color: black;
+  background-color: black;
+  color: white;
   padding: 8px 16px;
   border-radius: 4px;
   font-size: 16px;
@@ -22,7 +22,7 @@ button,
   font-weight: 600;
 
   &:hover {
-    background-color: var(--secondary-color-light);
+    background-color: rgb(48, 48, 48);
     cursor: pointer;
   }
 }
