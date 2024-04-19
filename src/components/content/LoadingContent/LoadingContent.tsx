@@ -12,7 +12,7 @@ const LOAD_STATUS_LIST = [
   "extensive background and criminal check on {WHO}",
   "googling your {WHO}",
   "reading tea leaves",
-  "https://en.wikipedia.org/wiki/{WHO}",
+  "studying https://en.wikipedia.org/wiki/{WHO}",
 ];
 
 const GIF_LIST = [

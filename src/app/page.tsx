@@ -9,6 +9,7 @@ import LandingContent from "@/components/content/LandingContent";
 import SearchingContent from "@/components/content/SearchingContent";
 import { fetchRecommend } from "@/utilities/useAPI";
 import LoadingContent from "@/components/content/LoadingContent";
+import { timeoutPromise } from "@/utilities/helpers";
 
 export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
@@ -27,8 +28,8 @@ export default function Home() {
   const currProductList = recProductMap[currRec] || [];
 
   // Loading states
-  const [loadingRecList, setLoadingRecList] = useState(true);
-  const [loadingProductList, setLoadingProductList] = useState(true);
+  const [loadingRecList, setLoadingRecList] = useState(false);
+  const [loadingProductList, setLoadingProductList] = useState(false);
 
   // Cache states
   const [searchFormCache, setSearchFormCache] = useState<FormResponse | null>(
@@ -37,9 +38,11 @@ export default function Home() {
 
   async function handleSearch(formResponse: FormResponse) {
     setSearchFormCache(formResponse);
-    setIsSearching(true);
     setLoadingRecList(true);
     setLoadingProductList(true);
+
+    // TODO: REMOVE FAUX WAITING
+    await timeoutPromise(3000);
 
     const res = await fetchRecommend({
       formResponse,
@@ -58,7 +61,7 @@ export default function Home() {
     setLoadingRecList(false);
     setLoadingProductList(false);
 
-    console.log(res);
+    setIsSearching(true);
   }
 
   function handleSearchingBack() {
@@ -69,9 +72,12 @@ export default function Home() {
     const newIdx = recList.indexOf(newRec);
 
     // See if product list exists
+    setRecIdx(newIdx);
     if (!recProductMap[newRec]) {
-      setLoadingRecList(true);
       setLoadingProductList(true);
+
+      // TODO: REMOVE FAUX WAITING
+      await timeoutPromise(3000);
 
       const res = await fetchRecommend({
         doProductList: true,
@@ -86,8 +92,6 @@ export default function Home() {
         addToRecProductMap(res.productListQuery, res.productList);
       }
       setTimeout(() => {
-        setRecIdx(newIdx);
-        setLoadingRecList(false);
         setLoadingProductList(false);
       }, 1);
       return;
