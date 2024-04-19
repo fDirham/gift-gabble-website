@@ -10,7 +10,7 @@ type LandingContentProps = {
 
 export default function LandingContent(props: LandingContentProps) {
   return (
-    <div className={styles.centerContainer}>
+    <div className={styles.container}>
       <div className={styles.hero}>
         <h1 className={styles.heroTitle}>
           FIND A <b>GIFT</b> FOR YOUR

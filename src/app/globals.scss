@@ -5,6 +5,10 @@
   --secondary-color: #6993ff;
   --secondary-color-light: #4566bb;
 }
+body,
+html {
+  background-color: var(--primary-color);
+}
 
 * {
   margin: 0;

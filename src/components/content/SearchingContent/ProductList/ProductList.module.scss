@@ -84,7 +84,7 @@
   .productBlock {
     display: grid;
     grid-template-columns: 136px auto;
-    grid-template-rows: auto 50px;
+    grid-template-rows: auto 55px;
     grid-template-areas: "img copy" "copy buy";
     &:not(:last-child) {
       margin-bottom: 32px;
@@ -94,5 +94,17 @@
   .loadingImg,
   .productImg {
     width: 128px;
+  }
+  .productImg {
+    max-height: 200px;
+  }
+
+  .loadingGifContainer {
+    width: 100%;
+
+    .loadingGif {
+      width: 100%;
+      height: 200px;
+    }
   }
 }

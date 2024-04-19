@@ -14,14 +14,14 @@ import {
 } from "@/utilities/dummy";
 
 export default function Home() {
-  const [isSearching, setIsSearching] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
 
   // Rec and product states
   const [recIdx, setRecIdx] = useState<number>(0);
-  const [recList, setRecList] = useState<string[]>(DUMMY_REC_LIST);
+  const [recList, setRecList] = useState<string[]>([]);
   const [recProductMap, _setRecProductMap] = useState<{
     [key: string]: ProductObj[];
-  }>(DUMMY_REC_PRODUCT_MAP);
+  }>({});
   function addToRecProductMap(rec: string, productList: ProductObj[]) {
     const newPM = { ...recProductMap, [rec]: productList };
     _setRecProductMap(newPM);
@@ -42,6 +42,10 @@ export default function Home() {
     setSearchFormCache(formResponse);
     setLoadingRecList(true);
     setLoadingProductList(true);
+
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 1);
 
     const res = await fetchRecommend({
       formResponse,

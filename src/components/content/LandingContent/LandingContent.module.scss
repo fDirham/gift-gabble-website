@@ -45,3 +45,9 @@
     box-sizing: border-box;
   }
 }
+
+@media only screen and (max-width: $breakpointMobile) {
+  .container {
+    padding-bottom: 100px;
+  }
+}

@@ -35,7 +35,10 @@ export default function ProductList(props: ProductListProps) {
           textList={LOADING_TEXT_LIST}
           className={styles.loadingText}
         />
-        <LoadingGif className={styles.loadingGif} />
+        <LoadingGif
+          gifClassName={styles.loadingGif}
+          className={styles.loadingGifContainer}
+        />
       </div>
     );
   };
@@ -54,6 +57,9 @@ export default function ProductList(props: ProductListProps) {
       : styles.productBlock;
 
     return listToRender.map((productObj) => {
+      let productTitle = productObj.title;
+      if (productTitle.length > 80)
+        productTitle = productTitle.slice(0, 77) + "...";
       return (
         <div className={productBlockClass} key={productObj.linkUrl}>
           {props.isLoading ? (
@@ -62,7 +68,7 @@ export default function ProductList(props: ProductListProps) {
             <img className={styles.productImg} src={productObj.imageUrl} />
           )}
           <div className={styles.productCopyContainer}>
-            <h3 className={styles.productTitle}>{productObj.title}</h3>
+            <h3 className={styles.productTitle}>{productTitle}</h3>
             {!props.isLoading && (
               <>
                 {!!productObj.rating && (
