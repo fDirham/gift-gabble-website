@@ -3,6 +3,8 @@ import styles from "./ProductList.module.scss";
 import React from "react";
 import StarRatings from "react-star-ratings";
 import { DUMMY_PRODUCT_LIST_0 } from "@/utilities/dummyProductLists";
+import LoadingText from "@/components/shared/LoadingText";
+import LoadingGif from "@/components/shared/LoadingGif";
 
 type ProductListProps = {
   productList: ProductObj[];
@@ -14,7 +16,30 @@ type ProductListProps = {
  * TODO: Add actual pagination
  */
 
+const LOADING_TEXT_LIST = [
+  "searching the web for products...",
+  "comparing reviews...",
+  "running simulations...",
+  "analyzing product ratings...",
+  "testing products virtually...",
+  "reading product FAQs...",
+  "creating test products...",
+];
+
 export default function ProductList(props: ProductListProps) {
+  const renderLoadingWow = () => {
+    if (!props.isLoading) return null;
+    return (
+      <div className={styles.wowContainer}>
+        <LoadingText
+          textList={LOADING_TEXT_LIST}
+          className={styles.loadingText}
+        />
+        <LoadingGif className={styles.loadingGif} />
+      </div>
+    );
+  };
+
   const renderProductList = () => {
     let listToRender = props.productList;
     if (props.isLoading) {
@@ -80,5 +105,10 @@ export default function ProductList(props: ProductListProps) {
       );
     });
   };
-  return <div className={styles.container}>{renderProductList()}</div>;
+  return (
+    <div className={styles.container}>
+      {renderLoadingWow()}
+      {renderProductList()}
+    </div>
+  );
 }

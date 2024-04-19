@@ -11,6 +11,10 @@ const GIF_LIST = [
   "https://giphy.com/embed/3o7TKILKwQCtphbl7y",
   "https://giphy.com/embed/l0MYHq0IFikDrVQOc",
   "https://giphy.com/embed/JIX9t2j0ZTN9S",
+  "https://giphy.com/embed/I1U0mhh9sVf2u4Qz8g",
+  "https://giphy.com/embed/xULW8vRQrlIPRfiEog",
+  "https://giphy.com/embed/26hiu3mZVquuykwhy",
+  "https://giphy.com/embed/IwTWTsUzmIicM",
 ];
 
 const DEFAULT_INTERVAL_DELAY = 2500;
@@ -18,6 +22,7 @@ const DEFAULT_INTERVAL_DELAY = 2500;
 type LoadingGifProps = {
   intervalDelay?: number;
   className?: string;
+  gifClassName?: string;
 };
 export default function LoadingGif(props: LoadingGifProps) {
   const [gifIdx, setGifIdx] = useState(0);
@@ -29,7 +34,11 @@ export default function LoadingGif(props: LoadingGifProps) {
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
         setGifIdx((currIdx) => {
-          if (gifHistory.current.length >= GIF_LIST.length) return currIdx;
+          if (gifHistory.current.length >= GIF_LIST.length) {
+            const newIdx = randomIntFromInterval(0, GIF_LIST.length);
+            gifHistory.current = [newIdx];
+            return newIdx;
+          }
 
           let randomIdx = -1;
 
@@ -57,10 +66,10 @@ export default function LoadingGif(props: LoadingGifProps) {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={[styles.container, props.className].join(" ")}>
       <iframe
         src={GIF_LIST[gifIdx]}
-        className={[styles.gifEmbed, props.className].join(" ")}
+        className={[styles.gifEmbed, props.gifClassName].join(" ")}
         allowFullScreen
       ></iframe>
     </div>

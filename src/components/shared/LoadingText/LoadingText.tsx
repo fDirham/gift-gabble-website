@@ -19,8 +19,11 @@ export default function LoadingText(props: LoadingTextProps) {
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
         setTextIdx((currIdx) => {
-          if (textHistory.current.length >= props.textList.length)
-            return currIdx;
+          if (textHistory.current.length >= props.textList.length) {
+            const newIdx = randomIntFromInterval(0, props.textList.length);
+            textHistory.current = [newIdx];
+            return newIdx;
+          }
 
           let randomIdx = -1;
 

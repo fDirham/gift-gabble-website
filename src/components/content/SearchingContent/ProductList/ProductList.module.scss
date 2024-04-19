@@ -58,3 +58,16 @@
   margin-left: 6px;
   color: rgb(100, 100, 100);
 }
+
+.wowContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.loadingText {
+  margin-bottom: 10px;
+}

@@ -9,7 +9,6 @@ import LandingContent from "@/components/content/LandingContent";
 import SearchingContent from "@/components/content/SearchingContent";
 import { fetchRecommend } from "@/utilities/useAPI";
 import LoadingContent from "@/components/content/LoadingContent";
-import { timeoutPromise } from "@/utilities/helpers";
 
 export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
