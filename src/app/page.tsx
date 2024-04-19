@@ -8,9 +8,10 @@ import { DUMMY_SEARCH_CONFIG } from "@/utilities/dummy";
 import LandingContent from "@/components/content/LandingContent";
 import SearchingContent from "@/components/content/SearchingContent";
 import { fetchRecommend } from "@/utilities/useAPI";
+import LoadingContent from "@/components/content/LoadingContent";
 
 export default function Home() {
-  const [isSearching, setIsSearching] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
 
   // Rec and product states
   const [recIdx, setRecIdx] = useState<number>(0);
@@ -96,6 +97,9 @@ export default function Home() {
   }
 
   const renderContent = () => {
+    if (loadingRecList) {
+      return <LoadingContent formResponse={searchFormCache!} />;
+    }
     if (isSearching) {
       return (
         <SearchingContent

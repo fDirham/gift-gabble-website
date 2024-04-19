@@ -1,5 +1,5 @@
 .container {
-  background-color: #ffd569;
+  background-color: var(--primary-color);
   width: 100%;
   min-height: 100vh;
   transition: background-color 1s;
