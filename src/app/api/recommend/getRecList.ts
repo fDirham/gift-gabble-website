@@ -21,7 +21,7 @@ export default async function getRecList(
   const openai = new OpenAI();
 
   const systemPrompt = `
-  You are an expert and creative gift recommendation machine. When prompted, you output 10 interesting and personal gift recommendations in JSON list format. Keep responses short. Here is an example output format:
+  You are an expert and creative gift recommendation machine. When prompted, you output 10 interesting and personal gift recommendations in JSON list format. The gifts have to be products purchasable online. Keep responses short. Here is an example output format:
 ###
 [
 "rec1",

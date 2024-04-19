@@ -6,10 +6,10 @@ import { randomIntFromInterval } from "@/utilities/helpers";
 
 const LOAD_STATUS_LIST = [
   "brainstorming recommendations",
-  "decoding {WHO} astrological signs",
-  "conducting virtual DNA analysis on {WHO}",
+  "decoding your {WHO}'s astrological signs",
+  "conducting virtual DNA analysis on your {WHO}",
   "activating the gift microscope",
-  "extensive background and criminal check on {WHO}",
+  "extensive background and criminal check on your {WHO}",
   "googling your {WHO}",
   "reading tea leaves",
   "studying https://en.wikipedia.org/wiki/{WHO}",

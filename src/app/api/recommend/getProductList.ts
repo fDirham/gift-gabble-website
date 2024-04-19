@@ -38,8 +38,6 @@ export default async function getProductList(
     }
   }
 
-  console.log(modifiedQuery);
-
   if (isDummy) {
     const dummyList = DUMMY_REC_PRODUCT_MAP[query] || [];
     return { isError: false, productList: dummyList, query };
@@ -74,6 +72,9 @@ export default async function getProductList(
     const resList = resObj.search_results;
     for (let j = 0; j < resList.length; j++) {
       const curr = resList[j];
+      if (!curr.price) {
+        continue;
+      }
       const toAdd: ProductObj = {
         title: curr.title,
         asin: curr.asin,

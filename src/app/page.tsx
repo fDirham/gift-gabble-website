@@ -41,9 +41,6 @@ export default function Home() {
     setLoadingRecList(true);
     setLoadingProductList(true);
 
-    // TODO: REMOVE FAUX WAITING
-    await timeoutPromise(3000);
-
     const res = await fetchRecommend({
       formResponse,
       doProductList: true,
@@ -75,9 +72,6 @@ export default function Home() {
     setRecIdx(newIdx);
     if (!recProductMap[newRec]) {
       setLoadingProductList(true);
-
-      // TODO: REMOVE FAUX WAITING
-      await timeoutPromise(3000);
 
       const res = await fetchRecommend({
         doProductList: true,
