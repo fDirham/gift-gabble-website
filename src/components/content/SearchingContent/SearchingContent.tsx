@@ -66,8 +66,10 @@ export default function SearchingContent(props: SearchingContentProps) {
         <span className={getRecSpanClass()}>{'"' + props.currRec + '"'}</span>
       </h2>
       <div className={styles.otherContainer}>
-        <span className={styles.otherText}> They might also like: </span>
-        {renderOther()}
+        <div className={styles.otherScrollContainer}>
+          <span className={styles.otherText}> They might also like: </span>
+          {renderOther()}
+        </div>
       </div>
       <span className={styles.disclaimerText}>
         DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.

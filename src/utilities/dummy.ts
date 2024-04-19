@@ -5,10 +5,13 @@ import {
 } from "./dummyProductLists";
 
 export const DUMMY_SEARCH_CONFIG: FormResponse = {
-  who: "girlfriend",
+  whoOne: "girlfriend",
+  whoTwo: "???",
   why: "birthday",
+  whyExtra: "",
   desc: "Lorem ipsum baba yetu mf",
   budget: 0,
+  pronouns: "female",
 };
 
 export const DUMMY_REC_LIST: string[] = [

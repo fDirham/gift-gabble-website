@@ -88,17 +88,20 @@ export default function ProductList(props: ProductListProps) {
                     className={styles.primeLogo}
                   />
                 )}
-
-                <a
-                  className={"button " + styles.productLink}
-                  href={productObj.linkUrl}
-                  target="_blank"
-                  style={{ fontWeight: 400 }}
-                >
-                  {productObj.price} on{" "}
-                  <span style={{ fontWeight: 600 }}>Amazon</span>
-                </a>
               </>
+            )}
+          </div>
+          <div className={styles.buyContainer}>
+            {!props.isLoading && (
+              <a
+                className={"button " + styles.productLink}
+                href={productObj.linkUrl}
+                target="_blank"
+                style={{ fontWeight: 400 }}
+              >
+                {productObj.price} on{" "}
+                <span style={{ fontWeight: 600 }}>Amazon</span>
+              </a>
             )}
           </div>
         </div>

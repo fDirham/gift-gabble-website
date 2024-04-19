@@ -7,7 +7,9 @@
 
 .productBlock {
   display: grid;
-  grid-template-columns: 160px auto;
+  grid-template-columns: 176px auto;
+  grid-template-rows: auto 50px;
+  grid-template-areas: "img copy" "img buy";
   &:not(:last-child) {
     margin-bottom: 32px;
   }
@@ -21,24 +23,25 @@
   }
 }
 
+.loadingImg,
+.productImg {
+  grid-area: img;
+  width: 160px;
+}
+
 .loadingImg {
   @extend .suspenseBackground;
   border-radius: 4px;
-  width: 160px;
   height: 160px;
 }
 
 .productImg {
-  width: 160px;
   max-height: 320px;
   object-fit: scale-down;
 }
 
 .productCopyContainer {
-  padding-left: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  grid-area: copy;
 }
 
 .productTitle {
@@ -46,8 +49,13 @@
   font-weight: 600;
 }
 
+.buyContainer {
+  grid-area: buy;
+  display: flex;
+  align-items: flex-end;
+}
+
 .productLink {
-  margin-top: 16px;
   text-decoration: none;
 }
 
@@ -70,4 +78,21 @@
 
 .loadingText {
   margin-bottom: 10px;
+}
+
+@media only screen and (max-width: $breakpointMobile) {
+  .productBlock {
+    display: grid;
+    grid-template-columns: 136px auto;
+    grid-template-rows: auto 50px;
+    grid-template-areas: "img copy" "copy buy";
+    &:not(:last-child) {
+      margin-bottom: 32px;
+    }
+  }
+
+  .loadingImg,
+  .productImg {
+    width: 128px;
+  }
 }

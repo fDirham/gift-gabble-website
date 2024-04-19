@@ -1,5 +1,7 @@
+@import "@/styles/shared.scss";
+
 .container {
-  width: 720px;
+  width: $breakpointTablet;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,8 +12,23 @@
   font-weight: 400;
   margin-top: 100px;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .spinner {
   margin-bottom: 24px;
+}
+
+@media only screen and (max-width: $breakpointTablet) {
+  .container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+}
+
+@media only screen and (max-width: $breakpointMobile) {
+  .loadingGif {
+    width: 100%;
+  }
 }

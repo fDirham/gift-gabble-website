@@ -9,11 +9,11 @@ import { resolveWho } from "../LandingContent/SearchForm/SearchForm";
 const LOAD_STATUS_LIST = [
   "brainstorming recommendations",
   "decoding your {WHO}'s astrological signs",
-  "conducting virtual DNA analysis on your {WHO}",
+  "starting virtual DNA analysis on your {WHO}",
   "activating the gift microscope",
   "extensive background and criminal check on your {WHO}",
   "googling your {WHO}",
-  "reading tea leaves",
+  "reading your {WHO}'s tea leaves",
   "studying https://en.wikipedia.org/wiki/{WHO}",
 ];
 
@@ -42,7 +42,10 @@ export default function LoadingContent(props: LoadingContentProps) {
         className={styles.statusText}
       />
       <LoadingSpinner className={styles.spinner} />
-      <LoadingGif intervalDelay={INTERVAL_DELAY} />
+      <LoadingGif
+        intervalDelay={INTERVAL_DELAY}
+        gifClassName={styles.loadingGif}
+      />
     </div>
   );
 }

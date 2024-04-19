@@ -3,22 +3,25 @@
 import styles from "./page.module.scss";
 import { useState } from "react";
 import { ProductObj, FormResponse } from "@/utilities/customTypes";
-import { DUMMY_SEARCH_CONFIG } from "@/utilities/dummy";
-
 import LandingContent from "@/components/content/LandingContent";
 import SearchingContent from "@/components/content/SearchingContent";
 import { fetchRecommend } from "@/utilities/useAPI";
 import LoadingContent from "@/components/content/LoadingContent";
+import {
+  DUMMY_REC_LIST,
+  DUMMY_REC_PRODUCT_MAP,
+  DUMMY_SEARCH_CONFIG,
+} from "@/utilities/dummy";
 
 export default function Home() {
-  const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(true);
 
   // Rec and product states
   const [recIdx, setRecIdx] = useState<number>(0);
-  const [recList, setRecList] = useState<string[]>([]);
+  const [recList, setRecList] = useState<string[]>(DUMMY_REC_LIST);
   const [recProductMap, _setRecProductMap] = useState<{
     [key: string]: ProductObj[];
-  }>({});
+  }>(DUMMY_REC_PRODUCT_MAP);
   function addToRecProductMap(rec: string, productList: ProductObj[]) {
     const newPM = { ...recProductMap, [rec]: productList };
     _setRecProductMap(newPM);
@@ -32,7 +35,7 @@ export default function Home() {
 
   // Cache states
   const [searchFormCache, setSearchFormCache] = useState<FormResponse | null>(
-    null
+    DUMMY_SEARCH_CONFIG
   );
 
   async function handleSearch(formResponse: FormResponse) {

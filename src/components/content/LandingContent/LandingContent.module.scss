@@ -1,6 +1,6 @@
 @import "@/styles/shared.scss";
 
-.centerContainer {
+.container {
   width: $breakpointTablet;
   display: flex;
   flex-direction: column;
@@ -39,7 +39,7 @@
 }
 
 @media only screen and (max-width: $breakpointTablet) {
-  .centerContainer {
+  .container {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
