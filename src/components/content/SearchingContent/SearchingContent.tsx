@@ -3,6 +3,7 @@ import { ProductObj, FormResponse } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 import ProductList from "./ProductList/ProductList";
+import { DUMMY_REC_LIST } from "@/utilities/dummy";
 
 type SearchingContentProps = {
   onBack: () => void;
@@ -11,17 +12,28 @@ type SearchingContentProps = {
   productList: ProductObj[];
   currRec: string;
   onRecChange: (val: string) => void;
+  loadingRecList: boolean;
+  loadingProductList: boolean;
 };
 
 export default function SearchingContent(props: SearchingContentProps) {
   const { who } = props.formResponse;
 
   const renderOther = () => {
-    const renderRecList = props.recList.filter((rec) => rec !== props.currRec);
+    let renderRecList: string[] = [];
+    const recObjClassList = [styles.otherRec];
+    if (props.loadingRecList) {
+      renderRecList = DUMMY_REC_LIST;
+      recObjClassList.push(styles.loading);
+    } else {
+      renderRecList = props.recList.filter((rec) => rec !== props.currRec);
+      recObjClassList.unshift("invisButton");
+    }
+
     return renderRecList.map((rec) => {
       return (
         <button
-          className={"invisButton " + styles.otherRec}
+          className={recObjClassList.join(" ")}
           key={rec}
           onClick={() => props.onRecChange(rec)}
         >
@@ -31,8 +43,15 @@ export default function SearchingContent(props: SearchingContentProps) {
     });
   };
 
+  const getRecSpanClass = () => {
+    if (props.loadingRecList) {
+      return [styles.recSpan, styles.loading].join(" ");
+    }
+    return styles.recSpan;
+  };
+
   return (
-    <div className={[styles.centerContainer].join(" ")}>
+    <div className={styles.container}>
       <button
         onClick={props.onBack}
         className={"invisButton " + styles.backButton}
@@ -41,7 +60,8 @@ export default function SearchingContent(props: SearchingContentProps) {
       </button>
       <h2 className={styles.resultsBlurb}>
         We think your <span className={amaranth.className}>{who}</span> would
-        love <span className={styles.recSpan}>{'"' + props.currRec + '"'}</span>
+        love{" "}
+        <span className={getRecSpanClass()}>{'"' + props.currRec + '"'}</span>
       </h2>
       <div className={styles.otherContainer}>
         <span className={styles.otherText}> They might also like: </span>
@@ -50,7 +70,11 @@ export default function SearchingContent(props: SearchingContentProps) {
       <span className={styles.disclaimerText}>
         DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
       </span>
-      <ProductList productList={props.productList} max={10} />
+      <ProductList
+        productList={props.productList}
+        max={10}
+        isLoading={props.loadingProductList}
+      />
     </div>
   );
 }

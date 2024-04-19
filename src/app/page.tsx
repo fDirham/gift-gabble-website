@@ -10,7 +10,9 @@ import SearchingContent from "@/components/content/SearchingContent";
 import { fetchRecommend } from "@/utilities/useAPI";
 
 export default function Home() {
-  const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(true);
+
+  // Rec and product states
   const [recIdx, setRecIdx] = useState<number>(0);
   const [recList, setRecList] = useState<string[]>([]);
   const [recProductMap, _setRecProductMap] = useState<{
@@ -20,11 +22,14 @@ export default function Home() {
     const newPM = { ...recProductMap, [rec]: productList };
     _setRecProductMap(newPM);
   }
-  const [loadingRec, setLoadingRec] = useState(false);
-
   const currRec = recList[recIdx];
   const currProductList = recProductMap[currRec] || [];
 
+  // Loading states
+  const [loadingRecList, setLoadingRecList] = useState(true);
+  const [loadingProductList, setLoadingProductList] = useState(true);
+
+  // Cache states
   const [searchFormCache, setSearchFormCache] = useState<FormResponse | null>(
     DUMMY_SEARCH_CONFIG
   );
@@ -32,6 +37,9 @@ export default function Home() {
   async function handleSearch(formResponse: FormResponse) {
     setSearchFormCache(formResponse);
     setIsSearching(true);
+    setLoadingRecList(true);
+    setLoadingProductList(true);
+
     const res = await fetchRecommend({
       formResponse,
       doProductList: true,
@@ -46,6 +54,9 @@ export default function Home() {
       addToRecProductMap(res.productListQuery, res.productList);
     }
 
+    setLoadingRecList(false);
+    setLoadingProductList(false);
+
     console.log(res);
   }
 
@@ -58,6 +69,9 @@ export default function Home() {
 
     // See if product list exists
     if (!recProductMap[newRec]) {
+      setLoadingRecList(true);
+      setLoadingProductList(true);
+
       const res = await fetchRecommend({
         doProductList: true,
         searchKeyWords: newRec,
@@ -70,7 +84,11 @@ export default function Home() {
       } else {
         addToRecProductMap(res.productListQuery, res.productList);
       }
-      setTimeout(() => setRecIdx(newIdx), 1);
+      setTimeout(() => {
+        setRecIdx(newIdx);
+        setLoadingRecList(false);
+        setLoadingProductList(false);
+      }, 1);
       return;
     }
 
@@ -87,6 +105,8 @@ export default function Home() {
           onRecChange={handleRecChange}
           recList={recList}
           productList={currProductList}
+          loadingRecList={loadingRecList}
+          loadingProductList={loadingProductList}
         />
       );
     }

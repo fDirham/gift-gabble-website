@@ -1,3 +1,5 @@
+@import "@/styles/shared.scss";
+
 .container {
   margin-top: 4px;
   padding-bottom: 400px;
@@ -9,6 +11,21 @@
   &:not(:last-child) {
     margin-bottom: 32px;
   }
+
+  &.loading {
+    .productTitle {
+      @extend .suspenseBackground;
+      color: transparent;
+      border-radius: 4px;
+    }
+  }
+}
+
+.loadingImg {
+  @extend .suspenseBackground;
+  border-radius: 4px;
+  width: 160px;
+  height: 160px;
 }
 
 .productImg {
