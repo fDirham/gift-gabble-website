@@ -113,7 +113,7 @@ export default function SearchForm(props: SearchFormProps) {
         value={whoOne}
         onChange={(e) => {
           setWhoOne(e.target.value);
-          setWhoTwo("");
+          setWhoTwo(UNKNOWN_VALUE);
         }}
       >
         {renderOptions(whoOptions, "whoOne")}

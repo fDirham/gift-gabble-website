@@ -21,6 +21,9 @@ export default function LandingContent(props: LandingContentProps) {
         </h1>
       </div>
 
+      <span className={styles.explainText}>
+        fill the form below to get free gift recommendations!
+      </span>
       <SearchForm
         onGo={props.handleSearch}
         initialValues={props.searchFormCache}

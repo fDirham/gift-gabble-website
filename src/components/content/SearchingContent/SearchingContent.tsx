@@ -4,6 +4,7 @@ import { Amaranth } from "next/font/google";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 import ProductList from "./ProductList/ProductList";
 import { DUMMY_REC_LIST } from "@/utilities/dummy";
+import { resolveWho } from "../LandingContent/SearchForm/SearchForm";
 
 type SearchingContentProps = {
   onBack: () => void;
@@ -17,7 +18,7 @@ type SearchingContentProps = {
 };
 
 export default function SearchingContent(props: SearchingContentProps) {
-  const { who } = props.formResponse;
+  const { whoOne, whoTwo } = props.formResponse;
 
   const renderOther = () => {
     let renderRecList: string[] = [];
@@ -59,8 +60,9 @@ export default function SearchingContent(props: SearchingContentProps) {
         {"<- Go back and try again"}
       </button>
       <h2 className={styles.resultsBlurb}>
-        We think your <span className={amaranth.className}>{who}</span> would
-        love{" "}
+        We think your{" "}
+        <span className={amaranth.className}>{resolveWho(whoOne, whoTwo)}</span>{" "}
+        would love{" "}
         <span className={getRecSpanClass()}>{'"' + props.currRec + '"'}</span>
       </h2>
       <div className={styles.otherContainer}>

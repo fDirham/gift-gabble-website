@@ -1,6 +1,6 @@
 import { resolveWho } from "@/components/content/LandingContent/SearchForm/SearchForm";
 import { APIFormResponse, FormResponse, ProductObj } from "./customTypes";
-import { encodeObject } from "./helpers";
+import { encodeObject, timeoutPromise } from "./helpers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const isDummyMode = process.env.NEXT_PUBLIC_DUMMY_MODE !== "0";
@@ -39,8 +39,9 @@ export async function fetchRecommend(args: FetchRecommendArgs): Promise<
     queryComponents["searchKeyWords"] = args.searchKeyWords;
   }
   if (isDummyMode) {
-    console.log("hello", process.env.DUMMY_MODE);
     queryComponents["returnDummy"] = 1;
+    // Faux loading
+    await timeoutPromise(3000);
   }
   const queryParams = "?" + encodeObject(queryComponents);
 
