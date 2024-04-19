@@ -1,3 +1,5 @@
+@import "@/styles/shared.scss";
+
 :root {
   --primary-color: #ffd569;
   --secondary-color: #6993ff;
@@ -35,5 +37,13 @@ button,
 
   &:hover {
     background: none;
+  }
+}
+
+@media only screen and (max-width: $breakpointMobile) {
+  button,
+  .button {
+    padding: 12px;
+    width: 100%;
   }
 }

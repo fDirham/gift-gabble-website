@@ -1,5 +1,7 @@
+@import "@/styles/shared.scss";
+
 .centerContainer {
-  width: 720px;
+  width: $breakpointTablet;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +18,7 @@
 }
 
 .hero {
-  margin-top: 15vh;
+  margin-top: 100px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -33,4 +35,13 @@
 .explainText {
   margin-bottom: 10px;
   color: rgb(32, 32, 32);
+  text-align: center;
+}
+
+@media only screen and (max-width: $breakpointTablet) {
+  .centerContainer {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
 }

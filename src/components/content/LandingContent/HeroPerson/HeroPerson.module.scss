@@ -1,3 +1,5 @@
+@import "@/styles/shared.scss";
+
 .container {
   overflow: hidden;
   width: 80%;
@@ -45,5 +47,11 @@
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+@media only screen and (max-width: $breakpointMobile) {
+  .personText {
+    font-size: 58px;
   }
 }

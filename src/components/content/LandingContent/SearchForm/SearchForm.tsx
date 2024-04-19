@@ -21,7 +21,8 @@ export type SearchFormProps = {
 };
 
 export function resolveWho(whoOne: string, whoTwo: string) {
-  return whoTwo || whoOne;
+  if (!whoTwo || whoTwo == UNKNOWN_VALUE) return whoOne;
+  return whoTwo;
 }
 
 export default function SearchForm(props: SearchFormProps) {
@@ -252,7 +253,10 @@ export default function SearchForm(props: SearchFormProps) {
     );
 
     toRender.push(
-      <span className={styles.input} key={"budgetInput"}>
+      <span
+        className={[styles.input, styles.budgetSpan].join(" ")}
+        key={"budgetInput"}
+      >
         {"$ "}
         <input
           name="budgetInput"

@@ -1,3 +1,5 @@
+@import "@/styles/shared.scss";
+
 .container {
   display: flex;
   flex-direction: column;
@@ -52,4 +54,29 @@
 
 .whoSpan {
   font-size: 18px;
+}
+
+@media only screen and (max-width: $breakpointMobile) {
+  .container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+    input,
+    .input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+
+      &:not(:last-child) {
+        margin-bottom: 30px;
+      }
+    }
+
+    .budgetSpan {
+      display: flex;
+      flex-direction: row;
+    }
+  }
 }

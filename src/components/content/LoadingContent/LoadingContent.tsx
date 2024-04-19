@@ -4,6 +4,7 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner/LoadingSpinner";
 import { FormResponse } from "@/utilities/customTypes";
 import LoadingText from "@/components/shared/LoadingText";
 import LoadingGif from "@/components/shared/LoadingGif";
+import { resolveWho } from "../LandingContent/SearchForm/SearchForm";
 
 const LOAD_STATUS_LIST = [
   "brainstorming recommendations",
@@ -23,8 +24,12 @@ type LoadingContentProps = {
 };
 export default function LoadingContent(props: LoadingContentProps) {
   const getLoadingTextList = () => {
+    const who = resolveWho(
+      props.formResponse.whoOne,
+      props.formResponse.whoTwo
+    );
     return LOAD_STATUS_LIST.map((text) => {
-      text = text.replace("{WHO}", props.formResponse.who);
+      text = text.replace("{WHO}", who);
       return text;
     });
   };
