@@ -47,6 +47,9 @@
 }
 
 @media only screen and (max-width: $breakpointMobile) {
+  .hero {
+    margin-top: 65px;
+  }
   .container {
     padding-bottom: 100px;
   }

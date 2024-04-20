@@ -7,7 +7,7 @@ import {
 export const DUMMY_SEARCH_CONFIG: FormResponse = {
   whoOne: "girlfriend",
   whoTwo: "???",
-  why: "birthday",
+  why: "bday",
   whyExtra: "",
   desc: "Lorem ipsum baba yetu mf",
   budget: 0,

@@ -53,10 +53,14 @@
   grid-area: buy;
   display: flex;
   align-items: flex-end;
+  overflow: hidden;
 }
 
 .productLink {
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ratingText {

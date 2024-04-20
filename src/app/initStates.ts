@@ -3,7 +3,7 @@ import {
   DUMMY_REC_LIST,
   DUMMY_REC_PRODUCT_MAP,
   DUMMY_SEARCH_CONFIG,
-} from '@/utilities/dummy';
+} from "@/utilities/dummy";
 
 const INIT_STATE_DEFAULT = {
   isSearching: false,
@@ -50,4 +50,4 @@ const INIT_STATE_FILLED_SEARCH = {
   searchFormCache: DUMMY_SEARCH_CONFIG,
 };
 
-export const initialStates = INIT_STATE_FILLED_SEARCH;
+export const initialStates = INIT_STATE_DEFAULT;

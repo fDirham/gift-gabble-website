@@ -8,7 +8,10 @@ import SearchingContent from "@/components/content/SearchingContent";
 import { fetchRecommend } from "@/utilities/useAPI";
 import LoadingContent from "@/components/content/LoadingContent";
 import { initialStates } from "./initStates";
+import Link from "next/link";
+import { Allura } from "next/font/google";
 
+const allura = Allura({ subsets: ["latin"], weight: "400" });
 export default function Home() {
   const [isSearching, setIsSearching] = useState(initialStates.isSearching);
 
@@ -137,9 +140,15 @@ export default function Home() {
 
   return (
     <div className={getContainerClass()}>
-      <header></header>
+      <header className={styles.header}>
+        <span className={[allura.className, styles.appName].join(" ")}>
+          gift gabble
+        </span>
+        <Link className={styles.navLink} href={"/about"}>
+          about
+        </Link>
+      </header>
       <main className={styles.main}>{renderContent()}</main>
-      <footer></footer>
     </div>
   );
 }

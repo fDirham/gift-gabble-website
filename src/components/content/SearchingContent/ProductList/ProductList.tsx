@@ -5,6 +5,7 @@ import StarRatings from "react-star-ratings";
 import { DUMMY_PRODUCT_LIST_0 } from "@/utilities/dummyProductLists";
 import LoadingText from "@/components/shared/LoadingText";
 import LoadingGif from "@/components/shared/LoadingGif";
+import useScreenSize from "@/hooks/useScreenSize";
 
 type ProductListProps = {
   productList: ProductObj[];
@@ -27,6 +28,8 @@ const LOADING_TEXT_LIST = [
 ];
 
 export default function ProductList(props: ProductListProps) {
+  const screenSize = useScreenSize();
+
   const renderLoadingWow = () => {
     if (!props.isLoading) return null;
     return (
@@ -58,7 +61,8 @@ export default function ProductList(props: ProductListProps) {
 
     return listToRender.map((productObj) => {
       let productTitle = productObj.title;
-      if (productTitle.length > 80)
+      const isMobile = screenSize.width <= 420;
+      if (isMobile && productTitle.length > 80)
         productTitle = productTitle.slice(0, 77) + "...";
       return (
         <div className={productBlockClass} key={productObj.linkUrl}>

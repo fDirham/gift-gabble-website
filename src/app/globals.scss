@@ -44,6 +44,14 @@ button,
   }
 }
 
+a {
+  color: black;
+
+  &:hover {
+    color: var(--secondary-color);
+  }
+}
+
 @media only screen and (max-width: $breakpointMobile) {
   button,
   .button {
