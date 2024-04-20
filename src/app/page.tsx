@@ -7,21 +7,17 @@ import LandingContent from "@/components/content/LandingContent";
 import SearchingContent from "@/components/content/SearchingContent";
 import { fetchRecommend } from "@/utilities/useAPI";
 import LoadingContent from "@/components/content/LoadingContent";
-import {
-  DUMMY_REC_LIST,
-  DUMMY_REC_PRODUCT_MAP,
-  DUMMY_SEARCH_CONFIG,
-} from "@/utilities/dummy";
+import { initialStates } from "./initStates";
 
 export default function Home() {
-  const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(initialStates.isSearching);
 
   // Rec and product states
-  const [recIdx, setRecIdx] = useState<number>(0);
-  const [recList, setRecList] = useState<string[]>([]);
+  const [recIdx, setRecIdx] = useState<number>(initialStates.recIdx);
+  const [recList, setRecList] = useState<string[]>(initialStates.recList);
   const [recProductMap, _setRecProductMap] = useState<{
     [key: string]: ProductObj[];
-  }>({});
+  }>(initialStates.recProductMap);
   function addToRecProductMap(rec: string, productList: ProductObj[]) {
     const newPM = { ...recProductMap, [rec]: productList };
     _setRecProductMap(newPM);
@@ -30,12 +26,16 @@ export default function Home() {
   const currProductList = recProductMap[currRec] || [];
 
   // Loading states
-  const [loadingRecList, setLoadingRecList] = useState(false);
-  const [loadingProductList, setLoadingProductList] = useState(false);
+  const [loadingRecList, setLoadingRecList] = useState(
+    initialStates.loadingRecList
+  );
+  const [loadingProductList, setLoadingProductList] = useState(
+    initialStates.loadingProductList
+  );
 
   // Cache states
   const [searchFormCache, setSearchFormCache] = useState<FormResponse | null>(
-    null
+    initialStates.searchFormCache
   );
 
   async function handleSearch(formResponse: FormResponse) {
