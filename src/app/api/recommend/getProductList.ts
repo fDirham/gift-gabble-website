@@ -72,9 +72,13 @@ export default async function getProductList(
     const resList = resObj.search_results;
     for (let j = 0; j < resList.length; j++) {
       const curr = resList[j];
-      if (!curr.price) {
+      let price = "";
+      try {
+        price = curr.price.symbol + curr.price.value;
+      } catch {
         continue;
       }
+
       const toAdd: ProductObj = {
         title: curr.title,
         asin: curr.asin,
@@ -82,7 +86,7 @@ export default async function getProductList(
         imageUrl: curr.image,
         rating: curr.rating,
         ratingsTotal: curr.ratings_total,
-        price: curr.price.raw,
+        price,
         isPrime: curr.is_prime || false,
       };
       productList.push(toAdd);

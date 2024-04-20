@@ -203,6 +203,10 @@ export default function SearchForm(props: SearchFormProps) {
         Describe your{" "}
         <span className={[amaranth.className, styles.whoSpan].join(" ")}>
           {resolvedWho}
+        </span>{" "}
+        <br />{" "}
+        <span style={{ fontWeight: 400 }}>
+          (The more you describe, the better our recommendations will be)
         </span>
       </label>
     );
@@ -248,7 +252,7 @@ export default function SearchForm(props: SearchFormProps) {
     // Budget
     toRender.push(
       <label htmlFor="budgetInput" key="budgetInputLabel">
-        OPTIONAL: Do you have a budget? ($0 for no)
+        OPTIONAL: Do you have a budget? ($0 for no , max $1000)
       </label>
     );
 
@@ -266,6 +270,7 @@ export default function SearchForm(props: SearchFormProps) {
           onChange={(e) => setBudget(parseInt(e.target.value))}
           type="number"
           min={0}
+          max={1000}
           placeholder="0"
         ></input>
       </span>

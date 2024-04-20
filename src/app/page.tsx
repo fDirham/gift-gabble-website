@@ -35,7 +35,7 @@ export default function Home() {
 
   // Cache states
   const [searchFormCache, setSearchFormCache] = useState<FormResponse | null>(
-    DUMMY_SEARCH_CONFIG
+    null
   );
 
   async function handleSearch(formResponse: FormResponse) {
