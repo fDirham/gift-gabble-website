@@ -68,14 +68,23 @@ export default async function getProductList(
       }
     );
 
+    const budget = searchParams.get("budget") as string;
+    const budgetNum = budget ? parseFloat(budget) : 0;
+
     const resObj = await res.json();
     const resList = resObj.search_results;
     for (let j = 0; j < resList.length; j++) {
       const curr = resList[j];
       let price = "";
+      let priceNum = 0;
       try {
         price = curr.price.symbol + curr.price.value;
+        priceNum = parseFloat(curr.price.value);
       } catch {
+        continue;
+      }
+
+      if (budgetNum > 0 && priceNum > budgetNum + 5) {
         continue;
       }
 

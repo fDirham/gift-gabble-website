@@ -94,7 +94,11 @@ export default async function getRecList(
   try {
     recList = JSON.parse(openaiRes as string);
   } catch (e) {
-    console.error("Parsing recommendations failed", e);
+    console.error(
+      "Parsing recommendations failed",
+      { openaiRes, userPrompt },
+      e
+    );
 
     return {
       isError: true,

@@ -15,7 +15,21 @@ export default function validateInputs(
     const currParam = cappedParamsList[i];
     const val = searchParams.get(currParam);
     if (!val) continue;
+
+    let isValid = true;
+    if (currParam == "budget") {
+      try {
+        parseFloat(val);
+      } catch {
+        isValid = false;
+      }
+    }
+
     if (val.length > MAX_USER_INPUT_LENGTH) {
+      isValid = false;
+    }
+
+    if (!isValid) {
       return "Invalid inputs";
     }
   }

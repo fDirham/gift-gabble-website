@@ -62,8 +62,6 @@ export default function Home() {
 
       setLoadingRecList(false);
       setLoadingProductList(false);
-
-      setIsSearching(true);
     } else {
       setRecList(res.recList);
       addToRecProductMap(res.productListQuery, res.productList);
@@ -77,6 +75,7 @@ export default function Home() {
 
   function handleSearchingBack() {
     setIsSearching(false);
+    setRecIdx(0);
   }
 
   async function handleRecChange(newRec: string) {
