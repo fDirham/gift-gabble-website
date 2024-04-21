@@ -11,17 +11,17 @@ export default async function getRecList(
   const isDummy = returnDummy === "1";
   if (isDummy) return { isError: false, recList: DUMMY_REC_LIST };
 
-  const who = searchParams.get("who");
-  const why = searchParams.get("why");
-  const whyExtra = searchParams.get("whyExtra");
-  const desc = searchParams.get("desc");
-  const budget = searchParams.get("budget");
-  const pronouns = searchParams.get("pronouns");
+  let who = searchParams.get("who");
+  let why = searchParams.get("why");
+  let whyExtra = searchParams.get("whyExtra");
+  let desc = searchParams.get("desc");
+  let budget = searchParams.get("budget");
+  let pronouns = searchParams.get("pronouns");
 
   const openai = new OpenAI();
 
   const systemPrompt = `
-  You are an expert and creative gift recommendation machine. When prompted, you output 10 interesting and personal gift recommendations in JSON list format. The gifts have to be products purchasable online. Keep responses short. Here is an example output format:
+  You are a creative gift recommendation machine. When prompted, you output 10 interesting and personal gift recommendations in JSON list format. The gifts have to be products purchasable online. Keep responses short. Here is an example output format:
 ###
 [
 "rec1",
@@ -43,6 +43,8 @@ export default async function getRecList(
       extendedWhy = ". Their wedding is coming up";
       break;
     case "other":
+      if (whyExtra) {
+      }
       extendedWhy = ". Why? " + whyExtra;
     case "na":
       extendedWhy = "";
@@ -55,14 +57,17 @@ export default async function getRecList(
   let extendedBudget = budget;
   if (budget) {
     if (budget !== "0") {
-      extendedBudget = "I only have a budget of $${budget}.";
+      extendedBudget = `I only have a budget of $${budget}.`;
     } else {
       extendedBudget = " ";
     }
   }
 
+  let extendedDesc = desc as string;
+  extendedDesc = extendedDesc.trim();
+
   const userPrompt = `
-  I want to get a gift for my ${who}${extendedWhy}. A little about my ${who}: ${desc}.${extendedBudget}What should I get?
+  I want to get a gift for my ${who}${extendedWhy}. A little about my ${who}: ${desc?.trim()}.${extendedBudget}What should I get?
   `;
 
   let openaiRes = "";

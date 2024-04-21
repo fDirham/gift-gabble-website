@@ -190,7 +190,7 @@ export default function SearchForm(props: SearchFormProps) {
           value={whyExtra}
           onChange={(e) => setWhyExtra(e.target.value)}
           placeholder="e.g Because I appreciate them..."
-          maxLength={300}
+          maxLength={100}
         ></textarea>
       );
 
@@ -220,7 +220,7 @@ export default function SearchForm(props: SearchFormProps) {
         value={desc}
         onChange={(e) => setDesc(e.target.value)}
         placeholder="Hobbies? Favorite tv shows / media? Personality?"
-        maxLength={300}
+        maxLength={200}
       ></textarea>
     );
 

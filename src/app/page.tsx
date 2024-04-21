@@ -57,17 +57,22 @@ export default function Home() {
     });
 
     if (res.isError) {
-      // TODO
+      window.alert("Searching failed! Please try again later.");
       console.error(res.error);
+
+      setLoadingRecList(false);
+      setLoadingProductList(false);
+
+      setIsSearching(true);
     } else {
       setRecList(res.recList);
       addToRecProductMap(res.productListQuery, res.productList);
+
+      setLoadingRecList(false);
+      setLoadingProductList(false);
+
+      setIsSearching(true);
     }
-
-    setLoadingRecList(false);
-    setLoadingProductList(false);
-
-    setIsSearching(true);
   }
 
   function handleSearchingBack() {
@@ -78,7 +83,9 @@ export default function Home() {
     const newIdx = recList.indexOf(newRec);
 
     // See if product list exists
+    const oldIdx = recIdx;
     setRecIdx(newIdx);
+
     if (!recProductMap[newRec]) {
       setLoadingProductList(true);
 
@@ -90,8 +97,11 @@ export default function Home() {
       });
 
       if (res.isError) {
-        // TODO
+        window.alert(
+          "Getting product recommendations failed! Please try again later."
+        );
         console.error(res.error);
+        setRecIdx(oldIdx);
       } else {
         addToRecProductMap(res.productListQuery, res.productList);
       }
@@ -100,8 +110,6 @@ export default function Home() {
       }, 1);
       return;
     }
-
-    setRecIdx(newIdx);
   }
 
   const renderContent = () => {

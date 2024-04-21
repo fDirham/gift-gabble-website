@@ -8,6 +8,7 @@ export const whoOptions = [
   "husband",
   "wife",
   "partner",
+  "co-worker",
   "family",
 ];
 
@@ -53,6 +54,7 @@ export const whoPronounsMap: { [k: string]: string } = {
   aunt: "female",
   grandfather: "male",
   grandmother: "female",
+  "co-worker": UNKNOWN_VALUE,
 };
 
 export const whyOptions = [
@@ -61,9 +63,6 @@ export const whyOptions = [
   ["anniversary", "our anniversary"],
   ["wedding", "their wedding"],
   ["other", "other (add below)"],
-  // Add bottom later
-  // ["sorry", "forgiveness"],
-  // ["event", "an event"],
   ["na", "no reason"],
 ];
 

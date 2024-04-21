@@ -1,9 +1,15 @@
 import { ProductObj } from "@/utilities/customTypes";
 import getRecList from "./getRecList";
 import getProductList from "./getProductList";
+import validateInputs from "./validateInputs";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+
+  const invalidInputs = validateInputs(searchParams);
+  if (invalidInputs) {
+    return Response.json({ error: invalidInputs }, { status: 400 });
+  }
 
   const doRecList = searchParams.get("doRecList");
   const doProductList = searchParams.get("doProductList");
