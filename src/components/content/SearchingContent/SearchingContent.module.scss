@@ -74,6 +74,12 @@
   font-weight: 600;
 }
 
+.overBudgetText {
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
 @media only screen and (max-width: $breakpointTablet) {
   .container {
     width: 100%;

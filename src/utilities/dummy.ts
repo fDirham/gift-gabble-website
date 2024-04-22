@@ -10,7 +10,7 @@ export const DUMMY_SEARCH_CONFIG: FormResponse = {
   why: "bday",
   whyExtra: "",
   desc: "She likes pokemon and the environment",
-  budget: 20,
+  budget: 5,
   pronouns: "female",
 };
 

@@ -19,7 +19,32 @@ type SearchingContentProps = {
 };
 
 export default function SearchingContent(props: SearchingContentProps) {
-  const { whoOne, whoTwo } = props.formResponse;
+  const { whoOne, whoTwo, budget } = props.formResponse;
+
+  // Filter product list
+  const [inBudgetProductList, overBudgetProductList] = (() => {
+    const inBudget: ProductObj[] = [];
+    const overBudget: ProductObj[] = [];
+    props.productList.forEach((productObj) => {
+      if (budget <= 0) {
+        inBudget.push(productObj);
+        return;
+      }
+
+      if (!productObj.price || !productObj.priceNum) {
+        overBudget.push(productObj);
+        return;
+      }
+      if (productObj.priceNum > budget + 2) {
+        overBudget.push(productObj);
+        return;
+      }
+
+      inBudget.push(productObj);
+    });
+
+    return [inBudget, overBudget];
+  })();
 
   const renderOther = () => {
     let renderRecList: string[] = [];
@@ -53,25 +78,62 @@ export default function SearchingContent(props: SearchingContentProps) {
   };
 
   const renderProductList = () => {
-    if (props.productList.length) {
-      return (
+    if (props.loadingProductList) {
+      return <ProductList productList={[]} max={20} isLoading={true} />;
+    }
+
+    const toRender = [];
+    const hasInBudget = inBudgetProductList.length > 0;
+    const hasOverBudget = overBudgetProductList.length > 0;
+
+    if (hasInBudget) {
+      toRender.push(
         <ProductList
-          productList={props.productList}
+          productList={inBudgetProductList}
           max={10}
-          isLoading={props.loadingProductList}
+          isLoading={false}
+          key={"inBudgetList"}
         />
       );
-    } else {
+    }
+
+    if (hasOverBudget) {
+      let overBudgetText =
+        "We also found these products that are over your set budget.";
+      if (!hasInBudget) {
+        overBudgetText =
+          "We did not find any products within budget, we found these products though.";
+      }
+
+      toRender.push(
+        <p className={styles.overBudgetText} key={"overBudgetText"}>
+          {overBudgetText}
+        </p>
+      );
+      toRender.push(
+        <ProductList
+          productList={overBudgetProductList}
+          max={10}
+          isLoading={false}
+          key={"overBudgetList"}
+        />
+      );
+    }
+
+    if (!hasInBudget && !hasOverBudget) {
       return (
         <p className={styles.notFoundText}>
           No Amazon products found {"😔"}. <br />
           Feel free to search for{" "}
           <span className={styles.notFoundRecSpan}>"{props.currRec}"</span> on
-          your own.
+          your own. Or try out another recommendation.
         </p>
       );
     }
+
+    return toRender;
   };
+
   return (
     <div className={styles.container}>
       <button

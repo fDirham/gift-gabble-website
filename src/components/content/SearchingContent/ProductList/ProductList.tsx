@@ -11,6 +11,7 @@ type ProductListProps = {
   productList: ProductObj[];
   max?: number;
   isLoading: boolean;
+  className?: string;
 };
 
 /**
@@ -119,7 +120,7 @@ export default function ProductList(props: ProductListProps) {
     });
   };
   return (
-    <div className={styles.container}>
+    <div className={[styles.container, props.className || ""].join(" ")}>
       {renderLoadingWow()}
       {renderProductList()}
     </div>
