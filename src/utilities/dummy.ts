@@ -9,8 +9,8 @@ export const DUMMY_SEARCH_CONFIG: FormResponse = {
   whoTwo: "???",
   why: "bday",
   whyExtra: "",
-  desc: "Lorem ipsum baba yetu mf",
-  budget: 0,
+  desc: "She likes pokemon and the environment",
+  budget: 20,
   pronouns: "female",
 };
 
