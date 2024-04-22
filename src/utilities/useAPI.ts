@@ -2,7 +2,6 @@ import { resolveWho } from "@/components/content/LandingContent/SearchForm/Searc
 import { APIFormResponse, FormResponse, ProductObj } from "./customTypes";
 import { encodeObject, timeoutPromise } from "./helpers";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const isDummyMode = process.env.NEXT_PUBLIC_DUMMY_MODE !== "0";
 
 type FetchRecommendArgs = {
@@ -24,7 +23,7 @@ export async function fetchRecommend(args: FetchRecommendArgs): Promise<
       error: any;
     }
 > {
-  const recommendUrl = API_URL + "recommend";
+  const recommendUrl = process.env.NEXT_PUBLIC_RECOMMEND_API_URL;
   let queryComponents: { [key: string]: string | number } = {};
   if (args.formResponse) {
     queryComponents = convertFormResponseForAPI(args.formResponse);
