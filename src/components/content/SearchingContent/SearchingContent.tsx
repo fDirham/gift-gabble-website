@@ -5,6 +5,7 @@ const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 import ProductList from "./ProductList/ProductList";
 import { DUMMY_REC_LIST } from "@/utilities/dummy";
 import { resolveWho } from "../LandingContent/SearchForm/SearchForm";
+import { spawn } from "child_process";
 
 type SearchingContentProps = {
   onBack: () => void;
@@ -51,6 +52,26 @@ export default function SearchingContent(props: SearchingContentProps) {
     return styles.recSpan;
   };
 
+  const renderProductList = () => {
+    if (props.productList.length) {
+      return (
+        <ProductList
+          productList={props.productList}
+          max={10}
+          isLoading={props.loadingProductList}
+        />
+      );
+    } else {
+      return (
+        <p className={styles.notFoundText}>
+          No Amazon products found {"😔"}. <br />
+          Feel free to search for{" "}
+          <span className={styles.notFoundRecSpan}>"{props.currRec}"</span> on
+          your own.
+        </p>
+      );
+    }
+  };
   return (
     <div className={styles.container}>
       <button
@@ -74,11 +95,7 @@ export default function SearchingContent(props: SearchingContentProps) {
       <span className={styles.disclaimerText}>
         DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
       </span>
-      <ProductList
-        productList={props.productList}
-        max={10}
-        isLoading={props.loadingProductList}
-      />
+      {renderProductList()}
     </div>
   );
 }

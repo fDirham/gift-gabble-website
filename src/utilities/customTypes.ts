@@ -2,7 +2,8 @@ export type ProductObj = {
   title: string;
   imageUrl: string;
   linkUrl: string;
-  price: string;
+  price?: string;
+  priceNum?: number;
   asin: string;
   rating?: number;
   ratingsTotal?: number;

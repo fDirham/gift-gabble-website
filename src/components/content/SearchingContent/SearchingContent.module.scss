@@ -66,6 +66,14 @@
   color: rgb(94, 94, 94);
 }
 
+.notFoundText {
+  margin-top: 12px;
+}
+
+.notFoundRecSpan {
+  font-weight: 600;
+}
+
 @media only screen and (max-width: $breakpointTablet) {
   .container {
     width: 100%;
