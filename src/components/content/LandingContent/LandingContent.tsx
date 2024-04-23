@@ -22,12 +22,8 @@ export default function LandingContent(props: LandingContentProps) {
       </div>
 
       <span className={styles.explainText}>
-        fill the form below to get free gift recommendations!
+        Site is down for maintenance...
       </span>
-      <SearchForm
-        onGo={props.handleSearch}
-        initialValues={props.searchFormCache}
-      />
     </div>
   );
 }
