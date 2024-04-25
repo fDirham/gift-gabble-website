@@ -17,7 +17,7 @@ export type FormResponse = {
   desc: string;
   budget: number;
   whyExtra: string;
-  pronouns: string;
+  giftNotes: string;
 };
 
 export type APIFormResponse = {
@@ -26,5 +26,5 @@ export type APIFormResponse = {
   desc: string;
   budget: number;
   whyExtra?: string;
-  pronouns: string;
+  giftNotes: string;
 };

@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./SearchForm.module.scss";
-import {
-  UNKNOWN_VALUE,
-  pronounsOptions,
-  whoOptions,
-  whoPronounsMap,
-  whoTwoMap,
-  whyOptions,
-} from "./options";
+import { UNKNOWN_VALUE, whoOptions, whoTwoMap, whyOptions } from "./options";
 import { FormResponse } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
 
@@ -34,7 +27,7 @@ export default function SearchForm(props: SearchFormProps) {
         why: UNKNOWN_VALUE,
         whyExtra: "",
         desc: "",
-        pronouns: "",
+        giftNotes: "",
         budget: 0,
       };
   const whoOneInitVal = initialValues.whoOne;
@@ -52,16 +45,11 @@ export default function SearchForm(props: SearchFormProps) {
   const descInitVal = initialValues.desc;
   const [desc, setDesc] = useState<string>(descInitVal);
 
-  const pronounsInitVal = initialValues.pronouns;
-  const [pronouns, setPronouns] = useState<string>(pronounsInitVal);
+  const giftNotesInitVal = initialValues.giftNotes;
+  const [giftNotes, setGiftNotes] = useState<string>(giftNotesInitVal);
 
   const budgetInitVal = initialValues.budget;
   const [budget, setBudget] = useState<number>(budgetInitVal);
-
-  useEffect(() => {
-    const newWho = resolveWho(whoOne, whoTwo);
-    setPronouns(whoPronounsMap[newWho] || UNKNOWN_VALUE);
-  }, [whoOne, whoTwo]);
 
   // Render
   const renderOptions = (
@@ -91,7 +79,7 @@ export default function SearchForm(props: SearchFormProps) {
       why: why,
       desc: desc,
       budget: budget,
-      pronouns: pronouns,
+      giftNotes: giftNotes,
       whyExtra: whyExtra,
     });
   }
@@ -226,33 +214,31 @@ export default function SearchForm(props: SearchFormProps) {
 
     if (!desc) return toRender;
 
-    // Gender pronouns
+    // gift notes
     toRender.push(
-      <label htmlFor="pronounsSelect" key="pronounsSelectLabel">
-        OPTIONAL: What are your{" "}
-        <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-          {resolvedWho}
-        </span>
-        {"'s"} pronouns?
+      <label htmlFor="giftNotesInput" key="giftNotesInputLabel">
+        OPTIONAL: Any notes about the gift?
       </label>
     );
 
     toRender.push(
-      <select
-        name="pronounsSelect"
-        id="pronounsSelect"
-        key="pronounsSelect"
-        value={pronouns}
-        onChange={(e) => setPronouns(e.target.value)}
-      >
-        {renderOptions(pronounsOptions, "pronouns")}
-      </select>
+      <textarea
+        name="giftNotesInput"
+        id="giftNotesInput"
+        key={"giftNotesInput"}
+        className={styles.giftNotesInput}
+        value={giftNotes}
+        onChange={(e) => setGiftNotes(e.target.value)}
+        placeholder="e.g It needs to be lightweight"
+        maxLength={200}
+      ></textarea>
     );
 
     // Budget
     toRender.push(
       <label htmlFor="budgetInput" key="budgetInputLabel">
-        OPTIONAL: Do you have a budget? ($0 for no , max $1000)
+        OPTIONAL: Do you have a budget? <br />
+        ($0 for no)
       </label>
     );
 
@@ -270,7 +256,7 @@ export default function SearchForm(props: SearchFormProps) {
           onChange={(e) => setBudget(parseInt(e.target.value))}
           type="number"
           min={0}
-          max={1000}
+          max={500}
           placeholder="0"
         ></input>
       </span>
