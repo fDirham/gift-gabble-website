@@ -22,7 +22,8 @@ export default function LandingContent(props: LandingContentProps) {
       </div>
 
       <span className={styles.explainText}>
-        fill the form below to get free gift recommendations!
+        Fill the form below to get free gift ideas! <br />
+        {"No sign ups required!"}
       </span>
       <SearchForm
         onGo={props.handleSearch}
