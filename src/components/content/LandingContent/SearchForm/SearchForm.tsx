@@ -22,6 +22,7 @@ export default function SearchForm(props: SearchFormProps) {
   const initialValues: FormResponse = props.initialValues
     ? props.initialValues
     : {
+        who: UNKNOWN_VALUE,
         whoOne: UNKNOWN_VALUE,
         whoTwo: UNKNOWN_VALUE,
         why: UNKNOWN_VALUE,
@@ -30,6 +31,7 @@ export default function SearchForm(props: SearchFormProps) {
         giftNotes: "",
         budget: 0,
       };
+
   const whoOneInitVal = initialValues.whoOne;
   const [whoOne, setWhoOne] = useState<string>(whoOneInitVal);
 
@@ -74,6 +76,7 @@ export default function SearchForm(props: SearchFormProps) {
 
   function handleGo() {
     props.onGo({
+      who: resolveWho(whoOne, whoTwo),
       whoOne: whoOne,
       whoTwo: whoTwo,
       why: why,

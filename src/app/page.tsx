@@ -2,10 +2,15 @@
 
 import styles from "./page.module.scss";
 import { useState } from "react";
-import { ProductObj, FormResponse } from "@/utilities/customTypes";
+import {
+  IdeaObj,
+  FormResponse,
+  APIReturnREC,
+  ProductObj,
+} from "@/utilities/customTypes";
 import LandingContent from "@/components/content/LandingContent";
 import SearchingContent from "@/components/content/SearchingContent";
-import { fetchRecommend } from "@/utilities/useAPI";
+import { useAPI } from "@/utilities/useAPI";
 import LoadingContent from "@/components/content/LoadingContent";
 import { initialStates } from "./initStates";
 import Link from "next/link";
@@ -15,25 +20,21 @@ const allura = Allura({ subsets: ["latin"], weight: "400" });
 export default function Home() {
   const [isSearching, setIsSearching] = useState(initialStates.isSearching);
 
-  // Rec and product states
-  const [recIdx, setRecIdx] = useState<number>(initialStates.recIdx);
-  const [recList, setRecList] = useState<string[]>(initialStates.recList);
-  const [recProductMap, _setRecProductMap] = useState<{
-    [key: string]: ProductObj[];
-  }>(initialStates.recProductMap);
-  function addToRecProductMap(rec: string, productList: ProductObj[]) {
-    const newPM = { ...recProductMap, [rec]: productList };
-    _setRecProductMap(newPM);
+  // States
+  const [oldIdeaList, setOldIdeaList] = useState<IdeaObj[]>([]);
+  const [currIdeaList, setCurrIdeaList] = useState<IdeaObj[]>([]);
+  function addNewIdeaList(newIdeaList: IdeaObj[]) {
+    const nOldIdeaList = [...oldIdeaList, ...currIdeaList];
+    setOldIdeaList(nOldIdeaList);
+    setCurrIdeaList(newIdeaList);
   }
-  const currRec = recList[recIdx];
-  const currProductList = recProductMap[currRec] || [];
+  const [productDict, setProductDict] = useState<{
+    [idea: string]: ProductObj[];
+  }>({});
 
   // Loading states
-  const [loadingRecList, setLoadingRecList] = useState(
-    initialStates.loadingRecList
-  );
-  const [loadingProductList, setLoadingProductList] = useState(
-    initialStates.loadingProductList
+  const [loadingIdeaList, setLoadingIdeaList] = useState(
+    initialStates.loadingIdeaList
   );
 
   // Cache states
@@ -43,76 +44,30 @@ export default function Home() {
 
   async function handleSearch(formResponse: FormResponse) {
     setSearchFormCache(formResponse);
-    setLoadingRecList(true);
-    setLoadingProductList(true);
+    setLoadingIdeaList(true);
 
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 1);
-
-    const res = await fetchRecommend({
+    // Get ideas
+    const ideaListRes = await useAPI<APIReturnREC>({
+      actionRoute: "REC",
       formResponse,
-      doProductList: true,
-      doRecList: true,
     });
 
-    if (res.isError) {
-      window.alert("Searching failed! Please try again later.");
-      console.error(res.error);
-
-      setLoadingRecList(false);
-      setLoadingProductList(false);
-    } else {
-      setRecList(res.recList);
-      addToRecProductMap(res.productListQuery, res.productList);
-
-      setLoadingRecList(false);
-      setLoadingProductList(false);
-
-      setIsSearching(true);
+    if (ideaListRes.isError) {
+      setLoadingIdeaList(false);
+      console.error(ideaListRes.error);
+      window.alert("Something went wrong, please try again later...");
+      return;
     }
+
+    addNewIdeaList(ideaListRes.data);
   }
 
   function handleSearchingBack() {
     setIsSearching(false);
-    setRecIdx(0);
-  }
-
-  async function handleRecChange(newRec: string) {
-    const newIdx = recList.indexOf(newRec);
-
-    // See if product list exists
-    const oldIdx = recIdx;
-    setRecIdx(newIdx);
-
-    if (!recProductMap[newRec]) {
-      setLoadingProductList(true);
-
-      const res = await fetchRecommend({
-        doProductList: true,
-        searchKeyWords: newRec,
-        doRecList: false,
-        formResponse: searchFormCache!,
-      });
-
-      if (res.isError) {
-        window.alert(
-          "Getting product recommendations failed! Please try again later."
-        );
-        console.error(res.error);
-        setRecIdx(oldIdx);
-      } else {
-        addToRecProductMap(res.productListQuery, res.productList);
-      }
-      setTimeout(() => {
-        setLoadingProductList(false);
-      }, 1);
-      return;
-    }
   }
 
   const renderContent = () => {
-    if (loadingRecList) {
+    if (loadingIdeaList) {
       return <LoadingContent formResponse={searchFormCache!} />;
     }
     if (isSearching) {
@@ -120,12 +75,7 @@ export default function Home() {
         <SearchingContent
           onBack={handleSearchingBack}
           formResponse={searchFormCache!}
-          currRec={currRec}
-          onRecChange={handleRecChange}
-          recList={recList}
-          productList={currProductList}
-          loadingRecList={loadingRecList}
-          loadingProductList={loadingProductList}
+          ideaList={currIdeaList}
         />
       );
     }
