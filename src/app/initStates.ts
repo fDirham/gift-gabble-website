@@ -1,11 +1,9 @@
 // Change initialStates at the bottom
 import { DUMMY_SEARCH_CONFIG } from "@/utilities/dummy";
+import { AppStage } from "./page";
 
 const INIT_STATE_DEFAULT = {
-  isSearching: false,
-  recIdx: 0,
-  recList: [],
-  recProductMap: {},
+  appStage: AppStage.LANDING,
   loadingIdeaList: false,
   searchFormCache: null,
 };

@@ -9,18 +9,23 @@ import {
   ProductObj,
 } from "@/utilities/customTypes";
 import LandingContent from "@/components/content/LandingContent";
-import SearchingContent from "@/components/content/SearchingContent";
 import { useAPI } from "@/utilities/useAPI";
-import LoadingContent from "@/components/content/LoadingContent";
 import { initialStates } from "./initStates";
 import Link from "next/link";
 import { Allura } from "next/font/google";
 
 const allura = Allura({ subsets: ["latin"], weight: "400" });
-export default function Home() {
-  const [isSearching, setIsSearching] = useState(initialStates.isSearching);
 
-  // States
+export enum AppStage {
+  LANDING,
+  IDEA,
+  PRODUCT,
+}
+export default function Home() {
+  // Stage state
+  const [appStage, setAppStage] = useState<AppStage>(initialStates.appStage);
+
+  // Data states
   const [oldIdeaList, setOldIdeaList] = useState<IdeaObj[]>([]);
   const [currIdeaList, setCurrIdeaList] = useState<IdeaObj[]>([]);
   function addNewIdeaList(newIdeaList: IdeaObj[]) {
@@ -62,23 +67,7 @@ export default function Home() {
     addNewIdeaList(ideaListRes.data);
   }
 
-  function handleSearchingBack() {
-    setIsSearching(false);
-  }
-
   const renderContent = () => {
-    if (loadingIdeaList) {
-      return <LoadingContent formResponse={searchFormCache!} />;
-    }
-    if (isSearching) {
-      return (
-        <SearchingContent
-          onBack={handleSearchingBack}
-          formResponse={searchFormCache!}
-          ideaList={currIdeaList}
-        />
-      );
-    }
     return (
       <LandingContent
         handleSearch={handleSearch}
@@ -88,7 +77,7 @@ export default function Home() {
   };
 
   const getContainerClass = () => {
-    if (isSearching) {
+    if (appStage !== AppStage.LANDING) {
       return [styles.container, styles["container-searching"]].join(" ");
     } else {
       return styles.container;
