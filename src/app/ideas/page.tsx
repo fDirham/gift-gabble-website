@@ -24,9 +24,9 @@ export default function IdeasPage() {
         <h2 className={styles.subtitle}>
           Click the idea you like the most for shopping options.
         </h2>
-        <p className={styles.disclaimerText}>
+        {/* <p className={styles.disclaimerText}>
           DISCLAIMER: All images belong to their respective owners
-        </p>
+        </p> */}
         <IdeaListRender ideaList={ideaList} />
       </div>
     </PageWrapper>

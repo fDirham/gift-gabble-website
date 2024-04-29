@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import styles from "./IdeaList.module.scss";
+import styles from "./IdeaListRender.module.scss";
 import { IdeaObj } from "@/utilities/customTypes";
+import { useRouter } from "next/navigation";
+import { encodeObject } from "@/utilities/helpers";
 
 type IdeaListRenderProps = {
   ideaList: IdeaObj[];
@@ -24,6 +26,7 @@ type IdeaBlockProps = {
 
 function IdeaBlock(props: IdeaBlockProps) {
   const { ideaObj } = props;
+  const router = useRouter();
   const [imgIdx, setImgIdx] = useState<number>(0);
   const imageInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -48,13 +51,20 @@ function IdeaBlock(props: IdeaBlockProps) {
   //   };
   // }, []);
 
+  function handleClick() {
+    router.push("/shop?" + encodeObject({ q: ideaObj.idea }));
+  }
   const imgSrc =
     ideaObj.imageList && ideaObj.imageList.length
       ? ideaObj.imageList[imgIdx]
       : "/unknown_gift.png";
 
   return (
-    <div className={styles.ideaBlockContainer} key={ideaObj.idea}>
+    <div
+      className={styles.ideaBlockContainer}
+      key={ideaObj.idea}
+      onClick={handleClick}
+    >
       <img src={imgSrc} alt="" className={styles.ideaImg} />
       <span className={styles.ideaText}>{ideaObj.idea}</span>
     </div>

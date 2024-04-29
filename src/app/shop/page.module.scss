@@ -10,12 +10,19 @@
 .title {
   font-size: 20px;
   font-weight: 400;
-}
+  margin-bottom: 16px;
 
-.subtitle {
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 24px;
+  .ideaText {
+    font-weight: 600;
+  }
+
+  .whoText {
+    font-size: 22px;
+  }
+
+  .amazonText {
+    text-decoration: underline;
+  }
 }
 
 .disclaimerText {
