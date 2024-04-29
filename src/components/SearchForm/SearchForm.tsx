@@ -1,13 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import styles from "./SearchForm.module.scss";
 import { UNKNOWN_VALUE, whoOptions, whoTwoMap, whyOptions } from "./options";
-import { FormResponse } from "@/utilities/customTypes";
-import { Amaranth } from "next/font/google";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import useFormResponse from "@/hooks/useFormResponse";
-
+import { Amaranth } from "next/font/google";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export type SearchFormProps = {

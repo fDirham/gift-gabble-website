@@ -1,6 +1,6 @@
 export type IdeaObj = {
   idea: string;
-  productList?: { link: string; image: string; title: string }[];
+  imageList?: string[];
 };
 
 export type AmazonProductObj = {};

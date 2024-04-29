@@ -8,6 +8,7 @@ const allura = Allura({ subsets: ["latin"], weight: "400" });
 type PageWrapperProps = {
   isBlankBG?: boolean;
   children: React.ReactNode;
+  centerContainerClassName?: string;
 };
 export default function PageWrapper(props: PageWrapperProps) {
   const getContainerClassName = () => {
@@ -17,6 +18,16 @@ export default function PageWrapper(props: PageWrapperProps) {
     }
     return toReturn.join(" ");
   };
+
+  const getCenterContainerClassName = () => {
+    const toReturn = [styles.centerContainer];
+    if (props.centerContainerClassName) {
+      toReturn.push(styles.centerContainerClassName);
+    }
+    return toReturn.join(" ");
+  };
+
+  // TODO: Center container class name props
   return (
     <div className={getContainerClassName()}>
       <header className={styles.header}>
@@ -28,7 +39,7 @@ export default function PageWrapper(props: PageWrapperProps) {
         </Link>
       </header>
       <main className={styles.main}>
-        <div className={styles.centerContainer}>{props.children}</div>
+        <div className={getCenterContainerClassName()}>{props.children}</div>
       </main>
     </div>
   );

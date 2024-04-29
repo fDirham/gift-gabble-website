@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+$imageWidth: 180px;
+.ideaBlockContainer {
+  display: grid;
+  grid-template-rows: $imageWidth auto;
+  width: $imageWidth;
+
+  margin-right: 16px;
+}
+
+.ideaImg {
+  width: $imageWidth;
+  height: $imageWidth;
+  object-fit: scale-down;
+}
+
+.ideaText {
+  margin-top: 4px;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: 600;
+}
