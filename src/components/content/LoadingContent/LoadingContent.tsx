@@ -4,7 +4,7 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner/LoadingSpinner";
 import { FormResponse } from "@/utilities/customTypes";
 import LoadingText from "@/components/shared/LoadingText";
 import LoadingGif from "@/components/shared/LoadingGif";
-import { resolveWho } from "../LandingContent/SearchForm/SearchForm";
+import { resolveWho } from "../../SearchForm/SearchForm";
 
 const LOAD_STATUS_LIST = [
   "brainstorming recommendations",

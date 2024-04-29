@@ -1,4 +1,4 @@
-import { UNKNOWN_VALUE } from "@/components/content/LandingContent/SearchForm/options";
+import { UNKNOWN_VALUE } from "@/components/SearchForm/options";
 import { FormResponse } from "@/utilities/customTypes";
 import useLocalStorage from "./useLocalStorage";
 
