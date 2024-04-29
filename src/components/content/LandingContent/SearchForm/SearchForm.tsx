@@ -5,53 +5,38 @@ import styles from "./SearchForm.module.scss";
 import { UNKNOWN_VALUE, whoOptions, whoTwoMap, whyOptions } from "./options";
 import { FormResponse } from "@/utilities/customTypes";
 import { Amaranth } from "next/font/google";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import useFormResponse from "@/hooks/useFormResponse";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export type SearchFormProps = {
-  onGo: (config: FormResponse) => void;
-  initialValues: FormResponse | null;
+  onGo: () => void;
 };
 
-export function resolveWho(whoOne: string, whoTwo: string) {
-  if (!whoTwo || whoTwo == UNKNOWN_VALUE) return whoOne;
-  return whoTwo;
-}
-
 export default function SearchForm(props: SearchFormProps) {
-  const initialValues: FormResponse = props.initialValues
-    ? props.initialValues
-    : {
-        who: UNKNOWN_VALUE,
-        whoOne: UNKNOWN_VALUE,
-        whoTwo: UNKNOWN_VALUE,
-        why: UNKNOWN_VALUE,
-        whyExtra: "",
-        desc: "",
-        giftNotes: "",
-        budget: 0,
-      };
+  const {
+    who,
+    whoOne,
+    whoTwo,
+    why,
+    whyExtra,
+    desc,
+    giftNotes,
+    budget,
+    setWhoOne,
+    setWhoTwo,
+    setWhy,
+    setWhyExtra,
+    setDesc,
+    setGiftNotes,
+    setBudget,
+    isFormResponseLoaded,
+  } = useFormResponse();
 
-  const whoOneInitVal = initialValues.whoOne;
-  const [whoOne, setWhoOne] = useState<string>(whoOneInitVal);
-
-  const whoTwoInitVal = initialValues.whoTwo;
-  const [whoTwo, setWhoTwo] = useState<string>(whoTwoInitVal);
-
-  const whyInitVal = initialValues.why;
-  const [why, setWhy] = useState<string>(whyInitVal);
-
-  const whyExtraInitVal = initialValues.whyExtra;
-  const [whyExtra, setWhyExtra] = useState<string>(whyExtraInitVal);
-
-  const descInitVal = initialValues.desc;
-  const [desc, setDesc] = useState<string>(descInitVal);
-
-  const giftNotesInitVal = initialValues.giftNotes;
-  const [giftNotes, setGiftNotes] = useState<string>(giftNotesInitVal);
-
-  const budgetInitVal = initialValues.budget;
-  const [budget, setBudget] = useState<number>(budgetInitVal);
+  function handleGo() {
+    props.onGo();
+  }
 
   // Render
   const renderOptions = (
@@ -74,20 +59,8 @@ export default function SearchForm(props: SearchFormProps) {
     });
   };
 
-  function handleGo() {
-    props.onGo({
-      who: resolveWho(whoOne, whoTwo),
-      whoOne: whoOne,
-      whoTwo: whoTwo,
-      why: why,
-      desc: desc,
-      budget: budget,
-      giftNotes: giftNotes,
-      whyExtra: whyExtra,
-    });
-  }
-
   const renderInputTree = () => {
+    if (!isFormResponseLoaded) return null;
     const toRender = [];
 
     // Who
@@ -137,8 +110,6 @@ export default function SearchForm(props: SearchFormProps) {
       if (whoTwo == UNKNOWN_VALUE) return toRender;
     }
 
-    const resolvedWho = resolveWho(whoOne, whoTwo);
-
     // Why
     toRender.push(
       <label htmlFor="whySelect" key="whySelectLabel">
@@ -166,7 +137,7 @@ export default function SearchForm(props: SearchFormProps) {
         <label htmlFor="otherWhyInput" key="otherWhyInputLabel">
           Why are you buying a gift for your{" "}
           <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-            {resolvedWho}
+            {who}
           </span>
           {"?"}
         </label>
@@ -193,7 +164,7 @@ export default function SearchForm(props: SearchFormProps) {
       <label htmlFor="descInput" key="descInputLabel">
         Describe your{" "}
         <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-          {resolvedWho}
+          {who}
         </span>{" "}
         <br />{" "}
         <span style={{ fontWeight: 400 }}>

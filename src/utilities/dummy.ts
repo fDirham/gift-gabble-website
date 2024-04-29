@@ -1,6 +1,6 @@
 import { FormResponse } from "./customTypes";
 
-export const DUMMY_SEARCH_CONFIG: FormResponse = {
+export const DUMMY_FORM_RESPONSE: FormResponse = {
   who: "girlfriend",
   whoOne: "girlfriend",
   whoTwo: "???",

@@ -1,11 +1,9 @@
 import styles from "./LandingContent.module.scss";
 import HeroPerson from "@/components/content/LandingContent/HeroPerson";
 import SearchForm from "@/components/content/LandingContent/SearchForm";
-import { FormResponse } from "@/utilities/customTypes";
 
 type LandingContentProps = {
-  handleSearch: (val: FormResponse) => void;
-  searchFormCache: FormResponse | null;
+  handleSearch: () => void;
 };
 
 export default function LandingContent(props: LandingContentProps) {
@@ -25,10 +23,7 @@ export default function LandingContent(props: LandingContentProps) {
         Fill the form below to get free gift ideas! <br />
         {"No sign ups required!"}
       </span>
-      <SearchForm
-        onGo={props.handleSearch}
-        initialValues={props.searchFormCache}
-      />
+      <SearchForm onGo={props.handleSearch} />
     </div>
   );
 }

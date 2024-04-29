@@ -3,7 +3,7 @@ export type IdeaObj = {
   productList?: { link: string; image: string; title: string }[];
 };
 
-export type ProductObj = {};
+export type AmazonProductObj = {};
 
 export type FormResponse = {
   why: string;
