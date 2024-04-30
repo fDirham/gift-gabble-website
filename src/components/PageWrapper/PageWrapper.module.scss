@@ -31,7 +31,7 @@
   width: $breakpointTablet;
 }
 
-@media only screen and (max-width: $breakpointTablet) {
+@media only screen and (max-width: calc($breakpointTablet + 40px)) {
   .centerContainer {
     width: 100%;
     padding: 20px;

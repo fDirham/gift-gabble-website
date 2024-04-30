@@ -23,20 +23,18 @@ export default function ShopPage() {
 
   return (
     <PageWrapper isBlankBG>
-      <div className={styles.container}>
-        <h1 className={styles.title}>
-          You can buy <span className={styles.ideaText}>"{idea}"</span> for your{" "}
-          <span className={[amaranth.className, styles.whoText].join(" ")}>
-            {formResponse.who}
-          </span>
-          {" right now from "}
-          <span className={styles.amazonText}>Amazon</span>
-        </h1>
-        <p className={styles.disclaimerText}>
-          DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
-        </p>
-        <AmazonProductListRender amazonProductList={amazonProductList} />
-      </div>
+      <h1 className={styles.title}>
+        You can buy <span className={styles.ideaText}>"{idea}"</span> for your{" "}
+        <span className={[amaranth.className, styles.whoText].join(" ")}>
+          {formResponse.who}
+        </span>
+        {" right now from "}
+        <span className={styles.amazonText}>Amazon</span>
+      </h1>
+      <p className={styles.disclaimerText}>
+        DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
+      </p>
+      <AmazonProductListRender amazonProductList={amazonProductList} />
     </PageWrapper>
   );
 }

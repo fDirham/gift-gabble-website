@@ -1,5 +1,6 @@
 "use client";
 
+import useScreenSize from "@/hooks/useScreenSize";
 import styles from "./AmazonProductListRender.module.scss";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import StarRatings from "react-star-ratings";
@@ -11,12 +12,15 @@ type AmazonProductListRenderProps = {
 export default function AmazonProductListRender(
   props: AmazonProductListRenderProps
 ) {
+  const screenSize = useScreenSize();
+
   const renderAmazonProductList = () => {
     return props.amazonProductList.map((productObj) => {
       return (
         <ProductBlock
           productObj={productObj}
           key={productObj.asin}
+          isMobile={screenSize.width < 421}
         ></ProductBlock>
       );
     });
@@ -28,43 +32,108 @@ export default function AmazonProductListRender(
 type ProductBlockProps = {
   productObj: AmazonProductObj;
   isLoading?: boolean;
+  isMobile: boolean;
 };
 
 function ProductBlock(props: ProductBlockProps) {
   const { productObj } = props;
 
-  const MAX_TITLE_LENGTH = 120;
+  const MAX_TITLE_LENGTH = props.isMobile ? 100 : 120;
   let productTitle = productObj.title;
   if (productTitle.length > MAX_TITLE_LENGTH) {
     productTitle = productTitle.slice(0, MAX_TITLE_LENGTH - 3) + "...";
   }
 
-  const imgSrc = productObj.imageUrl;
+  let imgSrc = productObj.imageUrl;
+  if (!props.isMobile) imgSrc = imgSrc.replace("UY218", "UL320");
 
-  return (
-    <div className={styles.productBlockContainer}>
-      <div className={styles.productImgContainer}>
-        <img src={imgSrc} alt="" className={styles.productImg} />
+  const productLink = productObj.linkUrl;
+  const reviewsLink = productLink + "#customerReviews";
+
+  const renderRatings = () => {
+    if (!productObj.rating) return null;
+    if (props.isMobile) {
+      return (
+        <div className={styles.ratingContainerMobile}>
+          <span className={styles.ratingText}>{productObj.rating}</span>
+          <StarRatings
+            rating={productObj.rating}
+            starDimension="16px"
+            starSpacing="0px"
+            starRatedColor="#FEA31C"
+            ignoreInlineStyles={false}
+          />
+          <span className={styles.ratingCountText}>
+            {"(" + productObj.ratingsTotal + ")"}
+          </span>
+        </div>
+      );
+    }
+    return (
+      <div className={styles.ratingContainer}>
+        <a href={reviewsLink} target="_blank" className="hiddenLink">
+          <StarRatings
+            rating={productObj.rating}
+            starDimension="16px"
+            starSpacing="0px"
+            starRatedColor="#FEA31C"
+            starEmptyColor="#D7D7D7"
+            ignoreInlineStyles={false}
+          />
+          <span className={styles.ratingCountText}>
+            {productObj.ratingsTotal}
+          </span>
+        </a>
       </div>
+    );
+  };
+
+  const renderProductCopy = () => {
+    if (props.isLoading) {
+      return null;
+    }
+    if (props.isMobile) {
+      return (
+        <a href={productLink} className="hiddenLink" target="_blank">
+          <div className={styles.productCopyContainer}>
+            <h3 className={styles.productTitle}>
+              <a href={productLink} className="hiddenLink" target="_blank">
+                {productTitle}
+              </a>
+            </h3>
+            {!props.isLoading && (
+              <>
+                {renderRatings()}
+                <span className={styles.price}>{productObj.price}</span>
+                {!!productObj.isPrime && (
+                  <img
+                    src="prime_logo.jpg"
+                    alt="prime"
+                    className={styles.primeLogo}
+                  />
+                )}
+              </>
+            )}
+          </div>
+        </a>
+      );
+    }
+
+    return (
       <div className={styles.productCopyContainer}>
-        <h3 className={styles.productTitle}>{productTitle}</h3>
+        <h3 className={styles.productTitle}>
+          <a href={productLink} className="hiddenLink" target="_blank">
+            {productTitle}
+          </a>
+        </h3>
         {!props.isLoading && (
           <>
-            {!!productObj.rating && (
-              <div className={styles.ratingContainer}>
-                <span className={styles.ratingText}>{productObj.rating}</span>
-                <StarRatings
-                  rating={productObj.rating}
-                  starDimension="16px"
-                  starSpacing="0px"
-                  starRatedColor="#FEA31C"
-                />
-                <span className={styles.ratingCountText}>
-                  {"(" + productObj.ratingsTotal + ")"}
-                </span>
-              </div>
-            )}
-            <span className={styles.price}>{productObj.price}</span>
+            {renderRatings()}
+            <span className={styles.price}>
+              <a href={productLink} className="hiddenLink" target="_blank">
+                {productObj.price}
+              </a>
+            </span>
             {!!productObj.isPrime && (
               <img
                 src="prime_logo.jpg"
@@ -75,6 +144,20 @@ function ProductBlock(props: ProductBlockProps) {
           </>
         )}
       </div>
+    );
+  };
+  return (
+    <div className={styles.productBlockContainer}>
+      <a
+        href={productLink}
+        className={["hiddenLink", styles.productImgLink].join(" ")}
+        target="_blank"
+      >
+        <div className={styles.productImgContainer}>
+          <img src={imgSrc} alt="" className={styles.productImg} />
+        </div>
+      </a>
+      {renderProductCopy()}
     </div>
   );
 }

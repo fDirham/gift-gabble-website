@@ -22,7 +22,7 @@ export default function PageWrapper(props: PageWrapperProps) {
   const getCenterContainerClassName = () => {
     const toReturn = [styles.centerContainer];
     if (props.centerContainerClassName) {
-      toReturn.push(styles.centerContainerClassName);
+      toReturn.push(props.centerContainerClassName);
     }
     return toReturn.join(" ");
   };
@@ -31,9 +31,12 @@ export default function PageWrapper(props: PageWrapperProps) {
   return (
     <div className={getContainerClassName()}>
       <header className={styles.header}>
-        <span className={[allura.className, styles.appName].join(" ")}>
-          gift gabble
-        </span>
+        <Link href={"/"} className="hiddenLink">
+          <span className={[allura.className, styles.appName].join(" ")}>
+            gift gabble
+          </span>
+        </Link>
+
         <Link className={styles.navLink} href={"/about"}>
           about
         </Link>
