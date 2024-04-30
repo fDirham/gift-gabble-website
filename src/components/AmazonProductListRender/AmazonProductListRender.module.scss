@@ -75,10 +75,14 @@ $imageWidth: 240px;
   }
 }
 
-.price {
-  margin-top: 4px;
-  font-size: 18px;
-  margin-bottom: 4px;
+.priceSymbol,
+.price2 {
+  vertical-align: top;
+  font-size: 13px;
+}
+
+.price1 {
+  font-size: 28px;
 }
 
 .primeLogo {
@@ -107,6 +111,8 @@ $imageWidth: 240px;
     grid-template-columns: $mobileImageWidth auto;
     grid-template-rows: auto;
     width: 100%;
+    border: 1px solid #f7f7f7;
+    margin-bottom: 4px;
   }
 
   .productImgContainer {
@@ -125,6 +131,7 @@ $imageWidth: 240px;
   .productCopyContainer {
     margin-top: 8px;
     margin-left: 8px;
+    padding-bottom: 8px;
   }
 
   .productTitle {

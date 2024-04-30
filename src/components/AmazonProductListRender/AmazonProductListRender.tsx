@@ -4,6 +4,7 @@ import useScreenSize from "@/hooks/useScreenSize";
 import styles from "./AmazonProductListRender.module.scss";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import StarRatings from "react-star-ratings";
+import { spawn } from "child_process";
 
 type AmazonProductListRenderProps = {
   amazonProductList: AmazonProductObj[];
@@ -88,6 +89,24 @@ function ProductBlock(props: ProductBlockProps) {
     );
   };
 
+  const renderPrice = () => {
+    if (!productObj.priceStr) return null;
+
+    const priceComponentList = productObj.priceStr.split(".");
+    const price1 = priceComponentList[0];
+    let price2 = priceComponentList.length > 1 ? priceComponentList[1] : null;
+    if (price2 && price2.length < 2) {
+      price2 = price2 + "0";
+    }
+
+    return (
+      <span className={styles.priceContainer}>
+        <span className={styles.priceSymbol}>{productObj.priceSymbol}</span>
+        <span className={styles.price1}>{price1}</span>
+        {!!price2 && <span className={styles.price2}>{price2}</span>}
+      </span>
+    );
+  };
   const renderProductCopy = () => {
     if (props.isLoading) {
       return null;
@@ -104,7 +123,7 @@ function ProductBlock(props: ProductBlockProps) {
             {!props.isLoading && (
               <>
                 {renderRatings()}
-                <span className={styles.price}>{productObj.price}</span>
+                {renderPrice()}
                 {!!productObj.isPrime && (
                   <img
                     src="prime_logo.jpg"
@@ -129,11 +148,9 @@ function ProductBlock(props: ProductBlockProps) {
         {!props.isLoading && (
           <>
             {renderRatings()}
-            <span className={styles.price}>
-              <a href={productLink} className="hiddenLink" target="_blank">
-                {productObj.price}
-              </a>
-            </span>
+            <a href={productLink} className="hiddenLink" target="_blank">
+              {renderPrice()}
+            </a>
             {!!productObj.isPrime && (
               <img
                 src="prime_logo.jpg"
@@ -146,6 +163,7 @@ function ProductBlock(props: ProductBlockProps) {
       </div>
     );
   };
+
   return (
     <div className={styles.productBlockContainer}>
       <a

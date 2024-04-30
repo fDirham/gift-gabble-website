@@ -8,10 +8,11 @@ export type AmazonProductObj = {
   asin: string;
   linkUrl: string;
   imageUrl: string;
-  rating: number;
-  ratingsTotal: number;
-  price: string;
-  priceNum: number;
+  rating?: number;
+  ratingsTotal?: number;
+  priceStr: string | null;
+  priceSymbol: string | null;
+  priceNum: number | null;
   isPrime: boolean;
 };
 

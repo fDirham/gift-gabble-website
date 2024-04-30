@@ -19,7 +19,7 @@ export default function ShopPage() {
 
   const [amazonProductList, setAmazonProductList] = useState<
     AmazonProductObj[]
-  >(DUMMY_AMAZON_SEARCH_RES["A salsa dance DVD set"]);
+  >(DUMMY_AMAZON_SEARCH_RES);
 
   return (
     <PageWrapper isBlankBG>
@@ -33,6 +33,7 @@ export default function ShopPage() {
       </h1>
       <p className={styles.disclaimerText}>
         DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
+        Clicking on any product below takes you to an Amazon page.
       </p>
       <AmazonProductListRender amazonProductList={amazonProductList} />
     </PageWrapper>
