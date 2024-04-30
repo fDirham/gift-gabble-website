@@ -65,7 +65,9 @@ function IdeaBlock(props: IdeaBlockProps) {
       key={ideaObj.idea}
       onClick={handleClick}
     >
-      <img src={imgSrc} alt="" className={styles.ideaImg} />
+      <div className={styles.ideaImgContainer}>
+        <img src={imgSrc} alt="" className={styles.ideaImg} />
+      </div>
       <span className={styles.ideaText}>{ideaObj.idea}</span>
     </div>
   );

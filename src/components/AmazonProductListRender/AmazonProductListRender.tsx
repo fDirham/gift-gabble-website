@@ -4,7 +4,6 @@ import useScreenSize from "@/hooks/useScreenSize";
 import styles from "./AmazonProductListRender.module.scss";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import StarRatings from "react-star-ratings";
-import { spawn } from "child_process";
 
 type AmazonProductListRenderProps = {
   amazonProductList: AmazonProductObj[];

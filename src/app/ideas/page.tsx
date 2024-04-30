@@ -19,7 +19,9 @@ export default function IdeasPage() {
       <div className={styles.container}>
         <h1 className={styles.title}>
           Here are some ideas for your{" "}
-          <span className={amaranth.className}>{formResponse.who}.</span>
+          <span className={[amaranth.className, styles.whoText].join(" ")}>
+            {formResponse.who}.
+          </span>
         </h1>
         <h2 className={styles.subtitle}>
           Click the idea you like the most for shopping options.
