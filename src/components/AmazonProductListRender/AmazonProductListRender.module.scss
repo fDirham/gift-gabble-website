@@ -4,7 +4,7 @@
   width: 100%;
   display: grid;
   grid-template-columns: auto auto auto;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 $imageWidth: 240px;
@@ -20,6 +20,8 @@ $imageWidth: 240px;
   width: $imageWidth;
   height: $imageWidth;
   background-color: #f7f7f7;
+  padding: 8px;
+  box-sizing: border-box;
 }
 .productImgLink {
   width: 100%;
@@ -92,22 +94,24 @@ $imageWidth: 240px;
 @media only screen and (max-width: calc($breakpointTablet + 40px)) {
   .container {
     grid-template-columns: auto auto;
+    justify-content: space-evenly;
   }
 }
 @media only screen and (max-width: 560px) {
   .container {
     grid-template-columns: auto auto;
+    justify-content: space-between;
   }
 
   .productBlockContainer {
     display: grid;
-    grid-template-rows: 50vw auto;
-    width: 100%;
+    grid-template-rows: calc(50vw - 30px) auto;
+    width: calc(50vw - 30px);
   }
 
   .productImgContainer {
     width: 100%;
-    height: 50vw;
+    height: calc(50vw - 30px);
   }
 }
 
