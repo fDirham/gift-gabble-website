@@ -30,5 +30,11 @@
   @extend .noselect;
 }
 
+.suspenseText {
+  @extend .suspenseBackground;
+  color: transparent !important;
+  border-radius: 4px;
+}
+
 $breakpointTablet: 768px;
 $breakpointMobile: 420px;

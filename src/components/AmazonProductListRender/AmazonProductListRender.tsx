@@ -4,7 +4,6 @@ import styles from "./AmazonProductListRender.module.scss";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import StarRatings from "react-star-ratings";
 import useScreenDevice from "@/hooks/useScreenDevice";
-import { DUMMY_AMAZON_SEARCH_RES } from "@/dummy/dummyAmazonSearchRes";
 
 type AmazonProductListRenderProps = {
   amazonProductList: AmazonProductObj[];
@@ -30,12 +29,10 @@ export default function AmazonProductListRender(
     if (props.isLoading) {
       for (let i = 0; i < 10; i++) {
         const toAdd = (
-          <ProductBlock
-            productObj={DUMMY_AMAZON_SEARCH_RES[0]}
+          <LoadingProductBlock
             key={"loading-product-" + i}
             isMobile={screenDevice.isMobile}
-            isLoading
-          ></ProductBlock>
+          ></LoadingProductBlock>
         );
 
         toReturn.push(toAdd);
@@ -50,7 +47,6 @@ export default function AmazonProductListRender(
 
 type ProductBlockProps = {
   productObj: AmazonProductObj;
-  isLoading?: boolean;
   isMobile: boolean;
 };
 
@@ -63,21 +59,28 @@ function ProductBlock(props: ProductBlockProps) {
   );
 }
 
+type LoadingProductBlockProps = {
+  isMobile: boolean;
+};
+function LoadingProductBlock(props: LoadingProductBlockProps) {
+  const cnContainer = () => {
+    const cn = [styles.loadingProductBlockContainer];
+    if (props.isMobile) {
+      cn.push(styles.mobile);
+    }
+    return cn.join(" ");
+  };
+  return (
+    <div className={cnContainer()}>
+      <div />
+    </div>
+  );
+}
 const ProductImg = (props: ProductBlockProps) => {
   const { productObj } = props;
 
   let imgSrc = productObj.imageUrl;
   if (!props.isMobile) imgSrc = imgSrc.replace("UY218", "UL320");
-
-  if (props.isLoading) {
-    return (
-      <div className={[styles.productImgLink, styles.loading].join(" ")}>
-        <div
-          className={[styles.productImgContainer, styles.loading].join(" ")}
-        ></div>
-      </div>
-    );
-  }
 
   return (
     <a
@@ -104,9 +107,6 @@ const ProductCopy = (props: ProductBlockProps) => {
   const productLink = productObj.linkUrl;
   const isPrime = !!productObj.isPrime;
 
-  if (props.isLoading) {
-    return null;
-  }
   if (props.isMobile) {
     return (
       <a href={productLink} className="hiddenLink" target="_blank">
@@ -116,26 +116,22 @@ const ProductCopy = (props: ProductBlockProps) => {
               {productTitle}
             </a>
           </h3>
-          {!props.isLoading && (
-            <>
-              <ProductRatings
-                rating={productObj.rating}
-                ratingsTotal={productObj.ratingsTotal}
-                productLink={productLink}
-                isMobile={props.isMobile}
-              />
-              <ProductPrice
-                priceStr={props.productObj.priceStr}
-                priceSymbol={props.productObj.priceSymbol}
-              />
-              {isPrime && (
-                <img
-                  src="prime_logo.jpg"
-                  alt="prime"
-                  className={styles.primeLogo}
-                />
-              )}
-            </>
+          <ProductRatings
+            rating={productObj.rating}
+            ratingsTotal={productObj.ratingsTotal}
+            productLink={productLink}
+            isMobile={props.isMobile}
+          />
+          <ProductPrice
+            priceStr={props.productObj.priceStr}
+            priceSymbol={props.productObj.priceSymbol}
+          />
+          {isPrime && (
+            <img
+              src="prime_logo.jpg"
+              alt="prime"
+              className={styles.primeLogo}
+            />
           )}
         </div>
       </a>
@@ -149,28 +145,20 @@ const ProductCopy = (props: ProductBlockProps) => {
           {productTitle}
         </a>
       </h3>
-      {!props.isLoading && (
-        <>
-          <ProductRatings
-            productLink={productLink}
-            rating={productObj.rating}
-            ratingsTotal={productObj.ratingsTotal}
-            isMobile={props.isMobile}
-          />
-          <a href={productLink} className="hiddenLink" target="_blank">
-            <ProductPrice
-              priceStr={productObj.priceStr}
-              priceSymbol={productObj.priceSymbol}
-            />
-          </a>
-          {isPrime && (
-            <img
-              src="prime_logo.jpg"
-              alt="prime"
-              className={styles.primeLogo}
-            />
-          )}
-        </>
+      <ProductRatings
+        productLink={productLink}
+        rating={productObj.rating}
+        ratingsTotal={productObj.ratingsTotal}
+        isMobile={props.isMobile}
+      />
+      <a href={productLink} className="hiddenLink" target="_blank">
+        <ProductPrice
+          priceStr={productObj.priceStr}
+          priceSymbol={productObj.priceSymbol}
+        />
+      </a>
+      {isPrime && (
+        <img src="prime_logo.jpg" alt="prime" className={styles.primeLogo} />
       )}
     </div>
   );

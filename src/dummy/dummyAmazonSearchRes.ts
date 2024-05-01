@@ -1,5 +1,17 @@
 import { AmazonProductObj } from "@/utilities/customTypes";
 
+export const DUMMY_LOADING_AMAZON_PRODUCT_OBJ: AmazonProductObj = {
+  title: "DISCOUNT PROMOS Custom 20 oz. Water Bottles with Push Cap",
+  asin: "B08D4Y4BC1",
+  linkUrl: "",
+  imageUrl: "",
+  rating: 4.4,
+  ratingsTotal: 233,
+  priceNum: 39.99,
+  priceSymbol: "$",
+  priceStr: "39.99",
+  isPrime: false,
+};
 export const DUMMY_AMAZON_SEARCH_RES: AmazonProductObj[] = [
   {
     title:
