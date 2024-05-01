@@ -28,7 +28,7 @@ export default function ShopPage() {
         <span className={[amaranth.className, styles.whoText].join(" ")}>
           {formResponse.who}
         </span>
-        {" right now from "}
+        {" from "}
         <span className={styles.amazonText}>Amazon</span>
       </h1>
       <p className={styles.disclaimerText}>

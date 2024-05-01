@@ -9,10 +9,6 @@
     font-weight: 600;
   }
 
-  .whoText {
-    font-size: 22px;
-  }
-
   .amazonText {
     text-decoration: underline;
   }
@@ -27,9 +23,5 @@
 @media only screen and (max-width: $breakpointMobile) {
   .title {
     font-size: 18px;
-
-    .whoText {
-      font-size: 20px;
-    }
   }
 }

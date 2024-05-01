@@ -8,11 +8,17 @@ import { DUMMY_IDEA_LIST } from "@/dummy/dummyIdeaList";
 import IdeaListRender from "@/components/IdeaListRender";
 import PageWrapper from "@/components/PageWrapper";
 import { Amaranth } from "next/font/google";
+import useScreenDevice from "@/hooks/useScreenDevice";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export default function IdeasPage() {
   const formResponse = useFormResponse();
   const [ideaList, setIdeaList] = useState<IdeaObj[]>(DUMMY_IDEA_LIST);
+  const screenDevice = useScreenDevice();
+
+  const disclaimerText = screenDevice.isMobile
+    ? "Preview images are not perfect, tap an idea for more accurate results"
+    : "Preview images are not perfect, click an idea for more accurate results";
 
   return (
     <PageWrapper isBlankBG>
@@ -24,11 +30,9 @@ export default function IdeasPage() {
           </span>
         </h1>
         <h2 className={styles.subtitle}>
-          Click the idea you like the most for shopping options.
+          Click the idea you like the most for <b>all</b> shopping options.
         </h2>
-        {/* <p className={styles.disclaimerText}>
-          DISCLAIMER: All images belong to their respective owners
-        </p> */}
+        <p className={styles.disclaimerText}>{disclaimerText}</p>
         <IdeaListRender ideaList={ideaList} />
       </div>
     </PageWrapper>
