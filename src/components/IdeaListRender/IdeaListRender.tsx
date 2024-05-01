@@ -5,13 +5,27 @@ import { IdeaObj } from "@/utilities/customTypes";
 import { useRouter } from "next/navigation";
 import { encodeObject } from "@/utilities/helpers";
 import RotatingImage from "../RotatingImage";
+import { DUMMY_IDEA_LIST } from "@/dummy/dummyIdeaList";
 
 type IdeaListRenderProps = {
   ideaList: IdeaObj[];
+  isLoading: boolean;
 };
 
 export default function IdeaListRender(props: IdeaListRenderProps) {
   const renderIdeaList = () => {
+    if (props.isLoading) {
+      const pseudoList = new Array(10).fill(null);
+      return pseudoList.map((_, idx) => {
+        return (
+          <IdeaBlock
+            ideaObj={DUMMY_IDEA_LIST[0]}
+            key={"loading-idea-" + idx}
+            isLoading
+          ></IdeaBlock>
+        );
+      });
+    }
     return props.ideaList.map((ideaObj) => {
       return <IdeaBlock ideaObj={ideaObj} key={ideaObj.idea}></IdeaBlock>;
     });
@@ -22,6 +36,7 @@ export default function IdeaListRender(props: IdeaListRenderProps) {
 
 type IdeaBlockProps = {
   ideaObj: IdeaObj;
+  isLoading?: boolean;
 };
 
 function IdeaBlock(props: IdeaBlockProps) {
@@ -31,10 +46,15 @@ function IdeaBlock(props: IdeaBlockProps) {
   const router = useRouter();
 
   function handleClick() {
+    if (props.isLoading) return;
+
     router.push("/shop?" + encodeObject({ q: ideaObj.idea }));
   }
 
   const renderImg = () => {
+    if (props.isLoading) {
+      return null;
+    }
     if (!imageList || !imageList.length) {
       return (
         <img src="/unknown_gift.png" alt="" className={styles.monoIdeaImg} />
@@ -45,15 +65,39 @@ function IdeaBlock(props: IdeaBlockProps) {
     }
     return <RotatingImage imageList={imageList}></RotatingImage>;
   };
+
+  const cnIdeaBlockContainer = () => {
+    const toReturn = [styles.ideaBlockContainer];
+    if (props.isLoading) {
+      toReturn.push(styles.loading);
+    }
+    return toReturn.join(" ");
+  };
+
+  const cnIdeaImgContainer = () => {
+    const toReturn = [styles.ideaImgContainer];
+    if (props.isLoading) {
+      toReturn.push(styles.loading);
+    }
+    return toReturn.join(" ");
+  };
+
+  const cnIdeaText = () => {
+    const toReturn = [styles.ideaText];
+    if (props.isLoading) {
+      toReturn.push(styles.loading);
+    }
+    return toReturn.join(" ");
+  };
+
   return (
     <div
-      className={styles.ideaBlockContainer}
+      className={cnIdeaBlockContainer()}
       key={ideaObj.idea}
       onClick={handleClick}
     >
-      <div className={styles.ideaImgContainer}>{renderImg()}</div>
-
-      <span className={styles.ideaText}>{ideaObj.idea}</span>
+      <div className={cnIdeaImgContainer()}>{renderImg()}</div>
+      <span className={cnIdeaText()}>{ideaObj.idea}</span>
     </div>
   );
 }

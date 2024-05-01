@@ -2,23 +2,51 @@
 
 import styles from "./page.module.scss";
 import useFormResponse from "@/hooks/useFormResponse";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IdeaObj } from "@/utilities/customTypes";
-import { DUMMY_IDEA_LIST } from "@/dummy/dummyIdeaList";
 import IdeaListRender from "@/components/IdeaListRender";
 import PageWrapper from "@/components/PageWrapper";
 import { Amaranth } from "next/font/google";
 import useScreenDevice from "@/hooks/useScreenDevice";
+import { useAPI } from "@/utilities/useAPI";
+import { useRouter } from "next/navigation";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export default function IdeasPage() {
   const formResponse = useFormResponse();
-  const [ideaList, setIdeaList] = useState<IdeaObj[]>(DUMMY_IDEA_LIST);
   const screenDevice = useScreenDevice();
+  const router = useRouter();
 
-  const disclaimerText = screenDevice.isMobile
-    ? "Preview images are not perfect, tap an idea for more accurate results"
-    : "Preview images are not perfect, click an idea for more accurate results";
+  const [ideaList, setIdeaList] = useState<IdeaObj[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const actionText = screenDevice.isDesktop ? "click" : "tap";
+
+  useEffect(() => {
+    // TODO: Use local storage for this stuff
+    if (formResponse.isFormResponseLoaded && !isLoading && !ideaList.length)
+      fetchIdeaList();
+  }, [formResponse, isLoading, ideaList]);
+
+  async function fetchIdeaList() {
+    setIsLoading(true);
+    const res = await useAPI<IdeaObj[]>({
+      actionRoute: "REC",
+      formResponse: formResponse,
+    });
+
+    if (res.isError) {
+      window.alert("Something went wrong, please try again later.");
+      router.push("/");
+      console.error(res.error);
+      return;
+    }
+
+    console.log(res);
+    const newIdeaList = res.data;
+    setIdeaList(newIdeaList);
+    setIsLoading(false);
+  }
 
   return (
     <PageWrapper isBlankBG>
@@ -30,10 +58,16 @@ export default function IdeasPage() {
           </span>
         </h1>
         <h2 className={styles.subtitle}>
-          Click the idea you like the most for <b>all</b> shopping options.
+          {actionText} the idea you like the most for <b>all</b> shopping
+          options.
         </h2>
-        <p className={styles.disclaimerText}>{disclaimerText}</p>
-        <IdeaListRender ideaList={ideaList} />
+        <p className={styles.disclaimerText}>
+          {`Preview images are not perfect, ${actionText} an idea for more accurate results. Scroll to bottom for more ideas.`}
+        </p>
+        <IdeaListRender
+          ideaList={ideaList}
+          isLoading={isLoading || !ideaList.length}
+        />
       </div>
     </PageWrapper>
   );

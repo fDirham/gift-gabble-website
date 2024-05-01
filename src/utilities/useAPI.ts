@@ -23,11 +23,14 @@ export async function useAPI<T>(reqBody: {
   try {
     const res = await fetch(recommendUrl as string, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(reqBody),
     });
     const data = await res.json();
     if (res.ok) {
-      return { isError: false, ...data };
+      return { isError: false, data };
     }
     throw data;
   } catch (error) {
