@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import styles from "./IdeaListRender.module.scss";
 import { IdeaObj } from "@/utilities/customTypes";
 import { useRouter } from "next/navigation";
 import { encodeObject } from "@/utilities/helpers";
+import RotatingImage from "../RotatingImage";
 
 type IdeaListRenderProps = {
   ideaList: IdeaObj[];
@@ -26,48 +26,33 @@ type IdeaBlockProps = {
 
 function IdeaBlock(props: IdeaBlockProps) {
   const { ideaObj } = props;
+  const { productList } = ideaObj;
+  const imageList = productList.map((obj) => obj.imageUrl);
   const router = useRouter();
-  const [imgIdx, setImgIdx] = useState<number>(0);
-  const imageInterval = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // TODO
-  // useEffect(() => {
-  //   if (!imageInterval.current && ideaObj.imageList) {
-  //     imageInterval.current = setInterval(() => {
-  //       setImgIdx((curr) => {
-  //         const newIdx = curr + 1;
-  //         if (newIdx >= ideaObj.imageList!.length) {
-  //           return 0;
-  //         }
-  //         return newIdx;
-  //       });
-  //     }, 5000);
-  //   }
-
-  //   return () => {
-  //     if (imageInterval.current) {
-  //       clearInterval(imageInterval.current);
-  //     }
-  //   };
-  // }, []);
 
   function handleClick() {
     router.push("/shop?" + encodeObject({ q: ideaObj.idea }));
   }
-  const imgSrc =
-    ideaObj.imageList && ideaObj.imageList.length
-      ? ideaObj.imageList[imgIdx]
-      : "/unknown_gift.png";
 
+  const renderImg = () => {
+    if (!imageList || !imageList.length) {
+      return (
+        <img src="/unknown_gift.png" alt="" className={styles.monoIdeaImg} />
+      );
+    }
+    if (imageList.length == 1) {
+      return <img src={imageList[0]} alt="" className={styles.monoIdeaImg} />;
+    }
+    return <RotatingImage imageList={imageList}></RotatingImage>;
+  };
   return (
     <div
       className={styles.ideaBlockContainer}
       key={ideaObj.idea}
       onClick={handleClick}
     >
-      <div className={styles.ideaImgContainer}>
-        <img src={imgSrc} alt="" className={styles.ideaImg} />
-      </div>
+      <div className={styles.ideaImgContainer}>{renderImg()}</div>
+
       <span className={styles.ideaText}>{ideaObj.idea}</span>
     </div>
   );
