@@ -42,12 +42,39 @@ export default function IdeasPage() {
       return;
     }
 
-    console.log(res);
     const newIdeaList = res.data;
     setIdeaList(newIdeaList);
     setIsLoading(false);
   }
 
+  async function fetchMoreIdeaList() {
+    if (ideaList.length > 20) {
+      window.alert(
+        "Limit reached. Perhaps changing your responses will help get better results?"
+      );
+      return;
+    }
+    setIsLoading(true);
+    const res = await useAPI<IdeaObj[]>({
+      actionRoute: "REC",
+      formResponse: formResponse,
+      oldIdeaList: ideaList.map((obj) => obj.idea),
+    });
+
+    if (res.isError) {
+      window.alert("Something went wrong, please try again later.");
+      router.push("/");
+      console.error(res.error);
+      return;
+    }
+
+    const newIdeaList = [...ideaList, ...res.data];
+
+    setIdeaList(newIdeaList);
+    setIsLoading(false);
+  }
+
+  const contentLoading = isLoading || !ideaList.length;
   return (
     <PageWrapper isBlankBG>
       <div className={styles.container}>
@@ -64,10 +91,13 @@ export default function IdeasPage() {
         <p className={styles.disclaimerText}>
           {`Preview images are not perfect, ${actionText} an idea for more accurate results. Scroll to bottom for more ideas.`}
         </p>
-        <IdeaListRender
-          ideaList={ideaList}
-          isLoading={isLoading || !ideaList.length}
-        />
+        <IdeaListRender ideaList={ideaList} isLoading={contentLoading} />
+        {!contentLoading && (
+          <div className={styles.moreContainer}>
+            <span className={styles.moreText}>Need more?</span>
+            <button onClick={fetchMoreIdeaList}>GIVE ME NEW IDEAS</button>
+          </div>
+        )}
       </div>
     </PageWrapper>
   );

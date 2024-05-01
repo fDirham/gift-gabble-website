@@ -14,21 +14,26 @@ type IdeaListRenderProps = {
 
 export default function IdeaListRender(props: IdeaListRenderProps) {
   const renderIdeaList = () => {
+    const toReturn = props.ideaList.map((ideaObj) => {
+      return <IdeaBlock ideaObj={ideaObj} key={ideaObj.idea}></IdeaBlock>;
+    });
+
     if (props.isLoading) {
       const pseudoList = new Array(10).fill(null);
-      return pseudoList.map((_, idx) => {
-        return (
+      pseudoList.forEach((_, idx) => {
+        const toAdd = (
           <IdeaBlock
             ideaObj={DUMMY_IDEA_LIST[0]}
             key={"loading-idea-" + idx}
             isLoading
           ></IdeaBlock>
         );
+
+        toReturn.push(toAdd);
       });
     }
-    return props.ideaList.map((ideaObj) => {
-      return <IdeaBlock ideaObj={ideaObj} key={ideaObj.idea}></IdeaBlock>;
-    });
+
+    return toReturn;
   };
 
   return <div className={styles.container}>{renderIdeaList()}</div>;
