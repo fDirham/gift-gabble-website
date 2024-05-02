@@ -1,6 +1,7 @@
 import { UNKNOWN_VALUE } from "@/components/SearchForm/options";
 import { FormResponse } from "@/utilities/customTypes";
-import useLocalStorage from "./useLocalStorage";
+import useSessionStorage from "./useSessionStorage";
+import { useCallback } from "react";
 
 function resolveWho(whoOne: string, whoTwo: string) {
   if (!whoTwo || whoTwo == UNKNOWN_VALUE) return whoOne;
@@ -19,68 +20,27 @@ export default function useFormResponse() {
     budget: 0,
   };
 
-  const whoOneInitVal = initialValues.whoOne;
-  const [whoOne, setWhoOne] = useLocalStorage<string>("whoOne", whoOneInitVal);
-
-  const whoTwoInitVal = initialValues.whoTwo;
-  const [whoTwo, setWhoTwo] = useLocalStorage<string>(
-    "whoTwoInitVal",
-    whoTwoInitVal
-  );
-
-  const whyInitVal = initialValues.why;
-  const [why, setWhy] = useLocalStorage<string>("whyInitVal", whyInitVal);
-
-  const whyExtraInitVal = initialValues.whyExtra;
-  const [whyExtra, setWhyExtra] = useLocalStorage<string>(
-    "whyExtraInitVal",
-    whyExtraInitVal
-  );
-
-  const descInitVal = initialValues.desc;
-  const [desc, setDesc] = useLocalStorage<string>("descInitVal", descInitVal);
-
-  const giftNotesInitVal = initialValues.giftNotes;
-  const [giftNotes, setGiftNotes] = useLocalStorage<string>(
-    "giftNotesInitVal",
-    giftNotesInitVal
-  );
-
-  const budgetInitVal = initialValues.budget;
-  const [budget, setBudget, isFormResponseLoaded] = useLocalStorage<number>(
-    "budgetInitVal",
-    budgetInitVal
-  );
-
-  const who = resolveWho(whoOne, whoTwo);
-
-  function setFormResponse(newFormResponse: FormResponse) {
-    setWhoOne(newFormResponse.whoOne);
-    setWhoTwo(newFormResponse.whoTwo);
-    setWhy(newFormResponse.why);
-    setWhyExtra(newFormResponse.whyExtra);
-    setDesc(newFormResponse.desc);
-    setGiftNotes(newFormResponse.giftNotes);
-    setBudget(newFormResponse.budget);
-  }
-
-  return {
-    who,
-    whoOne,
-    whoTwo,
-    why,
-    whyExtra,
-    desc,
-    giftNotes,
-    budget,
-    setWhoOne,
-    setWhoTwo,
-    setWhy,
-    setWhyExtra,
-    setDesc,
-    setGiftNotes,
-    setBudget,
+  const [
+    formResponse,
     setFormResponse,
     isFormResponseLoaded,
+    clearFormResponse,
+  ] = useSessionStorage("formResponse", initialValues);
+
+  const modifyFormResponse = useCallback(
+    (newFormResponse: Partial<FormResponse>) => {
+      const changeTo: FormResponse = { ...formResponse, ...newFormResponse };
+      changeTo.who = resolveWho(changeTo.whoOne, changeTo.whoTwo);
+      setFormResponse(changeTo);
+    },
+    [setFormResponse, formResponse]
+  );
+
+  return {
+    formResponse,
+    setFormResponse,
+    modifyFormResponse,
+    isFormResponseLoaded,
+    clearFormResponse,
   };
 }

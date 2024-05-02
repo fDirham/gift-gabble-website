@@ -13,7 +13,7 @@ import AmazonProductListRender from "@/components/AmazonProductListRender";
 import { useAPI } from "@/utilities/useAPI";
 
 export default function ShopPage() {
-  const formResponse = useFormResponse();
+  const { formResponse, isFormResponseLoaded } = useFormResponse();
   const searchParams = useSearchParams();
   const idea = searchParams.get("q");
   const router = useRouter();
@@ -48,6 +48,7 @@ export default function ShopPage() {
   }
 
   const contentLoading = isLoading || !amazonProductList.length;
+  if (!isFormResponseLoaded) return null;
   return (
     <PageWrapper isBlankBG>
       <h1 className={styles.title}>

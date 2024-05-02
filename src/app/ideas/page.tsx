@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export default function IdeasPage() {
-  const formResponse = useFormResponse();
+  const { formResponse, isFormResponseLoaded } = useFormResponse();
   const screenDevice = useScreenDevice();
   const router = useRouter();
 
@@ -24,8 +24,7 @@ export default function IdeasPage() {
 
   useEffect(() => {
     // TODO: Use local storage for this stuff
-    if (formResponse.isFormResponseLoaded && !isLoading && !ideaList.length)
-      fetchIdeaList();
+    if (isFormResponseLoaded && !isLoading && !ideaList.length) fetchIdeaList();
   }, [formResponse, isLoading, ideaList]);
 
   async function fetchIdeaList() {
@@ -75,6 +74,7 @@ export default function IdeasPage() {
   }
 
   const contentLoading = isLoading || !ideaList.length;
+  if (!isFormResponseLoaded) return null;
   return (
     <PageWrapper isBlankBG>
       <div className={styles.container}>

@@ -34,12 +34,12 @@
 
   .descInput {
     min-height: 20px;
-    height: 70px !important;
+    height: 70px;
   }
 
   .giftNotesInput {
     min-height: 20px;
-    height: 50px !important;
+    height: 50px;
   }
 
   .budgetSpan {
@@ -64,7 +64,6 @@
   textarea {
     font-size: 16px;
     min-width: 280px;
-    min-height: 120px;
   }
 
   option {

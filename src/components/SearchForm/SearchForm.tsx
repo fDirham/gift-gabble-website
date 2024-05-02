@@ -11,24 +11,8 @@ export type SearchFormProps = {
 };
 
 export default function SearchForm(props: SearchFormProps) {
-  const {
-    who,
-    whoOne,
-    whoTwo,
-    why,
-    whyExtra,
-    desc,
-    giftNotes,
-    budget,
-    setWhoOne,
-    setWhoTwo,
-    setWhy,
-    setWhyExtra,
-    setDesc,
-    setGiftNotes,
-    setBudget,
-    isFormResponseLoaded,
-  } = useFormResponse();
+  const { formResponse, modifyFormResponse, isFormResponseLoaded } =
+    useFormResponse();
 
   function handleGo() {
     props.onGo();
@@ -71,18 +55,21 @@ export default function SearchForm(props: SearchFormProps) {
         name="whoOne"
         id="whoOne"
         key="whoOne"
-        value={whoOne}
+        value={formResponse.whoOne}
         onChange={(e) => {
-          setWhoOne(e.target.value);
-          setWhoTwo(UNKNOWN_VALUE);
+          modifyFormResponse({
+            whoOne: e.target.value,
+            whoTwo: UNKNOWN_VALUE,
+            desc: "",
+          });
         }}
       >
         {renderOptions(whoOptions, "whoOne")}
       </select>
     );
 
-    if (whoOne == UNKNOWN_VALUE) return toRender;
-    const whoTwoObj = whoTwoMap[whoOne];
+    if (formResponse.whoOne == UNKNOWN_VALUE) return toRender;
+    const whoTwoObj = whoTwoMap[formResponse.whoOne];
 
     if (whoTwoObj) {
       toRender.push(
@@ -96,14 +83,14 @@ export default function SearchForm(props: SearchFormProps) {
           name="whoTwo"
           id="whoTwo"
           key="whoTwo"
-          value={whoTwo}
-          onChange={(e) => setWhoTwo(e.target.value)}
+          value={formResponse.whoTwo}
+          onChange={(e) => modifyFormResponse({ whoTwo: e.target.value })}
         >
           {renderOptions(whoTwoObj.optionsList, "whoTwo")}
         </select>
       );
 
-      if (whoTwo == UNKNOWN_VALUE) return toRender;
+      if (formResponse.whoTwo == UNKNOWN_VALUE) return toRender;
     }
 
     // Why
@@ -118,22 +105,24 @@ export default function SearchForm(props: SearchFormProps) {
         name="whySelect"
         id="whySelect"
         key="whySelect"
-        value={why}
-        onChange={(e) => setWhy(e.target.value)}
+        value={formResponse.why}
+        onChange={(e) =>
+          modifyFormResponse({ why: e.target.value, whyExtra: "" })
+        }
       >
         {renderOptions(whyOptions, "why")}
       </select>
     );
 
-    if (why == UNKNOWN_VALUE) return toRender;
+    if (formResponse.why == UNKNOWN_VALUE) return toRender;
 
     // Special why cases
-    if (why == "other") {
+    if (formResponse.why == "other") {
       toRender.push(
         <label htmlFor="otherWhyInput" key="otherWhyInputLabel">
           Why are you buying a gift for your{" "}
           <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-            {who}
+            {formResponse.who}
           </span>
           {"?"}
         </label>
@@ -145,14 +134,14 @@ export default function SearchForm(props: SearchFormProps) {
           id="otherWhyInput"
           key={"otherWhyInput"}
           className={styles.otherWhyInput}
-          value={whyExtra}
-          onChange={(e) => setWhyExtra(e.target.value)}
+          value={formResponse.whyExtra}
+          onChange={(e) => modifyFormResponse({ whyExtra: e.target.value })}
           placeholder="e.g Because I appreciate them..."
           maxLength={100}
         ></textarea>
       );
 
-      if (!whyExtra) return toRender;
+      if (!formResponse.whyExtra) return toRender;
     }
 
     // Description
@@ -160,7 +149,7 @@ export default function SearchForm(props: SearchFormProps) {
       <label htmlFor="descInput" key="descInputLabel">
         Describe your{" "}
         <span className={[amaranth.className, styles.whoSpan].join(" ")}>
-          {who}
+          {formResponse.who}
         </span>{" "}
         <br />{" "}
         <span style={{ fontWeight: 400 }}>
@@ -175,14 +164,14 @@ export default function SearchForm(props: SearchFormProps) {
         id="descInput"
         key={"descInput"}
         className={styles.descInput}
-        value={desc}
-        onChange={(e) => setDesc(e.target.value)}
+        value={formResponse.desc}
+        onChange={(e) => modifyFormResponse({ desc: e.target.value })}
         placeholder="Hobbies? Favorite tv shows / media? Personality?"
         maxLength={200}
       ></textarea>
     );
 
-    if (!desc) return toRender;
+    if (!formResponse.desc) return toRender;
 
     // gift notes
     toRender.push(
@@ -197,8 +186,8 @@ export default function SearchForm(props: SearchFormProps) {
         id="giftNotesInput"
         key={"giftNotesInput"}
         className={styles.giftNotesInput}
-        value={giftNotes}
-        onChange={(e) => setGiftNotes(e.target.value)}
+        value={formResponse.giftNotes}
+        onChange={(e) => modifyFormResponse({ giftNotes: e.target.value })}
         placeholder="e.g It needs to be lightweight"
         maxLength={200}
       ></textarea>
@@ -222,8 +211,10 @@ export default function SearchForm(props: SearchFormProps) {
           name="budgetInput"
           id="budgetInput"
           className={styles.budgetInput}
-          value={budget}
-          onChange={(e) => setBudget(parseInt(e.target.value))}
+          value={formResponse.budget}
+          onChange={(e) =>
+            modifyFormResponse({ budget: parseInt(e.target.value) })
+          }
           type="number"
           min={0}
           max={500}
