@@ -11,7 +11,7 @@ type PageWrapperProps = {
   centerContainerClassName?: string;
 };
 export default function PageWrapper(props: PageWrapperProps) {
-  const getContainerClassName = () => {
+  const cnContainer = () => {
     const toReturn = [styles.container];
     if (props.isBlankBG) {
       toReturn.push(styles.blankBG);
@@ -19,7 +19,7 @@ export default function PageWrapper(props: PageWrapperProps) {
     return toReturn.join(" ");
   };
 
-  const getCenterContainerClassName = () => {
+  const cnCenterContainer = () => {
     const toReturn = [styles.centerContainer];
     if (props.centerContainerClassName) {
       toReturn.push(props.centerContainerClassName);
@@ -29,7 +29,7 @@ export default function PageWrapper(props: PageWrapperProps) {
 
   // TODO: Center container class name props
   return (
-    <div className={getContainerClassName()}>
+    <div className={cnContainer()}>
       <header className={styles.header}>
         <Link href={"/"} className="hiddenLink">
           <span className={[allura.className, styles.appName].join(" ")}>
@@ -42,7 +42,7 @@ export default function PageWrapper(props: PageWrapperProps) {
         </Link>
       </header>
       <main className={styles.main}>
-        <div className={getCenterContainerClassName()}>{props.children}</div>
+        <div className={cnCenterContainer()}>{props.children}</div>
       </main>
     </div>
   );
