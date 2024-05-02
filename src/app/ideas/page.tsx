@@ -10,6 +10,7 @@ import { Amaranth } from "next/font/google";
 import useScreenDevice from "@/hooks/useScreenDevice";
 import { useAPI } from "@/utilities/useAPI";
 import { useRouter } from "next/navigation";
+import useIdeaList from "@/hooks/useIdeaList";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export default function IdeasPage() {
@@ -17,15 +18,20 @@ export default function IdeasPage() {
   const screenDevice = useScreenDevice();
   const router = useRouter();
 
-  const [ideaList, setIdeaList] = useState<IdeaObj[]>([]);
+  const { ideaList, setIdeaList, isIdeaListLoaded } = useIdeaList();
   const [isLoading, setIsLoading] = useState(false);
 
   const actionText = screenDevice.isDesktop ? "click" : "tap";
 
   useEffect(() => {
-    // TODO: Use local storage for this stuff
-    if (isFormResponseLoaded && !isLoading && !ideaList.length) fetchIdeaList();
-  }, [formResponse, isLoading, ideaList]);
+    if (
+      isIdeaListLoaded &&
+      isFormResponseLoaded &&
+      !isLoading &&
+      !ideaList.length
+    )
+      fetchIdeaList();
+  }, [formResponse, isLoading, ideaList, isIdeaListLoaded]);
 
   async function fetchIdeaList() {
     setIsLoading(true);
@@ -74,7 +80,7 @@ export default function IdeasPage() {
   }
 
   const contentLoading = isLoading || !ideaList.length;
-  if (!isFormResponseLoaded) return null;
+  if (!isFormResponseLoaded || !isIdeaListLoaded) return null;
   return (
     <PageWrapper isBlankBG>
       <div className={styles.container}>

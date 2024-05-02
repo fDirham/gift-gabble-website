@@ -1,7 +1,9 @@
 import { UNKNOWN_VALUE } from "@/components/SearchForm/options";
 import { FormResponse } from "@/utilities/customTypes";
 import useSessionStorage from "./useSessionStorage";
-import { useCallback } from "react";
+import { SetStateAction, useCallback } from "react";
+import useIdeaList from "./useIdeaList";
+import useProductMap from "./useProductMap";
 
 function resolveWho(whoOne: string, whoTwo: string) {
   if (!whoTwo || whoTwo == UNKNOWN_VALUE) return whoOne;
@@ -9,6 +11,9 @@ function resolveWho(whoOne: string, whoTwo: string) {
 }
 
 export default function useFormResponse() {
+  const { resetIdeaList } = useIdeaList();
+  const { resetProductMap } = useProductMap();
+
   const initialValues: FormResponse = {
     who: UNKNOWN_VALUE,
     whoOne: UNKNOWN_VALUE,
@@ -22,10 +27,19 @@ export default function useFormResponse() {
 
   const [
     formResponse,
-    setFormResponse,
+    _setFormResponse,
     isFormResponseLoaded,
     clearFormResponse,
   ] = useSessionStorage("formResponse", initialValues);
+
+  const setFormResponse = useCallback(
+    (newVal: SetStateAction<FormResponse>) => {
+      resetIdeaList();
+      resetProductMap();
+      _setFormResponse(newVal);
+    },
+    [_setFormResponse, resetIdeaList, resetProductMap]
+  );
 
   const modifyFormResponse = useCallback(
     (newFormResponse: Partial<FormResponse>) => {

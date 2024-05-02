@@ -11,6 +11,7 @@ import { AmazonProductObj } from "@/utilities/customTypes";
 import { useEffect, useState } from "react";
 import AmazonProductListRender from "@/components/AmazonProductListRender";
 import { useAPI } from "@/utilities/useAPI";
+import useProductMap from "@/hooks/useProductMap";
 
 export default function ShopPage() {
   const { formResponse, isFormResponseLoaded } = useFormResponse();
@@ -18,17 +19,21 @@ export default function ShopPage() {
   const idea = searchParams.get("q");
   const router = useRouter();
 
-  const [amazonProductList, setAmazonProductList] = useState<
-    AmazonProductObj[]
-  >([]);
+  const { productMap, addToProductMap, isProductMapLoaded } = useProductMap();
+  const amazonProductList: AmazonProductObj[] = idea
+    ? productMap[idea] || []
+    : [];
+
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // TODO: Use local storage for this stuff
-    if (!isLoading && !amazonProductList.length) fetchProductList();
-  }, [isLoading, amazonProductList]);
+    if (!isLoading && isProductMapLoaded && !amazonProductList.length && idea)
+      fetchProductList();
+  }, [isLoading, isProductMapLoaded, amazonProductList, idea]);
 
   async function fetchProductList() {
+    if (!idea) return;
+
     setIsLoading(true);
     const res = await useAPI<AmazonProductObj[]>({
       actionRoute: "AMZN_SEARCH",
@@ -43,12 +48,12 @@ export default function ShopPage() {
     }
 
     const newProductList = res.data;
-    setAmazonProductList(newProductList);
+    addToProductMap(idea, newProductList);
     setIsLoading(false);
   }
 
   const contentLoading = isLoading || !amazonProductList.length;
-  if (!isFormResponseLoaded) return null;
+  if (!isFormResponseLoaded || !isProductMapLoaded) return null;
   return (
     <PageWrapper isBlankBG>
       <h1 className={styles.title}>
