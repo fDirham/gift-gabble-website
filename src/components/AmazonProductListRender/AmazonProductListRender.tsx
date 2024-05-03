@@ -20,7 +20,7 @@ export default function AmazonProductListRender(
       return (
         <ProductBlock
           productObj={productObj}
-          key={productObj.data.title}
+          key={productObj.title}
           isMobile={screenDevice.isMobile}
           isLoading={props.isLoading}
         ></ProductBlock>
@@ -81,12 +81,10 @@ function LoadingProductBlock(props: LoadingProductBlockProps) {
 const ProductImg = (props: ProductBlockProps) => {
   const { productObj } = props;
 
-  let imgSrc = productObj.data.imageUrl;
+  let imgSrc = productObj.imageUrl;
   if (!props.isMobile) imgSrc = imgSrc.replace("UY218", "UL320");
 
-  const linkUrl = productObj.isShallow
-    ? productObj.data.amazonUrl
-    : productObj.data.linkUrl;
+  const linkUrl = productObj.linkUrl;
 
   return (
     <a
@@ -105,16 +103,14 @@ const ProductCopy = (props: ProductBlockProps) => {
   const { productObj } = props;
 
   const MAX_TITLE_LENGTH = props.isMobile ? 100 : 120;
-  let productTitle = productObj.data.title;
+  let productTitle = productObj.title;
   if (productTitle.length > MAX_TITLE_LENGTH) {
     productTitle = productTitle.slice(0, MAX_TITLE_LENGTH - 3) + "...";
   }
 
-  const productLink = productObj.isShallow
-    ? productObj.data.amazonUrl
-    : productObj.data.linkUrl;
+  const productLink = productObj.linkUrl;
 
-  const isPrime = productObj.isShallow ? false : productObj.data.isPrime;
+  const isPrime = productObj.isPrime;
 
   if (props.isMobile) {
     return (
@@ -158,17 +154,11 @@ const ProductCopy = (props: ProductBlockProps) => {
 };
 
 const ProductPrice = (props: ProductBlockProps) => {
-  if (props.productObj.isShallow) {
-    if (props.isLoading) {
-      return <div className={styles.loadingProductPrice}></div>;
-    }
-    return null;
-  }
+  const priceNum = props.productObj.price;
+  if (!priceNum) return null;
 
-  const priceStr = props.productObj.data.priceStr;
-  const priceSymbol = props.productObj.data.priceSymbol;
-
-  if (!priceStr) return null;
+  const priceStr = priceNum + "";
+  const currencySymbol = props.productObj.currencySymbol;
 
   const priceComponentList = priceStr.split(".");
   const price1 = priceComponentList[0];
@@ -179,8 +169,8 @@ const ProductPrice = (props: ProductBlockProps) => {
 
   return (
     <span className={styles.priceContainer}>
-      {!!priceSymbol && (
-        <span className={styles.priceSymbol}>{priceSymbol}</span>
+      {!!currencySymbol && (
+        <span className={styles.priceSymbol}>{currencySymbol}</span>
       )}
       <span className={styles.price1}>{price1}</span>
       {!!price2 && <span className={styles.price2}>{price2}</span>}
@@ -189,14 +179,9 @@ const ProductPrice = (props: ProductBlockProps) => {
 };
 
 const ProductRatings = (props: ProductBlockProps) => {
-  if (props.productObj.isShallow) {
-    if (props.isLoading) {
-      return <div className={styles.loadingProductRatings}></div>;
-    }
-    return null;
-  }
-  const { rating, ratingsTotal, linkUrl: productLink } = props.productObj.data;
-  if (!rating || !ratingsTotal) return null;
+  const { rating, linkUrl: productLink } = props.productObj;
+  if (!rating) return null;
+  let reviewsCount = props.productObj.reviewsCount || 0;
 
   const reviewsLink = productLink + "#customerReviews";
   if (props.isMobile) {
@@ -211,7 +196,7 @@ const ProductRatings = (props: ProductBlockProps) => {
           ignoreInlineStyles={false}
         />
         <span className={styles.ratingCountText}>
-          {"(" + ratingsTotal + ")"}
+          {"(" + reviewsCount + ")"}
         </span>
       </div>
     );
@@ -227,7 +212,7 @@ const ProductRatings = (props: ProductBlockProps) => {
           starEmptyColor="#D7D7D7"
           ignoreInlineStyles={false}
         />
-        <span className={styles.ratingCountText}>{ratingsTotal}</span>
+        <span className={styles.ratingCountText}>{reviewsCount}</span>
       </a>
     </div>
   );

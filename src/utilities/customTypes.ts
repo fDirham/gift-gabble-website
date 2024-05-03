@@ -4,6 +4,7 @@ export type AmazonProductObj = {
   linkUrl: string;
   imageUrl: string;
   rating?: number;
+  reviewsCount?: number;
   price?: number;
   currencySymbol?: string;
   isPrime: boolean;
