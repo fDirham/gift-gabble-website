@@ -4,7 +4,7 @@ import styles from "./page.module.scss";
 import useFormResponse from "@/hooks/useFormResponse";
 import PageWrapper from "@/components/PageWrapper";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { Suspense, useCallback, useEffect } from "react";
 import AmazonProductListRender from "@/components/AmazonProductListRender";
 import useProductMap from "@/hooks/useProductMap";
 import { Amaranth } from "next/font/google";
@@ -55,42 +55,44 @@ export default function ShopPage() {
   if (!idea || !isFormResponseLoaded || !isProductMapLoaded) return null;
 
   return (
-    <PageWrapper isBlankBG>
-      <h1 className={styles.title}>
-        You can buy <span className={styles.ideaText}>"{idea}"</span> for your{" "}
-        <span className={[amaranth.className, styles.whoText].join(" ")}>
-          {formResponse.who}
-        </span>
-        {" from "}
-        <a
-          href={getAmazonSearchLink(idea)}
-          target="_blank"
-          className={styles.amazonText}
-          onClick={logSearchClick}
-        >
-          Amazon
-        </a>
-      </h1>
+    <Suspense>
+      <PageWrapper isBlankBG>
+        <h1 className={styles.title}>
+          You can buy <span className={styles.ideaText}>"{idea}"</span> for your{" "}
+          <span className={[amaranth.className, styles.whoText].join(" ")}>
+            {formResponse.who}
+          </span>
+          {" from "}
+          <a
+            href={getAmazonSearchLink(idea)}
+            target="_blank"
+            className={styles.amazonText}
+            onClick={logSearchClick}
+          >
+            Amazon
+          </a>
+        </h1>
 
-      <p className={styles.disclaimerText}>
-        DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
-        Clicking on any product below takes you to an Amazon page.
-      </p>
-      <div className={styles.inAmazonContainer}>
-        <a
-          href={getAmazonSearchLink(idea)}
-          target="_blank"
-          onClick={logSearchClick}
-        >
-          Shop directly in Amazon
-        </a>
-      </div>
+        <p className={styles.disclaimerText}>
+          DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
+          Clicking on any product below takes you to an Amazon page.
+        </p>
+        <div className={styles.inAmazonContainer}>
+          <a
+            href={getAmazonSearchLink(idea)}
+            target="_blank"
+            onClick={logSearchClick}
+          >
+            Shop directly in Amazon
+          </a>
+        </div>
 
-      <AmazonProductListRender
-        amazonProductList={amazonProductList}
-        isLoading={false}
-        sessionId={analyticsSessionId}
-      />
-    </PageWrapper>
+        <AmazonProductListRender
+          amazonProductList={amazonProductList}
+          isLoading={false}
+          sessionId={analyticsSessionId}
+        />
+      </PageWrapper>
+    </Suspense>
   );
 }
