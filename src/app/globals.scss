@@ -2,7 +2,7 @@
 
 :root {
   --primary-color: #ffd569;
-  --secondary-color: #6993ff;
+  --secondary-color: #2a50b1;
   --secondary-color-light: #4566bb;
   --disclaimer-color: rgb(78, 78, 78);
 }
@@ -50,10 +50,10 @@ button,
 }
 
 a:not(.hiddenLink) {
-  color: black;
+  color: var(--secondary-color);
 
   &:hover {
-    color: var(--secondary-color);
+    color: var(--secondary-color-light);
   }
 }
 

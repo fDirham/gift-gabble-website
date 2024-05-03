@@ -10,6 +10,11 @@ import useProductMap from "@/hooks/useProductMap";
 import { Amaranth } from "next/font/google";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
+function getAmazonSearchLink(idea: string) {
+  const kStr = idea.toLowerCase().trim().split(" ").join("+");
+  return `https://www.amazon.com/s?k=${kStr}&linkCode=ll2&tag=fbdlabs-20`;
+}
+
 export default function ShopPage() {
   const { formResponse, isFormResponseLoaded } = useFormResponse();
   const searchParams = useSearchParams();
@@ -28,7 +33,7 @@ export default function ShopPage() {
     }
   }, [isProductMapLoaded, idea, amazonProductList]);
 
-  if (!isFormResponseLoaded || !isProductMapLoaded) return null;
+  if (!idea || !isFormResponseLoaded || !isProductMapLoaded) return null;
   return (
     <PageWrapper isBlankBG>
       <h1 className={styles.title}>
@@ -37,12 +42,25 @@ export default function ShopPage() {
           {formResponse.who}
         </span>
         {" from "}
-        <span className={styles.amazonText}>Amazon</span>
+        <a
+          href={getAmazonSearchLink(idea)}
+          target="_blank"
+          className={styles.amazonText}
+        >
+          Amazon
+        </a>
       </h1>
+
       <p className={styles.disclaimerText}>
         DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
         Clicking on any product below takes you to an Amazon page.
       </p>
+      <div className={styles.inAmazonContainer}>
+        <a href={getAmazonSearchLink(idea)} target="_blank">
+          Shop directly in Amazon
+        </a>
+      </div>
+
       <AmazonProductListRender
         amazonProductList={amazonProductList}
         isLoading={false}
