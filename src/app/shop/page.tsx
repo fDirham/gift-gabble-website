@@ -8,8 +8,9 @@ import { useEffect } from "react";
 import AmazonProductListRender from "@/components/AmazonProductListRender";
 import useProductMap from "@/hooks/useProductMap";
 import { Amaranth } from "next/font/google";
-const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
+import useScrollUp from "@/hooks/useScrollUp";
 
+const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 function getAmazonSearchLink(idea: string) {
   const kStr = idea.toLowerCase().trim().split(" ").join("+");
   return `https://www.amazon.com/s?k=${kStr}&linkCode=ll2&tag=fbdlabs-20`;
@@ -21,6 +22,7 @@ export default function ShopPage() {
   const searchParams = useSearchParams();
   const idea = searchParams.get("q");
   const router = useRouter();
+  useScrollUp();
 
   const { productMap, isProductMapLoaded } = useProductMap();
 

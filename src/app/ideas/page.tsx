@@ -12,8 +12,9 @@ import { useRouter } from "next/navigation";
 import useIdeaList from "@/hooks/useIdeaList";
 import useProductMap from "@/hooks/useProductMap";
 import { AmazonProductObj } from "@/utilities/customTypes";
-const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
+import useScrollUp from "@/hooks/useScrollUp";
 
+const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 const SHOW_INCREMENT = 4;
 
 export default function IdeasPage() {
@@ -21,6 +22,7 @@ export default function IdeasPage() {
     useFormResponse();
   const screenDevice = useScreenDevice();
   const router = useRouter();
+  useScrollUp();
 
   const { ideaList, setIdeaList, isIdeaListLoaded, shownIdx, setShownIdx } =
     useIdeaList();
