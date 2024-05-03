@@ -5,11 +5,32 @@ import { useRouter } from "next/navigation";
 import PageWrapper from "@/components/PageWrapper";
 import SearchForm from "@/components/SearchForm";
 import HeroPerson from "@/components/HeroPerson";
+import { FormResponse } from "@/utilities/customTypes";
+import { useAnalyticsAPI } from "@/utilities/useAPI";
+import useAnalyticsSessionId from "@/hooks/useAnalyticsSessionId";
+import { useEffect } from "react";
+import { randomFiveDigit } from "@/utilities/helpers";
 
 export default function Home() {
   const router = useRouter();
+  const {
+    analyticsSessionId,
+    setAnalyticsSessionId,
+    isAnalyticsSessionIdLoaded,
+  } = useAnalyticsSessionId();
 
-  async function handleSearch() {
+  useEffect(() => {
+    const defaultSessionId = new Date().toISOString() + randomFiveDigit();
+    setAnalyticsSessionId(defaultSessionId); // Initialize id
+  }, [isAnalyticsSessionIdLoaded]);
+
+  async function handleSearch(formResponse: FormResponse) {
+    useAnalyticsAPI({
+      actionType: "fr",
+      formResponse,
+      sessionId: analyticsSessionId,
+    });
+
     router.push("/ideas");
   }
 

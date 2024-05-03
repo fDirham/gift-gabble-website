@@ -4,18 +4,19 @@ import styles from "./IdeaListRender.module.scss";
 import { useRouter } from "next/navigation";
 import { encodeObject } from "@/utilities/helpers";
 import RotatingImage from "../RotatingImage";
-import { DUMMY_IDEA_LIST } from "@/dummy/dummyIdeaList";
 import { AmazonProductObj } from "@/utilities/customTypes";
+import { useAnalyticsAPI } from "@/utilities/useAPI";
 
 type IdeaListRenderProps = {
   ideaList: string[];
   isLoading: boolean;
   productMap: { [idea: string]: AmazonProductObj[] };
+  sessionId: string;
 };
 
 export default function IdeaListRender(props: IdeaListRenderProps) {
   const renderIdeaList = () => {
-    const toReturn = props.ideaList.map((idea) => {
+    const toReturn = props.ideaList.map((idea, idx) => {
       const productList = props.productMap[idea] ? props.productMap[idea] : [];
       return (
         <IdeaBlock
@@ -24,6 +25,8 @@ export default function IdeaListRender(props: IdeaListRenderProps) {
           productList={productList}
           isLoading={props.isLoading}
           pureLoading={false}
+          orderIdx={idx}
+          sessionId={props.sessionId}
         ></IdeaBlock>
       );
     });
@@ -50,6 +53,8 @@ type IdeaBlockProps =
       idea: string;
       productList: AmazonProductObj[];
       isLoading?: boolean;
+      orderIdx: number;
+      sessionId: string;
     }
   | {
       pureLoading: true;
@@ -63,6 +68,12 @@ function IdeaBlock(props: IdeaBlockProps) {
   function handleClick() {
     if (props.pureLoading || props.isLoading) return;
 
+    useAnalyticsAPI({
+      actionType: "ic",
+      idea: props.idea,
+      ideaIdx: props.orderIdx,
+      sessionId: props.sessionId,
+    });
     router.push("/shop?" + encodeObject({ q: props.idea }));
   }
 

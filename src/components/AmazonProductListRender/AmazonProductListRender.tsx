@@ -4,16 +4,33 @@ import styles from "./AmazonProductListRender.module.scss";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import StarRatings from "react-star-ratings";
 import useScreenDevice from "@/hooks/useScreenDevice";
+import { useAnalyticsAPI } from "@/utilities/useAPI";
 
 type AmazonProductListRenderProps = {
   amazonProductList: AmazonProductObj[];
   isLoading: boolean;
+  sessionId: string;
 };
 
 export default function AmazonProductListRender(
   props: AmazonProductListRenderProps
 ) {
   const screenDevice = useScreenDevice();
+
+  const logChoose = (productObj: AmazonProductObj) => {
+    useAnalyticsAPI({
+      actionType: "pc",
+      sessionId: props.sessionId,
+      title: productObj.title,
+      rating: productObj.rating,
+      reviewsCount: productObj.reviewsCount,
+      price: productObj.price,
+      currencySymbol: productObj.currencySymbol,
+      url: productObj.linkUrl,
+    });
+
+    return true;
+  };
 
   const renderAmazonProductList = () => {
     const toReturn = props.amazonProductList.map((productObj) => {
@@ -23,6 +40,7 @@ export default function AmazonProductListRender(
           key={productObj.title}
           isMobile={screenDevice.isMobile}
           isLoading={props.isLoading}
+          onChoose={logChoose}
         ></ProductBlock>
       );
     });
@@ -50,6 +68,7 @@ type ProductBlockProps = {
   productObj: AmazonProductObj;
   isMobile: boolean;
   isLoading: boolean;
+  onChoose: (obj: AmazonProductObj) => void;
 };
 
 function ProductBlock(props: ProductBlockProps) {
@@ -91,6 +110,7 @@ const ProductImg = (props: ProductBlockProps) => {
       href={linkUrl}
       className={["hiddenLink", styles.productImgLink].join(" ")}
       target="_blank"
+      onClick={() => props.onChoose(props.productObj)}
     >
       <div className={styles.productImgContainer}>
         <img src={imgSrc} alt="" className={styles.productImg} />
@@ -114,13 +134,14 @@ const ProductCopy = (props: ProductBlockProps) => {
 
   if (props.isMobile) {
     return (
-      <a href={productLink} className="hiddenLink" target="_blank">
+      <a
+        href={productLink}
+        className="hiddenLink"
+        target="_blank"
+        onClick={() => props.onChoose(props.productObj)}
+      >
         <div className={styles.productCopyContainer}>
-          <h3 className={styles.productTitle}>
-            <a href={productLink} className="hiddenLink" target="_blank">
-              {productTitle}
-            </a>
-          </h3>
+          <h3 className={styles.productTitle}>{productTitle}</h3>
           <ProductRatings {...props} />
           <ProductPrice {...props} />
           {isPrime && (
@@ -138,12 +159,22 @@ const ProductCopy = (props: ProductBlockProps) => {
   return (
     <div className={styles.productCopyContainer}>
       <h3 className={styles.productTitle}>
-        <a href={productLink} className="hiddenLink" target="_blank">
+        <a
+          href={productLink}
+          className="hiddenLink"
+          target="_blank"
+          onClick={() => props.onChoose(props.productObj)}
+        >
           {productTitle}
         </a>
       </h3>
       <ProductRatings {...props} />
-      <a href={productLink} className="hiddenLink" target="_blank">
+      <a
+        href={productLink}
+        className="hiddenLink"
+        target="_blank"
+        onClick={() => props.onChoose(props.productObj)}
+      >
         <ProductPrice {...props} />
       </a>
       {isPrime && (

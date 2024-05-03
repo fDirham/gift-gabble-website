@@ -4,10 +4,11 @@ import styles from "./SearchForm.module.scss";
 import { UNKNOWN_VALUE, whoOptions, whoTwoMap, whyOptions } from "./options";
 import useFormResponse from "@/hooks/useFormResponse";
 import { Amaranth } from "next/font/google";
+import { FormResponse } from "@/utilities/customTypes";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 
 export type SearchFormProps = {
-  onGo: () => void;
+  onGo: (formResponse: FormResponse) => void;
 };
 
 export default function SearchForm(props: SearchFormProps) {
@@ -15,7 +16,7 @@ export default function SearchForm(props: SearchFormProps) {
     useFormResponse();
 
   function handleGo() {
-    props.onGo();
+    props.onGo(formResponse);
   }
 
   // Render

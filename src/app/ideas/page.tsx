@@ -7,12 +7,13 @@ import IdeaListRender from "@/components/IdeaListRender";
 import PageWrapper from "@/components/PageWrapper";
 import { Amaranth } from "next/font/google";
 import useScreenDevice from "@/hooks/useScreenDevice";
-import { useAPI } from "@/utilities/useAPI";
+import { useAnalyticsAPI, useRecAPI } from "@/utilities/useAPI";
 import { useRouter } from "next/navigation";
 import useIdeaList from "@/hooks/useIdeaList";
 import useProductMap from "@/hooks/useProductMap";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import useScrollUp from "@/hooks/useScrollUp";
+import useAnalyticsSessionId from "@/hooks/useAnalyticsSessionId";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 const SHOW_INCREMENT = 4;
@@ -22,11 +23,12 @@ export default function IdeasPage() {
     useFormResponse();
   const screenDevice = useScreenDevice();
   const router = useRouter();
-  useScrollUp();
-
   const { ideaList, setIdeaList, isIdeaListLoaded, shownIdx, setShownIdx } =
     useIdeaList();
   const { productMap, setProductMap } = useProductMap();
+  const { analyticsSessionId, isAnalyticsSessionIdLoaded } =
+    useAnalyticsSessionId();
+  useScrollUp();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,7 +46,8 @@ export default function IdeasPage() {
       !ideaList.length &&
       isFormResponseLoaded &&
       !isFormResponseEmpty &&
-      !isLoading
+      !isLoading &&
+      isAnalyticsSessionIdLoaded
     )
       fetchIdeaList();
   }, [
@@ -54,6 +57,7 @@ export default function IdeasPage() {
     isFormResponseEmpty,
     isLoading,
     formResponse,
+    isAnalyticsSessionIdLoaded,
   ]);
 
   async function fetchIdeaList(useOldIdeas = false) {
@@ -81,7 +85,7 @@ export default function IdeasPage() {
         reqBody.oldIdeaList = ideaList;
       }
 
-      const res = await useAPI<string[]>(reqBody);
+      const res = await useRecAPI<string[]>(reqBody);
 
       if (res.isError) {
         window.alert("Something went wrong, please try again later.");
@@ -91,6 +95,13 @@ export default function IdeasPage() {
       }
 
       const newIdeaList = res.data;
+
+      useAnalyticsAPI({
+        actionType: "ig",
+        ideaList: newIdeaList,
+        sessionId: analyticsSessionId,
+      });
+
       workingIdeaList = [...workingIdeaList, ...newIdeaList];
       setIdeaList(workingIdeaList);
     }
@@ -103,7 +114,7 @@ export default function IdeasPage() {
       newShownIdeaListLength
     );
 
-    const prodRes = await useAPI<{ [idea: string]: AmazonProductObj[] }>({
+    const prodRes = await useRecAPI<{ [idea: string]: AmazonProductObj[] }>({
       actionRoute: "OXYLABS_AMAZON_PROD_SEARCH",
       inList: ideasToFindProductsFor,
     });
@@ -153,6 +164,7 @@ export default function IdeasPage() {
           ideaList={shownIdeaList}
           isLoading={contentLoading}
           productMap={productMap}
+          sessionId={analyticsSessionId}
         />
 
         {!contentLoading && (

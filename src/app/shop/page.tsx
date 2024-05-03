@@ -4,11 +4,13 @@ import styles from "./page.module.scss";
 import useFormResponse from "@/hooks/useFormResponse";
 import PageWrapper from "@/components/PageWrapper";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import AmazonProductListRender from "@/components/AmazonProductListRender";
 import useProductMap from "@/hooks/useProductMap";
 import { Amaranth } from "next/font/google";
 import useScrollUp from "@/hooks/useScrollUp";
+import useAnalyticsSessionId from "@/hooks/useAnalyticsSessionId";
+import { useAnalyticsAPI } from "@/utilities/useAPI";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 function getAmazonSearchLink(idea: string) {
@@ -19,6 +21,7 @@ function getAmazonSearchLink(idea: string) {
 export default function ShopPage() {
   const { formResponse, isFormResponseLoaded, isFormResponseEmpty } =
     useFormResponse();
+  const { analyticsSessionId } = useAnalyticsSessionId();
   const searchParams = useSearchParams();
   const idea = searchParams.get("q");
   const router = useRouter();
@@ -42,7 +45,15 @@ export default function ShopPage() {
     }
   }, [isProductMapLoaded, idea, amazonProductList]);
 
+  const logSearchClick = useCallback(() => {
+    useAnalyticsAPI({
+      actionType: "sc",
+      sessionId: analyticsSessionId,
+    });
+  }, [analyticsSessionId]);
+
   if (!idea || !isFormResponseLoaded || !isProductMapLoaded) return null;
+
   return (
     <PageWrapper isBlankBG>
       <h1 className={styles.title}>
@@ -55,6 +66,7 @@ export default function ShopPage() {
           href={getAmazonSearchLink(idea)}
           target="_blank"
           className={styles.amazonText}
+          onClick={logSearchClick}
         >
           Amazon
         </a>
@@ -65,7 +77,11 @@ export default function ShopPage() {
         Clicking on any product below takes you to an Amazon page.
       </p>
       <div className={styles.inAmazonContainer}>
-        <a href={getAmazonSearchLink(idea)} target="_blank">
+        <a
+          href={getAmazonSearchLink(idea)}
+          target="_blank"
+          onClick={logSearchClick}
+        >
           Shop directly in Amazon
         </a>
       </div>
@@ -73,6 +89,7 @@ export default function ShopPage() {
       <AmazonProductListRender
         amazonProductList={amazonProductList}
         isLoading={false}
+        sessionId={analyticsSessionId}
       />
     </PageWrapper>
   );
