@@ -1,28 +1,11 @@
-export type IdeaObj = {
-  idea: string;
-  productList: ShallowAmazonProductObj[];
-};
-
-export type ShallowAmazonProductObj = {
-  imageUrl: string;
-  amazonUrl: string;
-  title: string;
-};
-
-export type AmazonProductObj =
-  | { isShallow: false; data: FullAmazonProductObj }
-  | { isShallow: true; data: ShallowAmazonProductObj };
-
-export type FullAmazonProductObj = {
+export type AmazonProductObj = {
   title: string;
   asin: string;
   linkUrl: string;
   imageUrl: string;
   rating?: number;
-  ratingsTotal?: number;
-  priceStr: string | null;
-  priceSymbol: string | null;
-  priceNum: number | null;
+  price?: number;
+  currencySymbol?: string;
   isPrime: boolean;
 };
 
@@ -45,5 +28,3 @@ export type APIFormResponse = {
   budget: number;
   giftNotes?: string;
 };
-
-export type APIReturnREC = IdeaObj[];

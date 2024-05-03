@@ -1,36 +1,41 @@
 "use client";
 
 import styles from "./IdeaListRender.module.scss";
-import { IdeaObj } from "@/utilities/customTypes";
 import { useRouter } from "next/navigation";
 import { encodeObject } from "@/utilities/helpers";
 import RotatingImage from "../RotatingImage";
 import { DUMMY_IDEA_LIST } from "@/dummy/dummyIdeaList";
+import { AmazonProductObj } from "@/utilities/customTypes";
 
 type IdeaListRenderProps = {
-  ideaList: IdeaObj[];
+  ideaList: string[];
   isLoading: boolean;
+  productMap: { [idea: string]: AmazonProductObj[] };
 };
 
 export default function IdeaListRender(props: IdeaListRenderProps) {
   const renderIdeaList = () => {
-    const toReturn = props.ideaList.map((ideaObj) => {
-      return <IdeaBlock ideaObj={ideaObj} key={ideaObj.idea}></IdeaBlock>;
+    const toReturn = props.ideaList.map((idea) => {
+      const productList = props.productMap[idea] ? props.productMap[idea] : [];
+      return (
+        <IdeaBlock
+          idea={idea}
+          key={idea}
+          productList={productList}
+          isLoading={props.isLoading}
+          pureLoading={false}
+        ></IdeaBlock>
+      );
     });
 
     if (props.isLoading) {
-      const pseudoList = new Array(10).fill(null);
-      pseudoList.forEach((_, idx) => {
+      for (let i = 0; i < 10; i++) {
         const toAdd = (
-          <IdeaBlock
-            ideaObj={DUMMY_IDEA_LIST[0]}
-            key={"loading-idea-" + idx}
-            isLoading
-          ></IdeaBlock>
+          <IdeaBlock key={"loading-idea-" + i} pureLoading></IdeaBlock>
         );
 
         toReturn.push(toAdd);
-      });
+      }
     }
 
     return toReturn;
@@ -39,28 +44,33 @@ export default function IdeaListRender(props: IdeaListRenderProps) {
   return <div className={styles.container}>{renderIdeaList()}</div>;
 }
 
-type IdeaBlockProps = {
-  ideaObj: IdeaObj;
-  isLoading?: boolean;
-};
+type IdeaBlockProps =
+  | {
+      pureLoading: false;
+      idea: string;
+      productList: AmazonProductObj[];
+      isLoading?: boolean;
+    }
+  | {
+      pureLoading: true;
+    };
 
 function IdeaBlock(props: IdeaBlockProps) {
-  const { ideaObj } = props;
-  const { productList } = ideaObj;
+  const productList = props.pureLoading ? [] : props.productList;
   const imageList = productList.map((obj) => obj.imageUrl);
   const router = useRouter();
 
   function handleClick() {
-    if (props.isLoading) return;
+    if (props.pureLoading || props.isLoading) return;
 
-    router.push("/shop?" + encodeObject({ q: ideaObj.idea }));
+    router.push("/shop?" + encodeObject({ q: props.idea }));
   }
 
   const renderImg = () => {
-    if (props.isLoading) {
+    if (props.pureLoading || (props.isLoading && !imageList.length)) {
       return null;
     }
-    if (!imageList || !imageList.length) {
+    if (!imageList.length) {
       return (
         <img src="/unknown_gift.png" alt="" className={styles.monoIdeaImg} />
       );
@@ -73,7 +83,7 @@ function IdeaBlock(props: IdeaBlockProps) {
 
   const cnIdeaBlockContainer = () => {
     const toReturn = [styles.ideaBlockContainer];
-    if (props.isLoading) {
+    if (props.pureLoading || props.isLoading) {
       toReturn.push(styles.loading);
     }
     return toReturn.join(" ");
@@ -81,7 +91,7 @@ function IdeaBlock(props: IdeaBlockProps) {
 
   const cnIdeaImgContainer = () => {
     const toReturn = [styles.ideaImgContainer];
-    if (props.isLoading) {
+    if (props.pureLoading || (props.isLoading && !imageList.length)) {
       toReturn.push(styles.loading);
     }
     return toReturn.join(" ");
@@ -89,20 +99,17 @@ function IdeaBlock(props: IdeaBlockProps) {
 
   const cnIdeaText = () => {
     const toReturn = [styles.ideaText];
-    if (props.isLoading) {
+    if (props.pureLoading) {
       toReturn.push(styles.loading);
     }
     return toReturn.join(" ");
   };
 
+  const ideaStr = props.pureLoading ? "________" : props.idea;
   return (
-    <div
-      className={cnIdeaBlockContainer()}
-      key={ideaObj.idea}
-      onClick={handleClick}
-    >
+    <div className={cnIdeaBlockContainer()} onClick={handleClick}>
       <div className={cnIdeaImgContainer()}>{renderImg()}</div>
-      <span className={cnIdeaText()}>{ideaObj.idea}</span>
+      <span className={cnIdeaText()}>{ideaStr}</span>
     </div>
   );
 }

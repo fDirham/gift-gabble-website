@@ -3,7 +3,6 @@
 import styles from "./page.module.scss";
 import useFormResponse from "@/hooks/useFormResponse";
 import { useEffect, useState } from "react";
-import { IdeaObj } from "@/utilities/customTypes";
 import IdeaListRender from "@/components/IdeaListRender";
 import PageWrapper from "@/components/PageWrapper";
 import { Amaranth } from "next/font/google";
@@ -11,14 +10,21 @@ import useScreenDevice from "@/hooks/useScreenDevice";
 import { useAPI } from "@/utilities/useAPI";
 import { useRouter } from "next/navigation";
 import useIdeaList from "@/hooks/useIdeaList";
+import useProductMap from "@/hooks/useProductMap";
+import { AmazonProductObj } from "@/utilities/customTypes";
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
+
+const SHOW_INCREMENT = 4;
 
 export default function IdeasPage() {
   const { formResponse, isFormResponseLoaded } = useFormResponse();
   const screenDevice = useScreenDevice();
   const router = useRouter();
 
-  const { ideaList, setIdeaList, isIdeaListLoaded } = useIdeaList();
+  const { ideaList, setIdeaList, isIdeaListLoaded, shownIdx, setShownIdx } =
+    useIdeaList();
+  const { productMap, addToProductMap, setProductMap } = useProductMap();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const actionText = screenDevice.isDesktop ? "click" : "tap";
@@ -33,54 +39,83 @@ export default function IdeasPage() {
       fetchIdeaList();
   }, [formResponse, isLoading, ideaList, isIdeaListLoaded]);
 
-  async function fetchIdeaList() {
-    setIsLoading(true);
-    const res = await useAPI<IdeaObj[]>({
-      actionRoute: "REC",
-      formResponse: formResponse,
-    });
+  async function fetchIdeaList(useOldIdeas = false) {
+    if (isLoading) return;
 
-    if (res.isError) {
-      window.alert("Something went wrong, please try again later.");
-      router.push("/");
-      console.error(res.error);
-      return;
-    }
-
-    const newIdeaList = res.data;
-    setIdeaList(newIdeaList);
-    setIsLoading(false);
-  }
-
-  async function fetchMoreIdeaList() {
-    if (ideaList.length > 20) {
+    if (shownIdx > 20) {
       window.alert(
         "Limit reached. Perhaps changing your responses will help get better results?"
       );
       return;
     }
+
     setIsLoading(true);
-    const res = await useAPI<IdeaObj[]>({
-      actionRoute: "REC",
-      formResponse: formResponse,
-      oldIdeaList: ideaList.map((obj) => obj.idea),
+
+    const newShownIdeaListLength = shownIdx + SHOW_INCREMENT;
+    let workingIdeaList = ideaList;
+    if (ideaList.length < newShownIdeaListLength) {
+      // Get idea list
+      const reqBody: { [k: string]: any } = {
+        actionRoute: "REC",
+        formResponse: formResponse,
+      };
+
+      if (useOldIdeas) {
+        reqBody.oldIdeaList = ideaList;
+      }
+
+      const res = await useAPI<string[]>(reqBody);
+
+      if (res.isError) {
+        window.alert("Something went wrong, please try again later.");
+        router.push("/");
+        console.error(res.error);
+        return;
+      }
+
+      const newIdeaList = res.data;
+      workingIdeaList = [...workingIdeaList, ...newIdeaList];
+      setIdeaList(workingIdeaList);
+    }
+
+    setShownIdx((curr) => curr + SHOW_INCREMENT);
+
+    // Get products
+    const ideasToFindProductsFor = workingIdeaList.slice(
+      shownIdx,
+      newShownIdeaListLength
+    );
+
+    const prodRes = await useAPI<{ [idea: string]: AmazonProductObj[] }>({
+      actionRoute: "OXYLABS_AMAZON_PROD_SEARCH",
+      inList: ideasToFindProductsFor,
     });
 
-    if (res.isError) {
+    if (prodRes.isError) {
       window.alert("Something went wrong, please try again later.");
       router.push("/");
-      console.error(res.error);
+      console.error(prodRes.error);
       return;
     }
 
-    const newIdeaList = [...ideaList, ...res.data];
+    setProductMap((curr) => {
+      return {
+        ...curr,
+        ...prodRes.data,
+      };
+    });
 
-    setIdeaList(newIdeaList);
     setIsLoading(false);
+  }
+
+  async function fetchMoreIdeaList() {
+    return await fetchIdeaList(true);
   }
 
   const contentLoading = isLoading || !ideaList.length;
   if (!isFormResponseLoaded || !isIdeaListLoaded) return null;
+
+  const shownIdeaList = ideaList.slice(0, shownIdx);
   return (
     <PageWrapper isBlankBG>
       <div className={styles.container}>
@@ -97,7 +132,12 @@ export default function IdeasPage() {
         <p className={styles.disclaimerText}>
           {`Preview images are not perfect, ${actionText} an idea for more accurate results. Scroll to bottom for more ideas.`}
         </p>
-        <IdeaListRender ideaList={ideaList} isLoading={contentLoading} />
+        <IdeaListRender
+          ideaList={shownIdeaList}
+          isLoading={contentLoading}
+          productMap={productMap}
+        />
+
         {!contentLoading && (
           <div className={styles.moreContainer}>
             <span className={styles.moreText}>Need more?</span>
