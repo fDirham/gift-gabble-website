@@ -13,8 +13,8 @@ type PageWrapperProps = {
 export default function PageWrapper(props: PageWrapperProps) {
   const cnContainer = () => {
     const toReturn = [styles.container];
-    if (props.isBlankBG) {
-      toReturn.push(styles.blankBG);
+    if (!props.isBlankBG) {
+      toReturn.push("yellowBG");
     }
     return toReturn.join(" ");
   };
