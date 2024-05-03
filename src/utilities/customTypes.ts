@@ -1,15 +1,19 @@
 export type IdeaObj = {
   idea: string;
-  productList: ShallowProductObj[];
+  productList: ShallowAmazonProductObj[];
 };
 
-export type ShallowProductObj = {
+export type ShallowAmazonProductObj = {
   imageUrl: string;
   amazonUrl: string;
   title: string;
 };
 
-export type AmazonProductObj = {
+export type AmazonProductObj =
+  | { isShallow: false; data: FullAmazonProductObj }
+  | { isShallow: true; data: ShallowAmazonProductObj };
+
+export type FullAmazonProductObj = {
   title: string;
   asin: string;
   linkUrl: string;

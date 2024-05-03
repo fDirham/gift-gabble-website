@@ -1,6 +1,6 @@
-import { AmazonProductObj } from "@/utilities/customTypes";
+import { FullAmazonProductObj } from "@/utilities/customTypes";
 
-export const DUMMY_LOADING_AMAZON_PRODUCT_OBJ: AmazonProductObj = {
+export const DUMMY_LOADING_AMAZON_PRODUCT_OBJ: FullAmazonProductObj = {
   title: "DISCOUNT PROMOS Custom 20 oz. Water Bottles with Push Cap",
   asin: "B08D4Y4BC1",
   linkUrl: "",
@@ -12,7 +12,7 @@ export const DUMMY_LOADING_AMAZON_PRODUCT_OBJ: AmazonProductObj = {
   priceStr: "39.99",
   isPrime: false,
 };
-export const DUMMY_AMAZON_SEARCH_RES: AmazonProductObj[] = [
+export const DUMMY_AMAZON_SEARCH_RES: FullAmazonProductObj[] = [
   {
     title:
       "DISCOUNT PROMOS Custom 20 oz. Water Bottles with Push Cap Set of 10, Personalized Bulk Pack - Perfect for Gym, Hiking, Camping, Outdoor Sports - White",

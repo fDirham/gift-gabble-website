@@ -96,6 +96,18 @@ $imageWidth: 240px;
   flex-grow: 0;
 }
 
+.loadingProductPrice {
+  @extend .suspenseBackground;
+  width: 53px;
+  height: 34px;
+}
+
+.loadingProductRatings {
+  @extend .suspenseBackground;
+  width: 120px;
+  height: 17px;
+}
+
 @media only screen and (max-width: calc($breakpointTablet + 40px)) {
   .container {
     grid-template-columns: auto auto;

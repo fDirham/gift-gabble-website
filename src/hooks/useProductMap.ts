@@ -1,15 +1,15 @@
-import { AmazonProductObj } from "@/utilities/customTypes";
+import { FullAmazonProductObj } from "@/utilities/customTypes";
 import useSessionStorage from "./useSessionStorage";
 import { useCallback } from "react";
 
 export default function useProductMap() {
   const [productMap, setProductMap, isProductMapLoaded, resetProductMap] =
     useSessionStorage<{
-      [k: string]: AmazonProductObj[];
+      [k: string]: FullAmazonProductObj[];
     }>("productMap", {});
 
   const addToProductMap = useCallback(
-    (k: string, productList: AmazonProductObj[]) => {
+    (k: string, productList: FullAmazonProductObj[]) => {
       if (isProductMapLoaded)
         setProductMap((curr) => {
           return { ...curr, [k]: productList };

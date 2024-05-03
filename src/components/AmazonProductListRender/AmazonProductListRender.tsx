@@ -20,8 +20,9 @@ export default function AmazonProductListRender(
       return (
         <ProductBlock
           productObj={productObj}
-          key={productObj.asin}
+          key={productObj.data.title}
           isMobile={screenDevice.isMobile}
+          isLoading={props.isLoading}
         ></ProductBlock>
       );
     });
@@ -48,6 +49,7 @@ export default function AmazonProductListRender(
 type ProductBlockProps = {
   productObj: AmazonProductObj;
   isMobile: boolean;
+  isLoading: boolean;
 };
 
 function ProductBlock(props: ProductBlockProps) {
@@ -79,12 +81,16 @@ function LoadingProductBlock(props: LoadingProductBlockProps) {
 const ProductImg = (props: ProductBlockProps) => {
   const { productObj } = props;
 
-  let imgSrc = productObj.imageUrl;
+  let imgSrc = productObj.data.imageUrl;
   if (!props.isMobile) imgSrc = imgSrc.replace("UY218", "UL320");
+
+  const linkUrl = productObj.isShallow
+    ? productObj.data.amazonUrl
+    : productObj.data.linkUrl;
 
   return (
     <a
-      href={productObj.linkUrl}
+      href={linkUrl}
       className={["hiddenLink", styles.productImgLink].join(" ")}
       target="_blank"
     >
@@ -99,13 +105,16 @@ const ProductCopy = (props: ProductBlockProps) => {
   const { productObj } = props;
 
   const MAX_TITLE_LENGTH = props.isMobile ? 100 : 120;
-  let productTitle = productObj.title;
+  let productTitle = productObj.data.title;
   if (productTitle.length > MAX_TITLE_LENGTH) {
     productTitle = productTitle.slice(0, MAX_TITLE_LENGTH - 3) + "...";
   }
 
-  const productLink = productObj.linkUrl;
-  const isPrime = !!productObj.isPrime;
+  const productLink = productObj.isShallow
+    ? productObj.data.amazonUrl
+    : productObj.data.linkUrl;
+
+  const isPrime = productObj.isShallow ? false : productObj.data.isPrime;
 
   if (props.isMobile) {
     return (
@@ -116,16 +125,8 @@ const ProductCopy = (props: ProductBlockProps) => {
               {productTitle}
             </a>
           </h3>
-          <ProductRatings
-            rating={productObj.rating}
-            ratingsTotal={productObj.ratingsTotal}
-            productLink={productLink}
-            isMobile={props.isMobile}
-          />
-          <ProductPrice
-            priceStr={props.productObj.priceStr}
-            priceSymbol={props.productObj.priceSymbol}
-          />
+          <ProductRatings {...props} />
+          <ProductPrice {...props} />
           {isPrime && (
             <img
               src="prime_logo.jpg"
@@ -145,17 +146,9 @@ const ProductCopy = (props: ProductBlockProps) => {
           {productTitle}
         </a>
       </h3>
-      <ProductRatings
-        productLink={productLink}
-        rating={productObj.rating}
-        ratingsTotal={productObj.ratingsTotal}
-        isMobile={props.isMobile}
-      />
+      <ProductRatings {...props} />
       <a href={productLink} className="hiddenLink" target="_blank">
-        <ProductPrice
-          priceStr={productObj.priceStr}
-          priceSymbol={productObj.priceSymbol}
-        />
+        <ProductPrice {...props} />
       </a>
       {isPrime && (
         <img src="prime_logo.jpg" alt="prime" className={styles.primeLogo} />
@@ -164,13 +157,20 @@ const ProductCopy = (props: ProductBlockProps) => {
   );
 };
 
-const ProductPrice = (props: {
-  priceStr: string | null;
-  priceSymbol: string | null;
-}) => {
-  if (!props.priceStr || !props.priceSymbol) return null;
+const ProductPrice = (props: ProductBlockProps) => {
+  if (props.productObj.isShallow) {
+    if (props.isLoading) {
+      return <div className={styles.loadingProductPrice}></div>;
+    }
+    return null;
+  }
 
-  const priceComponentList = props.priceStr.split(".");
+  const priceStr = props.productObj.data.priceStr;
+  const priceSymbol = props.productObj.data.priceSymbol;
+
+  if (!priceStr) return null;
+
+  const priceComponentList = priceStr.split(".");
   const price1 = priceComponentList[0];
   let price2 = priceComponentList.length > 1 ? priceComponentList[1] : null;
   if (price2 && price2.length < 2) {
@@ -179,20 +179,23 @@ const ProductPrice = (props: {
 
   return (
     <span className={styles.priceContainer}>
-      <span className={styles.priceSymbol}>{props.priceSymbol}</span>
+      {!!priceSymbol && (
+        <span className={styles.priceSymbol}>{priceSymbol}</span>
+      )}
       <span className={styles.price1}>{price1}</span>
       {!!price2 && <span className={styles.price2}>{price2}</span>}
     </span>
   );
 };
 
-const ProductRatings = (props: {
-  isMobile: boolean;
-  productLink: string;
-  rating?: number;
-  ratingsTotal?: number;
-}) => {
-  const { rating, ratingsTotal, productLink } = props;
+const ProductRatings = (props: ProductBlockProps) => {
+  if (props.productObj.isShallow) {
+    if (props.isLoading) {
+      return <div className={styles.loadingProductRatings}></div>;
+    }
+    return null;
+  }
+  const { rating, ratingsTotal, linkUrl: productLink } = props.productObj.data;
   if (!rating || !ratingsTotal) return null;
 
   const reviewsLink = productLink + "#customerReviews";
