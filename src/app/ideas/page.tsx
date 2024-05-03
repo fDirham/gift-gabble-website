@@ -17,27 +17,42 @@ const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 const SHOW_INCREMENT = 4;
 
 export default function IdeasPage() {
-  const { formResponse, isFormResponseLoaded } = useFormResponse();
+  const { formResponse, isFormResponseLoaded, isFormResponseEmpty } =
+    useFormResponse();
   const screenDevice = useScreenDevice();
   const router = useRouter();
 
   const { ideaList, setIdeaList, isIdeaListLoaded, shownIdx, setShownIdx } =
     useIdeaList();
-  const { productMap, addToProductMap, setProductMap } = useProductMap();
+  const { productMap, setProductMap } = useProductMap();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const actionText = screenDevice.isDesktop ? "click" : "tap";
 
   useEffect(() => {
+    if (isFormResponseLoaded && isFormResponseEmpty) {
+      router.replace("/");
+    }
+  }, [isFormResponseEmpty, isFormResponseLoaded]);
+
+  useEffect(() => {
     if (
       isIdeaListLoaded &&
+      !ideaList.length &&
       isFormResponseLoaded &&
-      !isLoading &&
-      !ideaList.length
+      !isFormResponseEmpty &&
+      !isLoading
     )
       fetchIdeaList();
-  }, [formResponse, isLoading, ideaList, isIdeaListLoaded]);
+  }, [
+    isIdeaListLoaded,
+    ideaList,
+    isFormResponseLoaded,
+    isFormResponseEmpty,
+    isLoading,
+    formResponse,
+  ]);
 
   async function fetchIdeaList(useOldIdeas = false) {
     if (isLoading) return;

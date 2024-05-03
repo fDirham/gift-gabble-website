@@ -16,7 +16,8 @@ function getAmazonSearchLink(idea: string) {
 }
 
 export default function ShopPage() {
-  const { formResponse, isFormResponseLoaded } = useFormResponse();
+  const { formResponse, isFormResponseLoaded, isFormResponseEmpty } =
+    useFormResponse();
   const searchParams = useSearchParams();
   const idea = searchParams.get("q");
   const router = useRouter();
@@ -24,6 +25,12 @@ export default function ShopPage() {
   const { productMap, isProductMapLoaded } = useProductMap();
 
   const amazonProductList = idea ? productMap[idea] : [];
+
+  useEffect(() => {
+    if (isFormResponseLoaded && isFormResponseEmpty) {
+      router.replace("/");
+    }
+  }, [isFormResponseLoaded, isFormResponseEmpty]);
 
   useEffect(() => {
     if (idea && isProductMapLoaded && !amazonProductList.length) {

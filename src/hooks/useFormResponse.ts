@@ -56,5 +56,8 @@ export default function useFormResponse() {
     modifyFormResponse,
     isFormResponseLoaded,
     clearFormResponse,
+    isFormResponseEmpty:
+      formResponse.who === initialValues.who &&
+      formResponse.desc == initialValues.desc,
   };
 }
