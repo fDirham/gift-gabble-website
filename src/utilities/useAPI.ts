@@ -5,7 +5,7 @@ import { timeoutPromise } from "./helpers";
 const isDummyMode = process.env.NEXT_PUBLIC_DUMMY_MODE !== "0";
 
 export async function useAnalyticsAPI(reqBody: AnalyticsPostReqBody) {
-  const apiUrl = process.env.NEXT_PUBLIC_ANALYTICS_API_URL;
+  const apiUrl = "/api/analytics";
 
   try {
     const res = await fetch(apiUrl as string, {
