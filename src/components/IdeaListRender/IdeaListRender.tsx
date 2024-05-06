@@ -18,6 +18,7 @@ export default function IdeaListRender(props: IdeaListRenderProps) {
   const renderIdeaList = () => {
     const toReturn = props.ideaList.map((idea, idx) => {
       const productList = props.productMap[idea] ? props.productMap[idea] : [];
+      if (!props.isLoading && !productList.length) return null;
       return (
         <IdeaBlock
           idea={idea}
