@@ -63,13 +63,6 @@ export default function IdeasPage() {
   async function fetchIdeaList(useOldIdeas = false) {
     if (isLoading) return;
 
-    if (shownIdx > 20) {
-      window.alert(
-        "Limit reached. Perhaps changing your responses will help get better results?"
-      );
-      return;
-    }
-
     setIsLoading(true);
 
     const newShownIdeaListLength = shownIdx + SHOW_INCREMENT;
@@ -126,12 +119,24 @@ export default function IdeasPage() {
       return;
     }
 
+    const newProductMap = prodRes.data;
     setProductMap((curr) => {
       return {
         ...curr,
-        ...prodRes.data,
+        ...newProductMap,
       };
     });
+
+    // Delete those without idea list
+    const ideasToRemove = ideasToFindProductsFor.filter((idea) => {
+      return !newProductMap[idea];
+    });
+    const finalIdeaList: string[] = [];
+    workingIdeaList.forEach((idea) => {
+      if (!ideasToRemove.includes(idea)) finalIdeaList.push(idea);
+    });
+
+    setIdeaList(finalIdeaList);
 
     setIsLoading(false);
   }
@@ -144,6 +149,7 @@ export default function IdeasPage() {
   if (!isFormResponseLoaded || !isIdeaListLoaded) return null;
 
   const shownIdeaList = ideaList.slice(0, shownIdx);
+  const MAX_SHOWN_IDX = 20;
   return (
     <PageWrapper isBlankBG>
       <div className={styles.container}>
@@ -155,7 +161,7 @@ export default function IdeasPage() {
         </h1>
         <h2 className={styles.subtitle}>
           {actionText} the idea you like the most for <b>all</b> shopping
-          options.
+          options through Amazon.com
         </h2>
         <p className={styles.disclaimerText}>
           {`Preview images are not perfect, ${actionText} an idea for more accurate results. Scroll to bottom for more ideas.`}
@@ -167,7 +173,7 @@ export default function IdeasPage() {
           sessionId={analyticsSessionId}
         />
 
-        {!contentLoading && (
+        {!contentLoading && !!(shownIdx < MAX_SHOWN_IDX) && (
           <div className={styles.moreContainer}>
             <span className={styles.moreText}>Need more?</span>
             <button onClick={fetchMoreIdeaList}>GIVE ME NEW IDEAS</button>

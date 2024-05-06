@@ -12,41 +12,24 @@ import SafeImage from "../SafeImage";
 type RotatingImageProps = {
   imageList: string[];
   className?: string;
+  imgIdx: number;
 };
 export default function RotatingImage(props: RotatingImageProps) {
   const { imageList } = props;
 
-  const [imgIdx, setImgIdx] = useState<number>(0);
+  const initialCurrImgIdx = props.imgIdx % props.imageList.length;
+  const initialNextImgIdx = (props.imgIdx + 1) % props.imageList.length;
   const [isAnimating, setIsAnimating] = useState(false);
-  const [currImg, setCurrImg] = useState(imageList[0]);
-  const [nextImg, setNextImg] = useState(imageList[1]);
+  const [currImg, setCurrImg] = useState(imageList[initialCurrImgIdx]);
+  const [nextImg, setNextImg] = useState(imageList[initialNextImgIdx]);
   const [doneFirst, setDoneFirst] = useState(false);
 
-  const imgIdxInterval = useRef<ReturnType<typeof setInterval> | null>(null);
   const animTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const hasImageList = imageList && imageList.length;
-
   useEffect(() => {
-    if (!imgIdxInterval.current && hasImageList) {
-      imgIdxInterval.current = setInterval(() => {
-        setImgIdx((curr) => {
-          const newIdx = curr + 1;
-          if (newIdx >= imageList.length) {
-            return 0;
-          }
-          return newIdx;
-        });
-      }, 4000);
-    }
-
     return () => {
-      if (imgIdxInterval.current) {
-        clearInterval(imgIdxInterval.current);
-      }
-
       if (animTimeout.current) {
-        clearTimeout(animTimeout.current);
+        clearInterval(animTimeout.current);
       }
     };
   }, []);
@@ -56,10 +39,9 @@ export default function RotatingImage(props: RotatingImageProps) {
       setDoneFirst(true);
       return;
     }
-    let nextIdx = imgIdx + 1;
-    if (nextIdx >= imageList.length) {
-      nextIdx = 0;
-    }
+
+    const newCurrImgIdx = props.imgIdx % props.imageList.length;
+    const newNextImgIdx = (props.imgIdx + 1) % props.imageList.length;
 
     // Start animating image
     setIsAnimating(true);
@@ -69,11 +51,11 @@ export default function RotatingImage(props: RotatingImageProps) {
     }
 
     animTimeout.current = setTimeout(() => {
-      setCurrImg(imageList[imgIdx]);
-      setNextImg(imageList[nextIdx]);
+      setCurrImg(imageList[newCurrImgIdx]);
+      setNextImg(imageList[newNextImgIdx]);
       setIsAnimating(false);
     }, 1500);
-  }, [imgIdx]);
+  }, [props.imgIdx]);
 
   const getCurrImgClassName = () => {
     const toReturn = [styles.currImg];

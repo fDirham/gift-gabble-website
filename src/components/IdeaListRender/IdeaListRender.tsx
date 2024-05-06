@@ -6,6 +6,7 @@ import { encodeObject } from "@/utilities/helpers";
 import RotatingImage from "../RotatingImage";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import { useAnalyticsAPI } from "@/utilities/useAPI";
+import { useEffect, useRef, useState } from "react";
 
 type IdeaListRenderProps = {
   ideaList: string[];
@@ -15,6 +16,31 @@ type IdeaListRenderProps = {
 };
 
 export default function IdeaListRender(props: IdeaListRenderProps) {
+  const [imgSwitchIdx, setImgSwitchIdx] = useState(0);
+
+  const imgSwitchIdxInterval = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  );
+  const SWITCH_INTERVAL = 5000;
+  useEffect(() => {
+    if (!imgSwitchIdxInterval.current) {
+      imgSwitchIdxInterval.current = setInterval(() => {
+        setImgSwitchIdx((curr) => {
+          const newCurr = curr + 1;
+          const MAX_SWITCH_IDX = 2000;
+          if (newCurr > MAX_SWITCH_IDX) return 0;
+          return newCurr;
+        });
+      }, SWITCH_INTERVAL);
+    }
+
+    return () => {
+      if (imgSwitchIdxInterval.current) {
+        clearInterval(imgSwitchIdxInterval.current);
+      }
+    };
+  }, []);
+
   const renderIdeaList = () => {
     const toReturn = props.ideaList.map((idea, idx) => {
       const productList = props.productMap[idea] ? props.productMap[idea] : [];
@@ -28,6 +54,7 @@ export default function IdeaListRender(props: IdeaListRenderProps) {
           pureLoading={false}
           orderIdx={idx}
           sessionId={props.sessionId}
+          imgSwitchIdx={imgSwitchIdx}
         ></IdeaBlock>
       );
     });
@@ -56,6 +83,7 @@ type IdeaBlockProps =
       isLoading?: boolean;
       orderIdx: number;
       sessionId: string;
+      imgSwitchIdx: number;
     }
   | {
       pureLoading: true;
@@ -90,7 +118,12 @@ function IdeaBlock(props: IdeaBlockProps) {
     if (imageList.length == 1) {
       return <img src={imageList[0]} alt="" className={styles.monoIdeaImg} />;
     }
-    return <RotatingImage imageList={imageList}></RotatingImage>;
+    return (
+      <RotatingImage
+        imageList={imageList}
+        imgIdx={props.imgSwitchIdx}
+      ></RotatingImage>
+    );
   };
 
   const cnIdeaBlockContainer = () => {
