@@ -16,7 +16,7 @@ import useScrollUp from "@/hooks/useScrollUp";
 import useAnalyticsSessionId from "@/hooks/useAnalyticsSessionId";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
-const SHOW_INCREMENT = 4;
+const SHOW_INCREMENT = 5;
 
 export default function IdeasPage() {
   const { formResponse, isFormResponseLoaded, isFormResponseEmpty } =
