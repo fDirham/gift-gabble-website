@@ -41,7 +41,7 @@ export default function ShopPage() {
     if (idea && isProductMapLoaded && !amazonProductList.length) {
       window.alert("Something went wrong, please try again later");
       console.error("Empty shop product list");
-      router.replace("/");
+      router.back();
     }
   }, [isProductMapLoaded, idea, amazonProductList]);
 

@@ -102,8 +102,10 @@ function IdeaBlock(props: IdeaBlockProps) {
 
   const cnIdeaImgContainer = () => {
     const toReturn = [styles.ideaImgContainer];
-    if (props.pureLoading || (props.isLoading && !imageList.length)) {
+    if (props.pureLoading) {
       toReturn.push(styles.loading);
+    } else if (props.isLoading && !imageList.length) {
+      toReturn.push(styles.ideaLoading);
     }
     return toReturn.join(" ");
   };

@@ -154,7 +154,7 @@ export default function SearchForm(props: SearchFormProps) {
         </span>{" "}
         <br />{" "}
         <span style={{ fontWeight: 400 }}>
-          (The more you describe, the better our recommendations will be)
+          (The better the description, the better our recommendations will be)
         </span>
       </label>
     );
@@ -195,34 +195,34 @@ export default function SearchForm(props: SearchFormProps) {
     );
 
     // Budget
-    toRender.push(
-      <label htmlFor="budgetInput" key="budgetInputLabel">
-        OPTIONAL: Do you have a budget? <br />
-        ($0 for no)
-      </label>
-    );
+    // toRender.push(
+    //   <label htmlFor="budgetInput" key="budgetInputLabel">
+    //     OPTIONAL: Do you have a budget? <br />
+    //     ($0 for no)
+    //   </label>
+    // );
 
-    toRender.push(
-      <span
-        className={[styles.input, styles.budgetSpan].join(" ")}
-        key={"budgetInput"}
-      >
-        {"$ "}
-        <input
-          name="budgetInput"
-          id="budgetInput"
-          className={styles.budgetInput}
-          value={formResponse.budget}
-          onChange={(e) =>
-            modifyFormResponse({ budget: parseInt(e.target.value) })
-          }
-          type="number"
-          min={0}
-          max={500}
-          placeholder="0"
-        ></input>
-      </span>
-    );
+    // toRender.push(
+    //   <span
+    //     className={[styles.input, styles.budgetSpan].join(" ")}
+    //     key={"budgetInput"}
+    //   >
+    //     {"$ "}
+    //     <input
+    //       name="budgetInput"
+    //       id="budgetInput"
+    //       className={styles.budgetInput}
+    //       value={formResponse.budget}
+    //       onChange={(e) =>
+    //         modifyFormResponse({ budget: parseInt(e.target.value) })
+    //       }
+    //       type="number"
+    //       min={0}
+    //       max={500}
+    //       placeholder="0"
+    //     ></input>
+    //   </span>
+    // );
 
     toRender.push(
       <button onClick={handleGo} key={"goButton"}>

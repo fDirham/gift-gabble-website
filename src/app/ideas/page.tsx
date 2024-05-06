@@ -89,8 +89,8 @@ export default function IdeasPage() {
 
       if (res.isError) {
         window.alert("Something went wrong, please try again later.");
-        router.push("/");
         console.error(res.error);
+        router.back();
         return;
       }
 

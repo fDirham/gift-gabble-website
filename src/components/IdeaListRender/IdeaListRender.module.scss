@@ -25,9 +25,22 @@ $imageWidth: 240px;
   height: $imageWidth;
   background-color: #f7f7f7;
 
-  &.loading {
+  &.loading,
+  &.ideaLoading {
     @extend .suspenseBackground;
     border-radius: 4px;
+  }
+
+  &.ideaLoading {
+    background-color: var(--secondary-color-lighter);
+    background: linear-gradient(
+      to right,
+      var(--secondary-color-light) 2%,
+      var(--secondary-color) 18%,
+      var(--secondary-color-light) 33%
+    );
+
+    background-size: 800px 104px;
   }
 }
 
