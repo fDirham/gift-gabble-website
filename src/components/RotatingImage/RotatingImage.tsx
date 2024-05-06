@@ -37,7 +37,7 @@ export default function RotatingImage(props: RotatingImageProps) {
           }
           return newIdx;
         });
-      }, 3000);
+      }, 4000);
     }
 
     return () => {

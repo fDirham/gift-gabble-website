@@ -119,10 +119,36 @@ function IdeaBlock(props: IdeaBlockProps) {
   };
 
   const ideaStr = props.pureLoading ? "________" : props.idea;
+  const getPriceStr = () => {
+    if (props.pureLoading || !props.productList.length) return;
+
+    let minP = -1;
+    let maxP = -1;
+    let currencySymbol = "";
+    for (let i = 0; i < props.productList.length; i++) {
+      const currObj = productList[i];
+      const currPrice = currObj.price;
+      if (currPrice) {
+        if (minP == -1 || currPrice < minP) {
+          minP = currPrice;
+        }
+        if (maxP == -1 || currPrice > maxP) {
+          maxP = currPrice;
+        }
+        if (currObj.currencySymbol) {
+          currencySymbol = currObj.currencySymbol;
+        }
+      }
+    }
+
+    if (minP == maxP) return currencySymbol + minP;
+    return `${currencySymbol}${minP} - ${currencySymbol}${maxP}`;
+  };
   return (
     <div className={cnIdeaBlockContainer()} onClick={handleClick}>
       <div className={cnIdeaImgContainer()}>{renderImg()}</div>
       <span className={cnIdeaText()}>{ideaStr}</span>
+      <span className={styles.priceTag}>{getPriceStr()}</span>
     </div>
   );
 }
