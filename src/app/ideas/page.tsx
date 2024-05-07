@@ -14,6 +14,7 @@ import useProductMap from "@/hooks/useProductMap";
 import { AmazonProductObj } from "@/utilities/customTypes";
 import useScrollUp from "@/hooks/useScrollUp";
 import useAnalyticsSessionId from "@/hooks/useAnalyticsSessionId";
+import Link from "next/link";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 const SHOW_INCREMENT = 5;
@@ -153,6 +154,7 @@ export default function IdeasPage() {
   return (
     <PageWrapper isBlankBG>
       <div className={styles.container}>
+        <Link href={"/"}>{"<-"} Go back</Link>
         <h1 className={styles.title}>
           Here are some ideas for your{" "}
           <span className={[amaranth.className, styles.whoText].join(" ")}>

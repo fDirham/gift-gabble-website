@@ -11,6 +11,7 @@ import { Amaranth } from "next/font/google";
 import useScrollUp from "@/hooks/useScrollUp";
 import useAnalyticsSessionId from "@/hooks/useAnalyticsSessionId";
 import { useAnalyticsAPI } from "@/utilities/useAPI";
+import Link from "next/link";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 function getAmazonSearchLink(idea: string) {
@@ -57,6 +58,7 @@ export default function ShopPage() {
   return (
     <Suspense>
       <PageWrapper isBlankBG>
+        <Link href={"/ideas"}>{"<-"} Go back to ideas</Link>
         <h1 className={styles.title}>
           You can buy <span className={styles.ideaText}>"{idea}"</span> for your{" "}
           <span className={[amaranth.className, styles.whoText].join(" ")}>
