@@ -146,6 +146,25 @@ export default function IdeasPage() {
     return await fetchIdeaList(true);
   }
 
+  const renderMore = () => {
+    if (contentLoading) return null;
+    if (shownIdx < MAX_SHOWN_IDX)
+      return (
+        <div className={styles.moreContainer}>
+          <span className={styles.moreText}>Need more?</span>
+          <button onClick={fetchMoreIdeaList}>GIVE ME NEW IDEAS</button>
+        </div>
+      );
+    return (
+      <div className={styles.moreContainer}>
+        <span className={styles.moreText}>
+          Limit reached. Use a different description for more ideas.
+        </span>
+        <Link href={"/"}>Go back</Link>
+      </div>
+    );
+  };
+
   const contentLoading = isLoading || !ideaList.length;
   if (!isFormResponseLoaded || !isIdeaListLoaded) return null;
 
@@ -175,12 +194,7 @@ export default function IdeasPage() {
           sessionId={analyticsSessionId}
         />
 
-        {!contentLoading && !!(shownIdx < MAX_SHOWN_IDX) && (
-          <div className={styles.moreContainer}>
-            <span className={styles.moreText}>Need more?</span>
-            <button onClick={fetchMoreIdeaList}>GIVE ME NEW IDEAS</button>
-          </div>
-        )}
+        {renderMore()}
       </div>
     </PageWrapper>
   );

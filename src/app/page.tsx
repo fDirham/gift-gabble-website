@@ -48,7 +48,7 @@ export default function Home() {
         </div>
 
         <span className={styles.explainText}>
-          Fill the form below to get free gift ideas! <br />
+          Fill the form below to get free gift ideas and shopping options <br />
           {"No sign ups required!"}
         </span>
         <SearchForm onGo={handleSearch} />
