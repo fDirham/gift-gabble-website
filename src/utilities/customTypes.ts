@@ -1,30 +1,31 @@
-export type ProductObj = {
+export type AmazonProductObj = {
   title: string;
-  imageUrl: string;
-  linkUrl: string;
-  price?: string;
-  priceNum?: number;
   asin: string;
+  linkUrl: string;
+  imageUrl: string;
   rating?: number;
-  ratingsTotal?: number;
+  reviewsCount?: number;
+  price?: number;
+  currencySymbol?: string;
   isPrime: boolean;
 };
 
 export type FormResponse = {
   why: string;
+  who: string;
   whoOne: string;
   whoTwo: string;
   desc: string;
   budget: number;
   whyExtra: string;
-  pronouns: string;
+  giftNotes: string;
 };
 
 export type APIFormResponse = {
-  why: string;
   who: string;
+  why: string;
+  whyExtra?: string;
   desc: string;
   budget: number;
-  whyExtra?: string;
-  pronouns: string;
+  giftNotes?: string;
 };

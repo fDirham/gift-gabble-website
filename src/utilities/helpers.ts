@@ -20,3 +20,23 @@ export function randomIntFromInterval(
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export const camelToSnakeCase = (str: string) =>
+  str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+
+export function convertCamelCaseObjToSnakeCase(inObj: { [k: string]: any }) {
+  const keys = Object.keys(inObj);
+  const toReturn: { [k: string]: any } = {};
+
+  keys.forEach((k) => {
+    const val = inObj[k];
+    const newK = camelToSnakeCase(k);
+    toReturn[newK] = val;
+  });
+
+  return toReturn;
+}
+
+export const randomFiveDigit = () => {
+  return Math.floor(Math.random() * 90000) + 10000;
+};

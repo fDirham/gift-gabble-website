@@ -1,54 +1,58 @@
-import { resolveWho } from "@/components/content/LandingContent/SearchForm/SearchForm";
-import { APIFormResponse, FormResponse, ProductObj } from "./customTypes";
-import { encodeObject, timeoutPromise } from "./helpers";
+import { AnalyticsPostReqBody } from "@/app/api/analytics/route";
+import { APIFormResponse, FormResponse } from "./customTypes";
+import { timeoutPromise } from "./helpers";
 
 const isDummyMode = process.env.NEXT_PUBLIC_DUMMY_MODE !== "0";
 
-type FetchRecommendArgs = {
-  formResponse?: FormResponse;
-  doRecList?: boolean;
-  doProductList?: boolean;
-  searchKeyWords?: string;
-};
-
-export async function fetchRecommend(args: FetchRecommendArgs): Promise<
-  | {
-      isError: false;
-      recList: string[];
-      productList: ProductObj[];
-      productListQuery: string;
-    }
-  | {
-      isError: true;
-      error: any;
-    }
-> {
-  const recommendUrl = process.env.NEXT_PUBLIC_RECOMMEND_API_URL;
-  let queryComponents: { [key: string]: string | number } = {};
-  if (args.formResponse) {
-    queryComponents = convertFormResponseForAPI(args.formResponse);
-  }
-  if (args.doRecList) {
-    queryComponents["doRecList"] = 1;
-  }
-  if (args.doProductList) {
-    queryComponents["doProductList"] = 1;
-  }
-  if (args.searchKeyWords) {
-    queryComponents["searchKeyWords"] = args.searchKeyWords;
-  }
-  if (isDummyMode) {
-    queryComponents["returnDummy"] = 1;
-    // Faux loading
-    await timeoutPromise(3000);
-  }
-  const queryParams = "?" + encodeObject(queryComponents);
+export async function useAnalyticsAPI(reqBody: AnalyticsPostReqBody) {
+  const apiUrl = "/api/analytics";
 
   try {
-    const res = await fetch(recommendUrl + queryParams);
+    const res = await fetch(apiUrl as string, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reqBody),
+    });
     const data = await res.json();
     if (res.ok) {
-      return { isError: false, ...data };
+      return { isError: false, data };
+    }
+    throw data;
+  } catch (error) {
+    return { isError: true, error };
+  }
+}
+
+export async function useRecAPI<T>(reqBody: {
+  [k: string]: any;
+}): Promise<{ isError: true; error: any } | { isError: false; data: T }> {
+  const recommendUrl = process.env.NEXT_PUBLIC_RECOMMEND_API_URL;
+
+  if (reqBody["formResponse"]) {
+    reqBody["formResponse"] = convertFormResponseForAPI(
+      reqBody["formResponse"]
+    );
+  }
+
+  if (isDummyMode) {
+    // Faux loading
+    reqBody["isDummy"] = true;
+    await timeoutPromise(3000);
+  }
+
+  try {
+    const res = await fetch(recommendUrl as string, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reqBody),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      return { isError: false, data };
     }
     throw data;
   } catch (error) {
@@ -59,14 +63,13 @@ export async function fetchRecommend(args: FetchRecommendArgs): Promise<
 function convertFormResponseForAPI(
   formResponse: FormResponse
 ): APIFormResponse {
-  const who = resolveWho(formResponse.whoOne, formResponse.whoTwo);
   const toReturn: APIFormResponse = {
-    who,
+    who: formResponse.who,
     why: formResponse.why,
     whyExtra: formResponse.whyExtra,
     desc: formResponse.desc,
-    pronouns: formResponse.pronouns,
     budget: formResponse.budget,
+    giftNotes: formResponse.giftNotes,
   };
 
   return toReturn;
