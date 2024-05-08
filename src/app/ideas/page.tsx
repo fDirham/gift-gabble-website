@@ -10,11 +10,10 @@ import useScreenDevice from "@/hooks/useScreenDevice";
 import { useAnalyticsAPI, useRecAPI } from "@/utilities/useAPI";
 import { useRouter } from "next/navigation";
 import useIdeaList from "@/hooks/useIdeaList";
-import useProductMap from "@/hooks/useProductMap";
-import { AmazonProductObj } from "@/utilities/customTypes";
 import useScrollUp from "@/hooks/useScrollUp";
 import useAnalyticsSessionId from "@/hooks/useAnalyticsSessionId";
 import Link from "next/link";
+import useImageMap from "@/hooks/useImageMap";
 
 const amaranth = Amaranth({ subsets: ["latin"], weight: "700" });
 const SHOW_INCREMENT = 5;
@@ -26,7 +25,7 @@ export default function IdeasPage() {
   const router = useRouter();
   const { ideaList, setIdeaList, isIdeaListLoaded, shownIdx, setShownIdx } =
     useIdeaList();
-  const { productMap, setProductMap } = useProductMap();
+  const { imageMap, setImageMap } = useImageMap();
   const { analyticsSessionId, isAnalyticsSessionIdLoaded } =
     useAnalyticsSessionId();
   useScrollUp();
@@ -102,15 +101,15 @@ export default function IdeasPage() {
 
     setShownIdx((curr) => curr + SHOW_INCREMENT);
 
-    // Get products
-    const ideasToFindProductsFor = workingIdeaList.slice(
+    // Get images
+    const ideasToFindImagesFor = workingIdeaList.slice(
       shownIdx,
       newShownIdeaListLength
     );
 
-    const prodRes = await useRecAPI<{ [idea: string]: AmazonProductObj[] }>({
-      actionRoute: "OXYLABS_AMAZON_PROD_SEARCH",
-      inList: ideasToFindProductsFor,
+    const prodRes = await useRecAPI<{ [idea: string]: string[] }>({
+      actionRoute: "IMG_SEARCH",
+      inList: ideasToFindImagesFor,
     });
 
     if (prodRes.isError) {
@@ -120,17 +119,17 @@ export default function IdeasPage() {
       return;
     }
 
-    const newProductMap = prodRes.data;
-    setProductMap((curr) => {
+    const newImageMap = prodRes.data;
+    setImageMap((curr) => {
       return {
         ...curr,
-        ...newProductMap,
+        ...newImageMap,
       };
     });
 
-    // Delete those without idea list
-    const ideasToRemove = ideasToFindProductsFor.filter((idea) => {
-      return !newProductMap[idea];
+    // Delete those without imageList
+    const ideasToRemove = ideasToFindImagesFor.filter((idea) => {
+      return !newImageMap[idea];
     });
     const finalIdeaList: string[] = [];
     workingIdeaList.forEach((idea) => {
@@ -185,12 +184,13 @@ export default function IdeasPage() {
           options through Amazon.com
         </h2>
         <p className={styles.disclaimerText}>
-          {`Preview images are not perfect, ${actionText} an idea for more accurate results. Scroll to bottom for more ideas.`}
+          {`DISCLAIMER: As an Amazon Associate I earn from qualifying purchases.
+          If you ${actionText} any idea below, it takes you to an Amazon page.`}
         </p>
         <IdeaListRender
           ideaList={shownIdeaList}
           isLoading={contentLoading}
-          productMap={productMap}
+          imageMap={imageMap}
           sessionId={analyticsSessionId}
         />
 
