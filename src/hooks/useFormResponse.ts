@@ -3,7 +3,7 @@ import { FormResponse } from "@/utilities/customTypes";
 import useSessionStorage from "./useSessionStorage";
 import { SetStateAction, useCallback } from "react";
 import useIdeaList from "./useIdeaList";
-import useProductMap from "./useProductMap";
+import useImageMap from "./useImageMap";
 
 function resolveWho(whoOne: string, whoTwo: string) {
   if (!whoTwo || whoTwo == UNKNOWN_VALUE) return whoOne;
@@ -12,7 +12,7 @@ function resolveWho(whoOne: string, whoTwo: string) {
 
 export default function useFormResponse() {
   const { resetIdeaList } = useIdeaList();
-  const { resetProductMap } = useProductMap();
+  const { resetImageMap } = useImageMap();
 
   const initialValues: FormResponse = {
     who: UNKNOWN_VALUE,
@@ -35,10 +35,10 @@ export default function useFormResponse() {
   const setFormResponse = useCallback(
     (newVal: SetStateAction<FormResponse>) => {
       resetIdeaList();
-      resetProductMap();
+      resetImageMap();
       _setFormResponse(newVal);
     },
-    [_setFormResponse, resetIdeaList, resetProductMap]
+    [_setFormResponse, resetIdeaList, resetImageMap]
   );
 
   const modifyFormResponse = useCallback(

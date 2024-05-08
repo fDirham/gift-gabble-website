@@ -4,14 +4,13 @@ import styles from "./IdeaListRender.module.scss";
 import { useRouter } from "next/navigation";
 import { encodeObject } from "@/utilities/helpers";
 import RotatingImage from "../RotatingImage";
-import { AmazonProductObj } from "@/utilities/customTypes";
 import { useAnalyticsAPI } from "@/utilities/useAPI";
 import { useEffect, useRef, useState } from "react";
 
 type IdeaListRenderProps = {
   ideaList: string[];
   isLoading: boolean;
-  productMap: { [idea: string]: AmazonProductObj[] };
+  imageMap: { [idea: string]: string[] };
   sessionId: string;
 };
 
@@ -43,13 +42,13 @@ export default function IdeaListRender(props: IdeaListRenderProps) {
 
   const renderIdeaList = () => {
     const toReturn = props.ideaList.map((idea, idx) => {
-      const productList = props.productMap[idea] ? props.productMap[idea] : [];
-      if (!props.isLoading && !productList.length) return null;
+      const imageList = props.imageMap[idea] ? props.imageMap[idea] : [];
+      if (!props.isLoading && !imageList.length) return null;
       return (
         <IdeaBlock
           idea={idea}
           key={idea}
-          productList={productList}
+          imageList={imageList}
           isLoading={props.isLoading}
           pureLoading={false}
           orderIdx={idx}
@@ -79,7 +78,7 @@ type IdeaBlockProps =
   | {
       pureLoading: false;
       idea: string;
-      productList: AmazonProductObj[];
+      imageList: string[];
       isLoading?: boolean;
       orderIdx: number;
       sessionId: string;
@@ -89,13 +88,16 @@ type IdeaBlockProps =
       pureLoading: true;
     };
 
+function getAmazonSearchLink(idea: string) {
+  const kStr = idea.toLowerCase().trim().split(" ").join("+");
+  return `https://www.amazon.com/s?k=${kStr}&linkCode=ll2&tag=fbdlabs-20`;
+}
 function IdeaBlock(props: IdeaBlockProps) {
-  const productList = props.pureLoading ? [] : props.productList;
-  const imageList = productList.map((obj) => obj.imageUrl);
+  const imageList = props.pureLoading ? [] : props.imageList;
   const router = useRouter();
 
   function handleClick() {
-    if (props.pureLoading || props.isLoading) return;
+    if (props.pureLoading || props.isLoading) return false;
 
     useAnalyticsAPI({
       actionType: "ic",
@@ -103,7 +105,8 @@ function IdeaBlock(props: IdeaBlockProps) {
       ideaIdx: props.orderIdx,
       sessionId: props.sessionId,
     });
-    router.push("/shop?" + encodeObject({ q: props.idea }));
+
+    return true;
   }
 
   const renderImg = () => {
@@ -127,7 +130,7 @@ function IdeaBlock(props: IdeaBlockProps) {
   };
 
   const cnIdeaBlockContainer = () => {
-    const toReturn = [styles.ideaBlockContainer];
+    const toReturn = ["hiddenLink", styles.ideaBlockContainer];
     if (props.pureLoading || props.isLoading) {
       toReturn.push(styles.loading);
     }
@@ -153,36 +156,16 @@ function IdeaBlock(props: IdeaBlockProps) {
   };
 
   const ideaStr = props.pureLoading ? "________" : props.idea;
-  const getPriceStr = () => {
-    if (props.pureLoading || !props.productList.length) return;
 
-    let minP = -1;
-    let maxP = -1;
-    let currencySymbol = "";
-    for (let i = 0; i < props.productList.length; i++) {
-      const currObj = productList[i];
-      const currPrice = currObj.price;
-      if (currPrice) {
-        if (minP == -1 || currPrice < minP) {
-          minP = currPrice;
-        }
-        if (maxP == -1 || currPrice > maxP) {
-          maxP = currPrice;
-        }
-        if (currObj.currencySymbol) {
-          currencySymbol = currObj.currencySymbol;
-        }
-      }
-    }
-
-    if (minP == maxP) return currencySymbol + minP;
-    return `${currencySymbol}${minP} - ${currencySymbol}${maxP}`;
-  };
   return (
-    <div className={cnIdeaBlockContainer()} onClick={handleClick}>
+    <a
+      className={cnIdeaBlockContainer()}
+      onClick={handleClick}
+      href={getAmazonSearchLink(ideaStr)}
+      target="_blank"
+    >
       <div className={cnIdeaImgContainer()}>{renderImg()}</div>
       <span className={cnIdeaText()}>{ideaStr}</span>
-      <span className={styles.priceTag}>{getPriceStr()}</span>
-    </div>
+    </a>
   );
 }
