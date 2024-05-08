@@ -1,8 +1,6 @@
 "use client";
 
 import styles from "./IdeaListRender.module.scss";
-import { useRouter } from "next/navigation";
-import { encodeObject } from "@/utilities/helpers";
 import RotatingImage from "../RotatingImage";
 import { useAnalyticsAPI } from "@/utilities/useAPI";
 import { useEffect, useRef, useState } from "react";
@@ -88,13 +86,8 @@ type IdeaBlockProps =
       pureLoading: true;
     };
 
-function getAmazonSearchLink(idea: string) {
-  const kStr = idea.toLowerCase().trim().split(" ").join("+");
-  return `https://www.amazon.com/s?k=${kStr}&linkCode=ll2&tag=fbdlabs-20`;
-}
 function IdeaBlock(props: IdeaBlockProps) {
   const imageList = props.pureLoading ? [] : props.imageList;
-  const router = useRouter();
 
   function handleClick() {
     if (props.pureLoading || props.isLoading) return false;
@@ -155,13 +148,29 @@ function IdeaBlock(props: IdeaBlockProps) {
     return toReturn.join(" ");
   };
 
+  if (props.pureLoading)
+    return (
+      <div className={cnIdeaBlockContainer()}>
+        <div className={cnIdeaImgContainer()}>{renderImg()}</div>
+        <span className={cnIdeaText()}>_______</span>
+      </div>
+    );
+
   const ideaStr = props.pureLoading ? "________" : props.idea;
+  const kStr = ideaStr
+    .toLowerCase()
+    .trim()
+    .split(" ")
+    .join("+")
+    .replaceAll("?", "%3F")
+    .replaceAll("?", "%26");
+  const searchLink = `https://www.amazon.com/s?k=${kStr}&linkCode=ll2&tag=fbdlabs-20`;
 
   return (
     <a
       className={cnIdeaBlockContainer()}
       onClick={handleClick}
-      href={getAmazonSearchLink(ideaStr)}
+      href={searchLink}
       target="_blank"
     >
       <div className={cnIdeaImgContainer()}>{renderImg()}</div>
