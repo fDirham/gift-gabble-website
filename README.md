@@ -1,3 +1,8 @@
+## Overview
+A Next JS website for GiftGabble, an AI gift recommendation system that earns amazon commisions.
+
+## Setup
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
